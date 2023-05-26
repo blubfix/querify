@@ -100,35 +100,34 @@ async function createData() {
     console.log("DONE!");
     await connection.query(
       `INSERT INTO question (questionId, title, createdAt, userId, type, qrCode, questionLink, identifikation, ergebniseinsicht, wiederverwendung)
-      VALUES ('ABCDEF1234', 'Wie oft treibst du Sport pro Woche?', 'LOCALTIME', 'CCCCCCCC3333', 'free', 'qrCodeBase64', 'https://querify.com/question/ABCDEF1234', 'anonyme Abstimmung', 'vor ihrer Abstimmung sehen', 'als Vorlage gespeichert')`
+      VALUES ('ABCDEF1234', 'Wie oft treibst du Sport pro Woche?', CURRENT_TIMESTAMP, 'AAAAAA1111', 'free', 'qrCodeBase64', 'https://querify.com/question/ABCDEF1234', 'anonyme Abstimmung', 'vor ihrer Abstimmung sehen', 'als Vorlage gespeichert')`
     );
     await connection.query(
       `INSERT INTO question (questionId, title, createdAt, userId, type, qrCode, questionLink, identifikation, ergebniseinsicht, wiederverwendung)
-      VALUES ('YYYYYY8888', 'Was ist deine Lieblingsfarbe?', 'LOCALTIME', 'BBBBBB2222', 'multi', 'qrCodeBase64', 'https://querify.com/question/YYYYYY8888', 'nach Namen fragen, anderen aber nicht anzeigen', 'nach ihrer Abstimmung sehen', 'als Vorlage gespeichert')`
+      VALUES ('YYYYYY8888', 'Was ist deine Lieblingsfarbe?', CURRENT_TIMESTAMP, 'BBBBBB2222', 'multi', 'qrCodeBase64', 'https://querify.com/question/YYYYYY8888', 'nach Namen fragen, anderen aber nicht anzeigen', 'nach ihrer Abstimmung sehen', 'als Vorlage gespeichert')`
     );
     await connection.query(
       `INSERT INTO question (questionId, title, createdAt, userId, type, qrCode, questionLink, identifikation, ergebniseinsicht, wiederverwendung)
-      VALUES ('EFGHIJ5678', 'Welches Buch hast du zuletzt gelesen?', LOCALTIME, 'DDDDDDDD4444', 'poll', 'qrCodeBase64', 'https://querify.com/question/EFGHIJ5678', 'nach Namen fragen & für alle anzeigen', 'nach dem Umfragestichtag', '60 Tagen nach dem Umfragestichtag gelöscht')`
+      VALUES ('EFGHIJ5678', 'Welches Buch hast du zuletzt gelesen?', CURRENT_TIMESTAMP, 'AAAAAA1111', 'poll', 'qrCodeBase64', 'https://querify.com/question/EFGHIJ5678', 'nach Namen fragen & für alle anzeigen', 'nach dem Umfragestichtag', '60 Tagen nach dem Umfragestichtag gelöscht')`
     );
     console.log("DONE!");
 
     console.log("Creating answerOption data...");
     await connection.query(
-      `INSERT INTO answerOption (answerOptionId, answerText, questionid) VALUES ('ABABAB1212', 'Morgen Mittag?', 'ZZZZZZ9999')`
+      `INSERT INTO answerOption (answerOptionId, answerText, questionId) VALUES ('ABABAB1212', 'Zwei Mal pro Woche?', 'ABCDEF1234')`
     );
     console.log("DONE!");
-
     await connection.query(
-      `INSERT INTO answerOption (answerOptionId, answerText, questionid) VALUES ('BCBCBC3131', 'Übermorgen Vormittag?', 'ZZZZZZ9999')`
+      `INSERT INTO answerOption (answerOptionId, answerText, questionId) VALUES ('BCBCBC3131', 'Blau?', 'YYYYYY8888')`
     );
     console.log("DONE!");
 
     console.log("Creating answerGiven data...");
     await connection.query(
-      `INSERT INTO answerGiven (answerGivenId, userId, answerOptionId, questionId) VALUES ('ZYZYZY9898', 'BBBBBB2222', 'ABABAB1212', 'ZZZZZZ9999')`
+      `INSERT INTO answerGiven (answerGivenId, userId, answerOptionId, questionId) VALUES ('ZYZYZY9898', 'BBBBBB2222', 'ABABAB1212', 'ABCDEF1234')`
     );
     await connection.query(
-      `INSERT INTO answerGiven (answerGivenId, userId, answerOptionId, questionId) VALUES ('XWXWXW7676', 'CCCCCC3333', 'ABABAB1212', 'ZZZZZZ9999')`
+      `INSERT INTO answerGiven (answerGivenId, userId, answerOptionId, questionId) VALUES ('XWXWXW7676', 'CCCCCC3333', 'BCBCBC3131', 'YYYYYY8888')`
     );
     console.log("DONE!");
 
