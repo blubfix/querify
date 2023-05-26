@@ -112,11 +112,11 @@ async function createData() {
     console.log("Creating answerOption data...");
     await connection.query(
       `INSERT INTO answerOption (answerOptionId, answerText, questionId) VALUES
-      ('ABABAB1212', 'Zwei Mal pro Woche?', 'ABCDEF1234'),
-      ('BCBCBC3131', 'Blau?', 'YYYYYY8888'),
+      ('ABABAB1212', 'Zwei Mal pro Woche', 'ABCDEF1234'),
+      ('BCBCBC3131', 'Blau', 'YYYYYY8888'),
       ('DEDEDE4545', 'Paraquay', 'UVWXYZ7777'),
-      ('FGFGFG6767', 'Rot?', 'YYYYYY8888'),
-      ('HIHIHI8989', '>2 Stunden?', 'KLMNOP9999')`
+      ('FGFGFG6767', 'Rot', 'YYYYYY8888'),
+      ('HIHIHI8989', '>2 Stunden', 'KLMNOP9999')`
     );
     console.log("DONE!");
 
