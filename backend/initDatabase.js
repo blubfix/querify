@@ -27,6 +27,8 @@ async function createTables() {
         userId VARCHAR(100),
         email VARCHAR(100),
         password VARCHAR(50),
+        geburtstag DATE,
+        name VARCHAR(50),
         PRIMARY KEY (userId)
       );`
     );
@@ -39,6 +41,11 @@ async function createTables() {
         createdAt TIMESTAMP,
         userId VARCHAR(100),
         type ENUM('poll', 'multi', 'free'),
+        qrCode TEXT,
+        questionLink VARCHAR(255),
+        identifikation ENUM('anonyme Abstimmung', 'nach Namen fragen, anderen aber nicht anzeigen', 'nach Namen fragen & für alle anzeigen'),
+        ergebniseinsicht ENUM('vor ihrer Abstimmung sehen', 'nach ihrer Abstimmung sehen', 'nach dem Umfragestichtag'),
+        wiederverwendung ENUM('als Vorlage gespeichert', '60 Tagen nach dem Umfragestichtag gelöscht'),
         PRIMARY KEY (questionId),
         FOREIGN KEY (userId) REFERENCES user(userId)
       );`
@@ -82,19 +89,26 @@ async function createData() {
   try {
     console.log("Creating user data...");
     await connection.query(
-      `INSERT INTO user (userId, email, password) VALUES ('AAAAAA1111', 'Tobi@mail.de', 'pw123')`
+      `INSERT INTO user (userId, email, password, name, geburtstag) VALUES ('AAAAAA1111', 'Tobi@mail.de', 'pw123', 'Uwe', '1987-02-24')`
     );
     await connection.query(
-      `INSERT INTO user (userId, email, password) VALUES ('BBBBBB2222', 'Clara@mail.de', 'password')`
+      `INSERT INTO user (userId, email, password, name, geburtstag) VALUES ('BBBBBB2222', 'Clara@mail.de', 'password', 'Franzi', '2001-04-13')`
     );
     await connection.query(
-      `INSERT INTO user (userId, email, password) VALUES ('CCCCCC3333', 'Tim@mail.de', '123456')`
+      `INSERT INTO user (userId, email, password, name, geburtstag) VALUES ('CCCCCC3333', 'Tim@mail.de', '123456', 'Renate', '1998-07-19')`
     );
     console.log("DONE!");
-
-    console.log("Creating question data...");
     await connection.query(
-      `INSERT INTO question (questionId, title, type, createdAt, userId) VALUES ('ZZZZZZ9999', 'Wann wollen wir Eis essen gehen??', 'poll', LOCALTIME, 'AAAAAA1111')`
+      `INSERT INTO question (questionId, title, createdAt, userId, type, qrCode, questionLink, identifikation, ergebniseinsicht, wiederverwendung)
+      VALUES ('ABCDEF1234', 'Wie oft treibst du Sport pro Woche?', 'LOCALTIME', 'CCCCCCCC3333', 'free', 'qrCodeBase64', 'https://querify.com/question/ABCDEF1234', 'anonyme Abstimmung', 'vor ihrer Abstimmung sehen', 'als Vorlage gespeichert')`
+    );
+    await connection.query(
+      `INSERT INTO question (questionId, title, createdAt, userId, type, qrCode, questionLink, identifikation, ergebniseinsicht, wiederverwendung)
+      VALUES ('YYYYYY8888', 'Was ist deine Lieblingsfarbe?', 'LOCALTIME', 'BBBBBB2222', 'multi', 'qrCodeBase64', 'https://querify.com/question/YYYYYY8888', 'nach Namen fragen, anderen aber nicht anzeigen', 'nach ihrer Abstimmung sehen', 'als Vorlage gespeichert')`
+    );
+    await connection.query(
+      `INSERT INTO question (questionId, title, createdAt, userId, type, qrCode, questionLink, identifikation, ergebniseinsicht, wiederverwendung)
+      VALUES ('EFGHIJ5678', 'Welches Buch hast du zuletzt gelesen?', LOCALTIME, 'DDDDDDDD4444', 'poll', 'qrCodeBase64', 'https://querify.com/question/EFGHIJ5678', 'nach Namen fragen & für alle anzeigen', 'nach dem Umfragestichtag', '60 Tagen nach dem Umfragestichtag gelöscht')`
     );
     console.log("DONE!");
 
