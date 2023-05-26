@@ -114,7 +114,7 @@ async function createData() {
       `INSERT INTO answerOption (answerOptionId, answerText, questionId) VALUES
       ('ABABAB1212', 'Zwei Mal pro Woche?', 'ABCDEF1234'),
       ('BCBCBC3131', 'Blau?', 'YYYYYY8888'),
-      ('DEDEDE4545', 'Peru?', 'UVWXYZ7777'),
+      ('DEDEDE4545', 'Paraquay', 'UVWXYZ7777'),
       ('FGFGFG6767', 'Rot?', 'YYYYYY8888'),
       ('HIHIHI8989', '>2 Stunden?', 'KLMNOP9999')`
     );
