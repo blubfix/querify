@@ -3,7 +3,7 @@ import { View, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import MasterPage from "./src/Pages/MasterPage";
+import Master from "./src/Pages/Master";
 
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -26,7 +26,7 @@ const Tab = createBottomTabNavigator();
             headerShown: false
           }}>
          
-          <Stack.Screen name="MasterPage" component={MasterPage} />
+          <Stack.Screen name="Master" component={Master} />
   
   
         </Stack.Navigator>

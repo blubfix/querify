@@ -1,45 +1,52 @@
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet, Text, Image } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, Text, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
+const { width, height } = Dimensions.get("window");
 
 const SubmitButton = (probs) => {
 
     return (
-        <View>
-            <LinearGradient colors={['#4F73E7', '#734498']} start={[0, 0]} end={[1, 0]} style={styles.button}>
-                <TouchableOpacity style={styles.button} onPress={probs.onPress}>
+        <View style={styles.container}>
+            <TouchableOpacity style={styles.button} onPress={probs.onPress}>
+                <LinearGradient colors={['#4F73E7', '#734498']} start={[0, 0]} end={[1, 0]} style={styles.linearGradient}>
                     <Text style={styles.text}>{probs.buttonText}</Text>
-                    <Image style={styles.arrowIcon} source={require('../../assets/thin-arrow.png')}/>
-                </TouchableOpacity>
-            </LinearGradient>
+                    <MaterialCommunityIcons style={styles.arrowIcon} name='arrow-right' color={'white'} size={20}/>
+                </LinearGradient>
+            </TouchableOpacity>
         </View>
     )
 }
 
 const styles = StyleSheet.create({ 
     button: {
-        width: 300,
-        height: 48,
-        borderRadius: 24,
+        height: height*0.05,
+        width: width*0.75,
+
+        borderRadius: '100%',
         alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'row',
+        justifyContent: 'center'
+    },
+
+    linearGradient: {
+        width: '100%',
+        height: '100%',
+        borderRadius: '100%',
+        alignItems: 'center',
+        justifyContent: 'center'
+
     },
 
     text: {
         fontSize: 16,
-        fontWeight: '400',
+        fontWeight: '500',
         color: 'white',
-        alignSelf: 'center'
     },
 
     arrowIcon: {
         position: 'absolute',
-        height: 30,
-        width: 30,
         right: 30,
-        
     }
 });
 
