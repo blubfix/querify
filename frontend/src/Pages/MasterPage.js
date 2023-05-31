@@ -123,8 +123,9 @@ export default function MasterPage({ navigation }) {
                                                 onChangeText={text => setText(text)}
                                             />
                                         </Col>
-                                        <SubmitButton buttonText={"Weiter"} onPress={() => console.log('Hello')}/>
+                                        
                                     </Row>
+                                    <SubmitButton buttonText={"Weiter"} onPress={() => console.log('Hello')}/>
                                 </Grid>
 
 
