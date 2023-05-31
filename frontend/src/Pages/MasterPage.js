@@ -21,6 +21,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { TouchableOpacity } from "react-native-web";
+import SubmitButton from "../Components/SubmitButton";
 
 
 
@@ -122,6 +123,7 @@ export default function MasterPage({ navigation }) {
                                                 onChangeText={text => setText(text)}
                                             />
                                         </Col>
+                                        <SubmitButton buttonText={"Weiter"} onPress={() => console.log('Hello')}/>
                                     </Row>
                                 </Grid>
 

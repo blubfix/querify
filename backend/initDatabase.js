@@ -27,6 +27,8 @@ async function createTables() {
         userId VARCHAR(100),
         email VARCHAR(100),
         password VARCHAR(50),
+        geburtstag DATE,
+        name VARCHAR(50),
         PRIMARY KEY (userId)
       );`
     );
@@ -39,6 +41,11 @@ async function createTables() {
         createdAt TIMESTAMP,
         userId VARCHAR(100),
         type ENUM('poll', 'multi', 'free'),
+        qrCode TEXT,
+        questionLink VARCHAR(255),
+        identifikation ENUM('anonyme Abstimmung', 'nach Namen fragen, anderen aber nicht anzeigen', 'nach Namen fragen & für alle anzeigen'),
+        ergebniseinsicht ENUM('vor ihrer Abstimmung sehen', 'nach ihrer Abstimmung sehen', 'nach dem Umfragestichtag'),
+        wiederverwendung ENUM('als Vorlage gespeichert', '60 Tagen nach dem Umfragestichtag gelöscht'),
         PRIMARY KEY (questionId),
         FOREIGN KEY (userId) REFERENCES user(userId)
       );`
@@ -82,39 +89,45 @@ async function createData() {
   try {
     console.log("Creating user data...");
     await connection.query(
-      `INSERT INTO user (userId, email, password) VALUES ('AAAAAA1111', 'Tobi@mail.de', 'pw123')`
-    );
-    await connection.query(
-      `INSERT INTO user (userId, email, password) VALUES ('BBBBBB2222', 'Clara@mail.de', 'password')`
-    );
-    await connection.query(
-      `INSERT INTO user (userId, email, password) VALUES ('CCCCCC3333', 'Tim@mail.de', '123456')`
+      `INSERT INTO user (userId, email, password, name, geburtstag) VALUES
+      ('AAAAAA1111', 'Tobi@mail.de', 'pw123', 'Uwe', '1987-02-24'),
+      ('BBBBBB2222', 'Clara@mail.de', 'password', 'Franzi', '2001-04-13'),
+      ('CCCCCC3333', 'Tim@mail.de', '123456', 'Renate', '1998-07-19'),
+      ('DDDDDD4444', 'Anna@mail.de', 'secret', 'Lena', '1995-10-05'),
+      ('EEEEEE5555', 'Max@mail.de', 'pass123', 'Paul', '1990-12-31')`
     );
     console.log("DONE!");
 
     console.log("Creating question data...");
     await connection.query(
-      `INSERT INTO question (questionId, title, type, createdAt, userId) VALUES ('ZZZZZZ9999', 'Wann wollen wir Eis essen gehen??', 'poll', LOCALTIME, 'AAAAAA1111')`
+      `INSERT INTO question (questionId, title, createdAt, userId, type, qrCode, questionLink, identifikation, ergebniseinsicht, wiederverwendung) VALUES
+      ('ABCDEF1234', 'Wie oft treibst du Sport pro Woche?', CURRENT_TIMESTAMP, 'AAAAAA1111', 'free', 'qrCodeBase64', 'https://querify.com/question/ABCDEF1234', 'anonyme Abstimmung', 'vor ihrer Abstimmung sehen', 'als Vorlage gespeichert'),
+      ('YYYYYY8888', 'Was ist deine Lieblingsfarbe?', CURRENT_TIMESTAMP, 'BBBBBB2222', 'multi', 'qrCodeBase64', 'https://querify.com/question/YYYYYY8888', 'nach Namen fragen, anderen aber nicht anzeigen', 'nach ihrer Abstimmung sehen', 'als Vorlage gespeichert'),
+      ('EFGHIJ5678', 'Welches Buch hast du zuletzt gelesen?', CURRENT_TIMESTAMP, 'AAAAAA1111', 'poll', 'qrCodeBase64', 'https://querify.com/question/EFGHIJ5678', 'nach Namen fragen & für alle anzeigen', 'nach dem Umfragestichtag', '60 Tagen nach dem Umfragestichtag gelöscht'),
+      ('KLMNOP9999', 'Wie viel Zeit verbringst du täglich mit dem Lesen von Nachrichten?', CURRENT_TIMESTAMP, 'CCCCCC3333', 'free', 'qrCodeBase64', 'https://querify.com/question/KLMNOP9999', 'anonyme Abstimmung', 'nach ihrer Abstimmung sehen', 'als Vorlage gespeichert'),
+      ('UVWXYZ7777', 'Welches Land möchtest du gerne bereisen?', CURRENT_TIMESTAMP, 'DDDDDD4444', 'poll', 'qrCodeBase64', 'https://querify.com/question/UVWXYZ7777', 'anonyme Abstimmung', 'vor ihrer Abstimmung sehen', 'als Vorlage gespeichert')`
     );
     console.log("DONE!");
 
     console.log("Creating answerOption data...");
     await connection.query(
-      `INSERT INTO answerOption (answerOptionId, answerText, questionid) VALUES ('ABABAB1212', 'Morgen Mittag?', 'ZZZZZZ9999')`
-    );
-    console.log("DONE!");
-
-    await connection.query(
-      `INSERT INTO answerOption (answerOptionId, answerText, questionid) VALUES ('BCBCBC3131', 'Übermorgen Vormittag?', 'ZZZZZZ9999')`
+      `INSERT INTO answerOption (answerOptionId, answerText, questionId) VALUES
+      ('ABABAB1212', 'Zwei Mal pro Woche', 'ABCDEF1234'),
+      ('BCBCBC3131', 'Blau', 'YYYYYY8888'),
+      ('DEDEDE4545', 'Paraquay', 'UVWXYZ7777'),
+      ('FGFGFG6767', 'Rot', 'YYYYYY8888'),
+      ('HIHIHI8989', '>2 Stunden', 'KLMNOP9999')`
     );
     console.log("DONE!");
 
     console.log("Creating answerGiven data...");
     await connection.query(
-      `INSERT INTO answerGiven (answerGivenId, userId, answerOptionId, questionId) VALUES ('ZYZYZY9898', 'BBBBBB2222', 'ABABAB1212', 'ZZZZZZ9999')`
-    );
-    await connection.query(
-      `INSERT INTO answerGiven (answerGivenId, userId, answerOptionId, questionId) VALUES ('XWXWXW7676', 'CCCCCC3333', 'ABABAB1212', 'ZZZZZZ9999')`
+      `INSERT INTO answerGiven (answerGivenId, userId, answerOptionId, questionId) VALUES
+      ('ZYZYZY9898', 'BBBBBB2222', 'ABABAB1212', 'ABCDEF1234'),
+      ('XWXWXW7676', 'CCCCCC3333', 'BCBCBC3131', 'YYYYYY8888'),
+      ('AQWSED1234', 'AAAAAA1111', 'DEDEDE4545', 'ABCDEF1234'),
+      ('YHBGVF5678', 'DDDDDD4444', 'FGFGFG6767', 'YYYYYY8888'),
+      ('UIOKLJ9090', 'EEEEEE5555', 'HIHIHI8989', 'EFGHIJ5678')`
     );
     console.log("DONE!");
 
