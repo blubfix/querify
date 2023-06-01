@@ -19,10 +19,11 @@ const SubmitButton = (probs) => {
     )
 }
 
-const styles = StyleSheet.create({ 
+const styles = StyleSheet.create({
+    
     button: {
-        height: height*0.05,
-        width: width*0.75,
+        height: height*0.06,
+        width: width*0.8,
 
         borderRadius: '100%',
         alignItems: 'center',
