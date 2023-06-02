@@ -6,16 +6,18 @@ const userRouter = express.Router();
 userRouter.post("/signUp", async (req, res) => {
   try {
     const userId = generateIds.generateId();
-    const {password, email } = req.body;
+    const { password, email, name, geburtstag} = req.body;
     if (!password) {
-      return res
-        .status(400)
-        .send("password field is required");
+      throw new Error("password field is required");
     }
     if (!email) {
-      return res
-        .status(400)
-        .send("email field is required");
+      throw new Error("email field is required");
+    }
+    if (!name) {
+      throw new Error("name field is required");
+    }
+    if (!geburtstag) {
+      throw new Error("birthday field is required");
     }
     const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
     if (!passwordRegex.test(password)) {
@@ -25,7 +27,7 @@ userRouter.post("/signUp", async (req, res) => {
     if (user !== null) {
       throw new Error("User with this email already exists.");
     }
-    await database.signUp(email, password, userId);
+    await database.signUp(email, password, userId, name, geburtstag);
     const result = await database.login(email, password);
     res.status(201).send(result);
   } catch (e) {
@@ -38,7 +40,7 @@ userRouter.get("/", async (req, res) => {
   try {
     const result = await database.getAllUsers();
     if (result.length === 0) {
-      res.status(404).send('there are no users');
+      res.status(404).send("there are no users");
     } else {
       res.status(200).send(result);
     }
@@ -50,11 +52,10 @@ userRouter.get("/", async (req, res) => {
 
 userRouter.post("/login", async (req, res) => {
   try {
-    const {email, password} = req.body;
-    console.log(email);
+    const { email, password } = req.body;
     const result = await database.login(email, password);
     if (result.length === 0) {
-      res.status(404).send({error: 'Email or password incorrect!'});
+      res.status(404).send({ error: "Email or password incorrect!" });
     } else {
       res.status(200).send(result);
     }
