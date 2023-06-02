@@ -23,10 +23,10 @@ async function connectToDb() {
 
 // ++++++++++++ USER ++++++++++++
 
-async function signUp(email, password, userId) {
+async function signUp(email, password, userId, name, geburtstag) {
   try {
     await connection.query(
-      `INSERT INTO user (email, password, userId) VALUES ('${email}', '${password}', '${userId}')`
+      `INSERT INTO user (email, password, userId, name, geburtstag) VALUES ('${email}', '${password}', '${userId}', '${name}', '${geburtstag}')`
     );
     console.log("data (user) inserted");
   } catch (e) {
@@ -37,7 +37,7 @@ async function signUp(email, password, userId) {
 async function getAllUsers() {
   try {
     const result = await connection.query(
-      `SELECT email, password, userId FROM user`
+      `SELECT * FROM user`
     );
     console.log("DB Result: getAllUsers", result);
     return result;
