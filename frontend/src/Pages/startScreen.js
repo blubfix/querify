@@ -12,70 +12,78 @@ import {
     BottomNavigation,
     TextInput,
 } from "react-native-paper";
-import { Col, Row, Grid } from "react-native-paper-grid";
-import DatePicker from "react-native-date-picker";
+import SubmitButton from "../Components/SubmitButton";
+import LoginScreen from "./loginScreen";
 
-import { SafeAreaView } from "react-native-safe-area-context";
-
-import { LinearGradient } from 'expo-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Col, Row, Grid } from "react-native-paper-grid";
 
-import { TouchableOpacity } from "react-native-web";
+import { useFonts } from 'expo-font';
 
 
 
-const CreateRoute = () => <Text>Test</Text>;
 
-const ListRoute = () => <Text>Albums</Text>;
 
-const SettingsRoute = () => <Text>Recents</Text>;
 
 export default function StartScreen({ navigation }) {
-    const createTwoButtonAlert = () =>
-        Alert.alert("This is an Alert Call", "Create Fast response", [
-            {
-                text: "Cancel",
-                onPress: () => console.log("Cancel Pressed"),
-                style: "cancel",
-            },
-            { text: "OK", onPress: () => console.log("OK Pressed") },
-        ]);
-    const [isSwitchOn, setIsSwitchOn] = React.useState(false);
-    const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+    
 
-    const [date, setDate] = useState(new Date());
-    const [open, setOpen] = useState(false);
+    const [fontsLoaded] = useFonts({
+        'Italiana-Regular': require('../Fonts/Italiana-Regular.ttf'),
+      });
 
-    const [index, setIndex] = React.useState(0);
-    const [routes] = React.useState([
-        { key: 'create', title: 'Create', focusedIcon: (props) => <MaterialCommunityIcons name='pencil-outline' color={'#F5F1F3'} size={25} />, unfocusedIcon: (props) => <MaterialCommunityIcons name='pencil' color={'#303030'} size={25} /> },
-        {
-            key: 'list', title: 'List', focusedIcon: (props) => <MaterialCommunityIcons name='format-list-bulleted' color={'#F5F1F3'} size={25} />, unfocusedIcon: (props) => <MaterialCommunityIcons name='format-list-bulleted-square' color={'#303030'} size={25} />
-        },
-        { key: 'settings', title: 'Settings', focusedIcon: (props) => <MaterialCommunityIcons name='cog' color={'#F5F1F3'} size={25} />, unfocusedIcon: (props) => <MaterialCommunityIcons name='cog-outline' color={'#303030'} size={25} /> },
-
-    ]);
-
-    const renderScene = BottomNavigation.SceneMap({
-        create: CreateRoute,
-        list: ListRoute,
-        settings: SettingsRoute,
-
-    });
-
-
-    const [text, setText] = React.useState("");
+    
 
 
     return (
         <PaperProvider theme={theme} >
-            
+
+            <Grid container style={styles.container}>
+                <Row>
+                    <Col>
+                        <Image
+                            style={styles.Logo}
+                            source={require('../Images/Logo.png')} />
+                        <Text style={{ color: "#00B3FF", alignSelf:"center", fontSize:96, fontFamily:'Italiana-Regular' }}>querify</Text>
+                    </Col>
+                </Row>
+                <Row >
+                    <Col>
+                        <View style={{ display: "flex", alignItems: "center", }}>
+                            <SubmitButton buttonText={"Anmelden"} onPress={() => navigation.navigate("LoginScreen")} />
+                        </View>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <View style={{ display: "flex", alignItems: "center", }}>
+                            <SubmitButton buttonText={"Konto erstellen"} onPress={() => console.log('Hello')} />
+                        </View>
+                    </Col>
+                </Row>
+            </Grid>
         </PaperProvider >
     );
 }
 
 const styles = StyleSheet.create({
-    
+    container: {
+        flex: 1,
+        justifyContent: "flex-start",
+
+
+        backgroundColor: "#000000",
+
+
+
+    },
+    Logo: {
+        marginTop:20,
+        height: 500,
+        width: "100%",
+
+    },
+
 });
 
 const theme = {
@@ -85,6 +93,7 @@ const theme = {
         ...DefaultTheme.colors,
         primary: "purple",
         secondary: "yellow",
+        background: "black",
 
 
 
