@@ -3,25 +3,62 @@ const database = require("../../database");
 const generateIds = require("../functions/generateIds")
 const questionRouter = express.Router();
 
+const validIdentifikationValues = [
+  "anonyme Abstimmung",
+  "nach Namen fragen, anderen aber nicht anzeigen",
+  "nach Namen fragen & für alle anzeigen",
+];
+
+const validWiederverwendungValues = [
+  "als Vorlage gespeichert",
+  "60 Tagen nach dem Umfragestichtag gelöscht",
+];
+
+const validErgebniseinsichtValues = [
+  "vor ihrer Abstimmung sehen",
+  "nach ihrer Abstimmung sehen",
+  "nach dem Umfragestichtag",
+];
+
 questionRouter.post("/", async (req, res) => {
   try {
     const questionId = generateIds.generateId();
-    const { title, type, userId } = req.body;
+    const {
+      title,
+      type,
+      userId,
+      qrCode,
+      questionLink,
+      identifikation,
+      wiederverwendung,
+      ergebniseinsicht,
+    } = req.body;
+
     if (!title) {
-      return res
-        .status(400)
-        .send("Title field is required");
+      return res.status(400).send("Title field is required");
     }
     if (!type) {
-      return res
-        .status(400)
-        .send("type field is required");
+      return res.status(400).send("Type field is required");
     }
     if (!userId) {
-      return res
-        .status(400)
-        .send("userId field is required");
-    }    
+      return res.status(400).send("userId field is required");
+    }
+    if (!validIdentifikationValues.includes(identifikation)) {
+      return res.status(400).send({
+        error: `Invalid identifikation value: ${identifikation}`,
+      });
+    }
+    if (!validWiederverwendungValues.includes(wiederverwendung)) {
+      return res.status(400).send({
+        error: `Invalid wiederverwendung value: ${wiederverwendung}`,
+      });
+    }
+    if (!validErgebniseinsichtValues.includes(ergebniseinsicht)) {
+      return res.status(400).send({
+        error: `Invalid ergebniseinsicht value: ${ergebniseinsicht}`,
+      });
+    }
+
     const user = await database.getUserById(userId);
     if (!user) {
       return res.status(400).send({ error: `Invalid userId ${userId}` });
@@ -30,7 +67,18 @@ questionRouter.post("/", async (req, res) => {
     if (!validTypes.includes(type)) {
       return res.status(400).send({ error: `Invalid question type ${type}` });
     }
-    await database.createQuestion(questionId, title, type, userId);
+
+    await database.createQuestion(
+      questionId,
+      title,
+      type,
+      userId,
+      qrCode,
+      questionLink,
+      identifikation,
+      wiederverwendung,
+      ergebniseinsicht
+    );
     res.status(201).send(questionId);
   } catch (e) {
     console.error(e);
@@ -57,11 +105,11 @@ questionRouter.get("/", async(req, res) => {
 questionRouter.get("/:questionId", async (req, res) => {
   try {
     const { questionId } = req.params;
-    const questions = await database.getQuestionById(questionId);
-    if (!questions) {
-      res.status(404).send('there are no questions with this ID');
+    const question = await database.getQuestionById(questionId);
+    if (!question) {
+      res.status(404).send("There are no questions with this ID");
     } else {
-      res.status(200).send(questions);
+      res.status(200).send(question);
     }
   } catch (e) {
     console.error(e);
