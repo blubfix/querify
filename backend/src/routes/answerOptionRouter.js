@@ -34,7 +34,9 @@ answerOptionRouter.get("/question/:questionId", async (req, res) => {
       questionId
     );
     if (!answerOptions) {
-      return res.status(404).send("No answerOption with this Id available");
+      return res
+        .status(404)
+        .send("No answerOption with this question Id available");
     }
     res.json(answerOptions);
   } catch (e) {
@@ -42,6 +44,7 @@ answerOptionRouter.get("/question/:questionId", async (req, res) => {
     res.status(500).send("Error fetching answerOptions");
   }
 });
+
 
 answerOptionRouter.get("/:answerOptionId", async (req, res) => {
   try {
