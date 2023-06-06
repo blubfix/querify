@@ -105,18 +105,16 @@ async function getUserIdByEmailAndPassword(email, password) {
 
 // ++++++++++++ question ++++++++++++
 
-
-async function createQuestion(questionId, title, type, userId) {
+async function createQuestion(questionId, title, type, userId, qrCode, questionLink, identifikation, wiederverwendung, ergebniseinsicht) {
   try {
     await connection.query(
-      `INSERT INTO question (questionId, createdAt, title, type, userId) VALUES ('${questionId}', LOCALTIME, '${title}', '${type}', '${userId}')`
+      `INSERT INTO question (questionId, createdAt, title, type, userId, qrCode, questionLink, identifikation, wiederverwendung, ergebniseinsicht) VALUES ('${questionId}', LOCALTIME, '${title}', '${type}', '${userId}', '${qrCode}', '${questionLink}', '${identifikation}', '${wiederverwendung}', '${ergebniseinsicht}')`
     );
     console.log("data (question) inserted");
   } catch (e) {
     console.error(e);
   }
 }
-
 
 async function getQuestionById(questionId) {
   try {
@@ -125,7 +123,7 @@ async function getQuestionById(questionId) {
     );
     console.log("DB Result: getAnswerOptionByID", result);
     if (result.length === 0) {
-      console.log("No question with this Id avilable");
+      console.log("No question with this Id available");
       return null;
     }
     return result;
