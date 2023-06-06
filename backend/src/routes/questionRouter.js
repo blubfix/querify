@@ -38,7 +38,6 @@ questionRouter.post("/", async (req, res) => {
   }
 });
 
-
 questionRouter.get("/", async(req, res) => {
   try {
     const result = await database.getAllQuestions();

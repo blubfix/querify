@@ -7,6 +7,7 @@ const pool = mariadb.createPool({
   password: "alfred1",
   database: "wishhzDB",
   connectionLimit: 5,
+  
 });
 
 async function connectToDb() {
