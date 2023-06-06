@@ -216,11 +216,13 @@ async function addAnswerGiven(answerOptionId, userId, answerGivenId, questionId)
     await connection.query(
       `INSERT INTO answerGiven (answerOptionId, userId, answerGivenId, questionId) VALUES ('${answerOptionId}', '${userId}', '${answerGivenId}', '${questionId}')`
     );
+    console.log("AnswerGiven inserted:", answerGivenId);
   } catch (e) {
     console.error(e);
     throw e;
   }
 }
+
 
 async function getAnswerGivenByAnswerOption(answerOptionId) {
   try {

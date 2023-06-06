@@ -48,16 +48,20 @@ answerGivenRouter.post("/", async (req, res) => {
   }
 });
 
-answerGivenRouter.get("/answerOption/:answerOptionId", async (req, res) => {
+answerGivenRouter.get("/:answerOptionId", async (req, res) => {
   try {
     const { answerOptionId } = req.params;
+    console.log("Request parameter - answerOptionId:", answerOptionId);
     // Check if answerOptionId is valid
     const answerOption = await database.getAnswerOptionById(answerOptionId);
     if (!answerOption) {
       return res.status(404).send("No answerOption with this Id available");
     }
     // Get answerGiven from the database
-    const answerGiven = await database.getAnswerGivenByAnswerOption(answerOptionId);
+    const answerGiven = await database.getAnswerGivenByAnswerOption(
+      answerOptionId
+    );
+    console.log("AnswerGiven retrieved:", answerGiven);
     res.status(200).send(answerGiven);
   } catch (e) {
     console.error(e);
