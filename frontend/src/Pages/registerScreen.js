@@ -45,8 +45,6 @@ const RegisterScreen =() => {
                                 <Text style={styles.checkboxText}>Ich möchte Werbung und Marketingmitteilungen von querify erhalten.</Text>
                             </Col>
                         </Row>
-
-
                     </Col>
                 </Row>
                 <Row>
@@ -83,6 +81,7 @@ const styles = StyleSheet.create({
     subHeaderText: {
         fontSize: 14,
         fontWeight: '400',
+        color: '#64748B',
         alignSelf: 'center',
         marginTop: 15,
         marginBottom: 15
