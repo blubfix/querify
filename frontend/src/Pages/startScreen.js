@@ -18,7 +18,7 @@ import LoginScreen from "./loginScreen";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Col, Row, Grid } from "react-native-paper-grid";
 
-import { useFonts } from 'expo-font';
+import { useFonts, Italiana_400Regular } from '@expo-google-fonts/italiana';
 
 
 
@@ -29,8 +29,12 @@ export default function StartScreen({ navigation }) {
     
 
     const [fontsLoaded] = useFonts({
-        'Italiana-Regular': require('../Fonts/Italiana-Regular.ttf'),
-      });
+        Italiana_400Regular
+    });
+
+    if (!fontsLoaded) {
+        return null;
+    }
 
     
 
@@ -44,7 +48,7 @@ export default function StartScreen({ navigation }) {
                         <Image
                             style={styles.Logo}
                             source={require('../Images/Logo.png')} />
-                        <Text style={{ color: "#00B3FF", alignSelf:"center", fontSize:96, fontFamily:'Italiana-Regular' }}>querify</Text>
+                        <Text style={{ color: "#00B3FF", alignSelf:"center", fontSize:96, fontFamily:'Italiana_400Regular' }}>querify</Text>
                     </Col>
                 </Row>
                 <Row >
