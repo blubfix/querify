@@ -57,7 +57,7 @@ export default function StartScreen({ navigation }) {
                 <Row>
                     <Col>
                         <View style={{ display: "flex", alignItems: "center", }}>
-                            <SubmitButton buttonText={"Konto erstellen"} onPress={() => console.log('Hello')} />
+                            <SubmitButton buttonText={"Konto erstellen"} onPress={() => navigation.navigate("RegisterScreen")} />
                         </View>
                     </Col>
                 </Row>

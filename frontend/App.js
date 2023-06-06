@@ -10,6 +10,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LogoTitle from "./src/Components/LogoTitle";
+import RegisterScreen from './src/Pages/registerScreen';
 
 // Erstellen einer Instanz der Bottom-Tab-Navigators
 const Tab = createBottomTabNavigator();
@@ -26,10 +27,13 @@ export default function App() {
                     component={Home}
                     options={{ headerShown: false }}
                 />
-                <Stack.Screen name="StartScreen" component={startScreen} options={{headerTitle: "", headerLeft: () => <LogoTitle  /> }}
+                <Stack.Screen name="StartScreen" component={startScreen} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0}/>, headerShadowVisible: false  }}
                 />
-                <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerTitle: "", headerLeft: () => <LogoTitle  />  }}
+                <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0.25}/>, headerShadowVisible: false   }}
                 />
+                <Stack.Screen name="RegisterScreen" component={RegisterScreen} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0.25}/>, headerShadowVisible: false  }}
+                />
+
             </Stack.Navigator>
         </NavigationContainer>
     )
