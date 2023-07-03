@@ -2,19 +2,18 @@ import { StatusBar } from "expo-status-bar";
 import { Image,Text } from "react-native";
 import { ProgressBar } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 export default function LogoTitle(probs) {
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
-        <Text>
-            {"<"}
-        </Text>
-        <Image
-          style={{ width: 35, height: 40, marginLeft:10 }}
+      <MaterialCommunityIcons name='chevron-left' color={'black'} size={20}/>        
+      <Image
+          style={{width:30.5, height: 35 }}
           source={require('../Images/Logo.png')}
-        />
+      />
       </View>
       <View>
         <ProgressBar style={styles.statusBar} progress={probs.progress} color={'#6171A9'}/>

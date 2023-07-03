@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { Image, Button, StyleSheet, View, Alert, useWindowDimensions} from "react-native";
+import { Image, Button, StyleSheet, View, Alert, useWindowDimensions, TextInput} from "react-native";
 import {
     MD3DarkTheme as DefaultTheme,
     Provider as PaperProvider,
@@ -10,7 +10,6 @@ import {
     Appbar,
     SegmentedButtons,
     BottomNavigation,
-    TextInput,
 } from "react-native-paper";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Col, Row, Grid } from "react-native-paper-grid";
@@ -18,13 +17,12 @@ import SubmitButton from "../Components/SubmitButton";
 import SingleLineInput from "../Components/SingleLineInput";
 import CheckBox from 'expo-checkbox';
 import { useFonts, Inter_700Bold, Inter_400Regular, Inter_500Medium  } from '@expo-google-fonts/inter';
-import { Manrope_400Regular, Manrope_600SemiBold, Manrope_700Bold } from '@expo-google-fonts/manrope'
+import { Manrope_400Regular, Manrope_300Light } from '@expo-google-fonts/manrope'
 
-const LoginScreen =({ navigation }) => {
+const RegisterScreen_1 =({ navigation }) => {
     const [checked, setChecked] = React.useState(false);
     const [textInputColor, setTextInputColor] = useState('#E3E5E5')
-    const [mail, setMail] = useState('')
-    const [password, setPassword] = useState('')
+    const [textInputText, setTextInputText] = useState('')
     const [errorText, setErrorText] = useState('')
 
     const [fontsLoaded] = useFonts({
@@ -32,21 +30,17 @@ const LoginScreen =({ navigation }) => {
         Inter_500Medium,
         Inter_700Bold,
         Manrope_400Regular,
-        Manrope_600SemiBold,
-        Manrope_700Bold
+        Manrope_300Light
     });
 
     if (!fontsLoaded) {
         return null;
     }
 
-    const checkCredentials = async (mail, password) => {
+    const checkMail = async (mail) => {
         if (!mail.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
             setTextInputColor('#DC2626');
             setErrorText('Bitte gib eine gültige E-Mail Adresse ein.');
-        } else if (password == ''){
-            setTextInputColor('#DC2626');
-            setErrorText('Bitte gib ein gültiges Passwort ein.');
         } else {
             setTextInputColor('#E3E5E5');
             setErrorText('');
@@ -54,28 +48,16 @@ const LoginScreen =({ navigation }) => {
         }
     }
 
-
     return (
         <PaperProvider>
                 <Grid style={styles.container} container>
-                    <Row size={0.55}>
+                    <Row size={0.4}>
                         <Col>
                             <Row>
                                 <Col>
-                                    <Text style={styles.headerText}>Login</Text>
-                                    <Text style={styles.subHeaderText}>Willkommen zurück. Gib deine Anmelde-informationen ein, um auf dein Konto zuzugreifen:</Text>
-                                    <Text style={styles.textInputHeaderText}>E-Mail Adresse</Text>
-                                    <SingleLineInput borderColor={textInputColor} value={mail} onChangeText={setMail} type={'username'}/>
-                                    
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <View style={styles.textInputHeaderContainer}>
-                                        <Text style={styles.textInputHeaderText}>Passwort</Text>
-                                        <Text style={styles.forgorPasswordText}>Passwort vergessen</Text>
-                                    </View>
-                                    <SingleLineInput borderColor={textInputColor} value={password} onChangeText={setPassword} type={'password'} secureTextEntry={true}/>
+                                    <Text style={styles.headerText}>Wie ist deine E-Mail Adresse?</Text>
+                                    <Text style={styles.subHeaderText}>Bestätige deine E-Mail Adresse, um den Zugriff auf dein Konto nicht zu verlieren.</Text>
+                                    <SingleLineInput borderColor={textInputColor} value={textInputText} onChangeText={setTextInputText} type={'username'}/>
                                     <Text style={styles.errorText}>{errorText}</Text>
                                 </Col>
                             </Row>
@@ -87,20 +69,14 @@ const LoginScreen =({ navigation }) => {
                                         style={styles.checkbox} 
                                         color={'#734498'}
                                     />
-                                    <Text style={styles.checkboxText}>Ich möchte angemeldet bleiben</Text>
+                                    <Text style={styles.checkboxText}>Ich möchte Werbung und Marketingmitteilungen von querify erhalten.</Text>
                                 </Col>
                             </Row>
-
-                        </Col>
-                    </Row>
-                    <Row size={0.1}>
-                        <Col>
-                            <SubmitButton buttonText={'Weiter'} onPress={() => checkCredentials(mail, password)}/>
                         </Col>
                     </Row>
                     <Row>
                         <Col>
-                            <Text style={styles.submitText}>Hast du noch keinen Account? <Text style={styles.submitTextPurple} onPress={() => navigation.navigate('RegisterScreen_1')}>Registriere dich hier</Text></Text>
+                            <SubmitButton buttonText={'Weiter'} onPress={() => checkMail(textInputText)}/>
                         </Col>
                     </Row>
 
@@ -127,7 +103,6 @@ const styles = StyleSheet.create({
         fontWeight: '700',
         alignSelf: 'center',
         marginTop: 25,
-        marginBottom: 15,
         fontFamily: 'Inter_700Bold'
     },
 
@@ -135,27 +110,17 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: '400',
         color: '#64748B',
-        alignSelf: "flex-start",
+        alignSelf: 'flex-start',
+        marginTop: 15,
         marginBottom: 15,
         fontFamily: 'Manrope_400Regular'
     },
 
-    textInputHeaderText: {
-        fontFamily: 'Manrope_600SemiBold',
+    errorText: {
+        marginTop: 10,
         fontSize: 14,
-        marginBottom: 5,
-        color: '#191D23'
-    },
-
-    forgorPasswordText: {
-        fontFamily: 'Manrope_700Bold',
-        fontSize: 12,
-        color: '#734498'
-    },
-
-    textInputHeaderContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between'
+        fontFamily: 'Manrope_300Light',
+        color: '#DC2626',
     },
 
     checkboxText: {
@@ -169,32 +134,9 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         color: '#734498',
         borderWidth: 1.5
-    },
-
-    errorText: {
-        marginTop: 10,
-        fontSize: 14,
-        fontFamily: 'Manrope_300Light',
-        color: '#DC2626',
-    },
-
-    submitText: {
-        alignSelf: 'center',
-        textAlign: 'center',
-        fontFamily: 'Manrope_400Regular',
-        color: '#191D23'
-    },
-
-    submitTextPurple: {
-        alignSelf: 'center',
-        textAlign: 'center',
-        fontFamily: 'Manrope_700Bold',
-        color: '#734498'
     }
-
-
 
 
 })
 
-export default LoginScreen;
+export default RegisterScreen_1;

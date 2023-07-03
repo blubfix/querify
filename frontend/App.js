@@ -10,7 +10,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LogoTitle from "./src/Components/LogoTitle";
-import RegisterScreen from './src/Pages/registerScreen';
+import RegisterScreen_2 from './src/Pages/registerScreen_2';
+import RegisterScreen_1 from './src/Pages/registerScreen_1';
+import RegisterScreen_3 from './src/Pages/registerScreen_3';
+import RegisterScreen_4 from './src/Pages/registerScreen_4';
 
 // Erstellen einer Instanz der Bottom-Tab-Navigators
 const Tab = createBottomTabNavigator();
@@ -31,8 +34,16 @@ export default function App() {
                 />
                 <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0.25}/>, headerShadowVisible: false   }}
                 />
-                <Stack.Screen name="RegisterScreen" component={RegisterScreen} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0.25}/>, headerShadowVisible: false  }}
+                <Stack.Screen name="RegisterScreen_1" component={RegisterScreen_1} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0.25}/>, headerShadowVisible: false  }}
                 />
+                <Stack.Screen name="RegisterScreen_2" component={RegisterScreen_2} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0.5}/>, headerShadowVisible: false  }}
+                />
+                <Stack.Screen name="RegisterScreen_3" component={RegisterScreen_3} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0.75}/>, headerShadowVisible: false  }}
+                />
+                <Stack.Screen name="RegisterScreen_4" component={RegisterScreen_4} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={1}/>, headerShadowVisible: false  }}
+                />
+
+
 
             </Stack.Navigator>
         </NavigationContainer>

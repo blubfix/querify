@@ -2,10 +2,19 @@ import React from 'react';
 import { View, TouchableOpacity, StyleSheet, Text, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useFonts, Inter_500Medium  } from '@expo-google-fonts/inter';
 
 const { width, height } = Dimensions.get("window");
 
 const SubmitButton = (probs) => {
+
+    const [fontsLoaded] = useFonts({
+        Inter_500Medium,
+    });
+
+    if (!fontsLoaded) {
+        return null;
+    }
 
     return (
         <View style={styles.container}>
@@ -44,6 +53,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '500',
         color: 'white',
+        fontFamily: 'Inter_500Medium'
     },
 
     arrowIcon: {

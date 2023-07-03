@@ -14,15 +14,9 @@ import {
 } from "react-native-paper";
 import SubmitButton from "../Components/SubmitButton";
 import LoginScreen from "./loginScreen";
-
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Col, Row, Grid } from "react-native-paper-grid";
-
 import { useFonts, Italiana_400Regular } from '@expo-google-fonts/italiana';
-
-
-
-
 
 
 export default function StartScreen({ navigation }) {
@@ -61,7 +55,7 @@ export default function StartScreen({ navigation }) {
                 <Row>
                     <Col>
                         <View style={{ display: "flex", alignItems: "center", }}>
-                            <SubmitButton buttonText={"Konto erstellen"} onPress={() => navigation.navigate("RegisterScreen")} />
+                            <SubmitButton buttonText={"Konto erstellen"} onPress={() => navigation.navigate("RegisterScreen_1")} />
                         </View>
                     </Col>
                 </Row>
