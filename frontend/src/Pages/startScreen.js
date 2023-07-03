@@ -34,11 +34,11 @@ export default function StartScreen({ navigation }) {
 
 
     return (
-        <PaperProvider theme={theme} >
+        <PaperProvider>
 
             <Grid container style={styles.container}>
-                <Row>
-                    <Col>
+                <Row nopad>
+                    <Col nopad>
                         <Image
                             style={styles.Logo}
                             source={require('../Images/Logo.png')} />
@@ -76,28 +76,11 @@ const styles = StyleSheet.create({
 
     },
     Logo: {
-        marginTop:20,
+        marginTop:45,
         height: 500,
         width: "100%",
 
     },
 
 });
-
-const theme = {
-    ...DefaultTheme,
-
-    colors: {
-        ...DefaultTheme.colors,
-        primary: "purple",
-        secondary: "yellow",
-        background: "black",
-
-
-
-
-
-    },
-
-};
 
