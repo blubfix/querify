@@ -18,7 +18,7 @@ import SubmitButton from "../Components/SubmitButton";
 import SingleLineInput from "../Components/SingleLineInput";
 import CheckBox from 'expo-checkbox';
 import { useFonts, Inter_700Bold, Inter_400Regular, Inter_500Medium  } from '@expo-google-fonts/inter';
-import { Manrope_400Regular, Manrope_600SemiBold, Manrope_700Bold } from '@expo-google-fonts/manrope'
+import { Manrope_400Regular, Manrope_600SemiBold, Manrope_700Bold, Manrope_300Light } from '@expo-google-fonts/manrope'
 
 const LoginScreen =({ navigation }) => {
     const [checked, setChecked] = React.useState(false);
@@ -33,7 +33,8 @@ const LoginScreen =({ navigation }) => {
         Inter_700Bold,
         Manrope_400Regular,
         Manrope_600SemiBold,
-        Manrope_700Bold
+        Manrope_700Bold,
+        Manrope_300Light
     });
 
     if (!fontsLoaded) {

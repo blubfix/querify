@@ -34,7 +34,7 @@ const RegisterScreen_4 =({ navigation }) => {
         Inter_500Medium,
         Inter_700Bold,
         Manrope_400Regular,
-        Poppins_500Medium
+        Poppins_500Medium,
     });
 
     if (!fontsLoaded) {

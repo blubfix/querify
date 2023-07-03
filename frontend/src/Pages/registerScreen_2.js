@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: '400',
         color: '#64748B',
-        alignSelf: "flec-start",
+        alignSelf: "flex-start",
         marginBottom: 15,
         fontFamily: 'Manrope_400Regular'
     },

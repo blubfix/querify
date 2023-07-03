@@ -62,7 +62,7 @@ const RegisterScreen_3 =({ navigation }) => {
                                 <Col>
                                     <Text style={styles.headerText}>Wähle ein Passwort</Text>
                                     <Text style={styles.subHeaderText}>Es muss mindestens 6 Zeichen enthalten.</Text>
-                                    <SingleLineInput borderColor={textInputColor} value={password} onChangeText={setPassword} type={'Password'} secureTextEntry={true}/>
+                                    <SingleLineInput borderColor={textInputColor} value={password} onChangeText={setPassword} type={'password'} secureTextEntry={true}/>
                                     <Text style={styles.errorText}>{errorText}</Text>
                                 </Col>
                             </Row>
