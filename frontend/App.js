@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { Provider as PaperProvider } from 'react-native-paper';
 import MasterPage from './src/Pages/MasterPage'
 import startScreen from './src/Pages/startScreen'
 import Login from './src/Pages/Login'
@@ -14,6 +12,11 @@ import RegisterScreen_2 from './src/Pages/registerScreen_2';
 import RegisterScreen_1 from './src/Pages/registerScreen_1';
 import RegisterScreen_3 from './src/Pages/registerScreen_3';
 import RegisterScreen_4 from './src/Pages/registerScreen_4';
+import CreateQuestionaireScreen from './src/Pages/createQuestionaireScreen';
+import AccountScreen from './src/Pages/accountScreen';
+import InboxScreen from './src/Pages/inboxScreen';
+import CalendarScreen from './src/Pages/calendarScreen';
+import StatisticsScreen from './src/Pages/statisticScreen';
 
 // Erstellen einer Instanz der Bottom-Tab-Navigators
 const Tab = createBottomTabNavigator();
@@ -30,18 +33,32 @@ export default function App() {
                     component={Home}
                     options={{ headerShown: false }}
                 />
-                <Stack.Screen name="StartScreen" component={startScreen} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0}/>, headerShadowVisible: false  }}
+                <Stack.Screen name="StartScreen" component={startScreen} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0}/>, headerShadowVisible: false, gestureEnabled: false  }}
                 />
-                <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0.25}/>, headerShadowVisible: false   }}
+                <Stack.Screen name="LoginScreen" component={LoginScreen} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0.25}/>, headerShadowVisible: false, gestureEnabled: false   }}
                 />
-                <Stack.Screen name="RegisterScreen_1" component={RegisterScreen_1} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0.25}/>, headerShadowVisible: false  }}
+                <Stack.Screen name="RegisterScreen_1" component={RegisterScreen_1} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0.25}/>, headerShadowVisible: false, gestureEnabled: false  }}
                 />
-                <Stack.Screen name="RegisterScreen_2" component={RegisterScreen_2} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0.5}/>, headerShadowVisible: false  }}
+                <Stack.Screen name="RegisterScreen_2" component={RegisterScreen_2} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0.5}/>, headerShadowVisible: false, gestureEnabled: false  }}
                 />
-                <Stack.Screen name="RegisterScreen_3" component={RegisterScreen_3} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0.75}/>, headerShadowVisible: false  }}
+                <Stack.Screen name="RegisterScreen_3" component={RegisterScreen_3} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0.75}/>, headerShadowVisible: false, gestureEnabled: false  }}
                 />
-                <Stack.Screen name="RegisterScreen_4" component={RegisterScreen_4} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={1}/>, headerShadowVisible: false  }}
+                <Stack.Screen name="RegisterScreen_4" component={RegisterScreen_4} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={1}/>, headerShadowVisible: false, gestureEnabled: false  }}
                 />
+                <Stack.Screen name="CreateQuestionaire" component={CreateQuestionaireScreen} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={1}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
+                />
+                <Stack.Screen name="AccountScreen" component={AccountScreen} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
+                />
+                <Stack.Screen name="InboxScreen" component={InboxScreen} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
+                />
+                <Stack.Screen name="CalendarScreen" component={CalendarScreen} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
+                />
+                <Stack.Screen name="StatisticsScreen" component={StatisticsScreen} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
+                />
+
+
+
+
 
 
 

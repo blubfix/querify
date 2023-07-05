@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { Image, Button, StyleSheet, View, Alert, useWindowDimensions} from "react-native";
 import {
@@ -41,7 +40,7 @@ const RegisterScreen_3 =({ navigation }) => {
         return null;
     }
 
-    const checkPassword = (password) => {
+    const register = (mail, password, name, birthday) => {
         if (password.length<6) {
             setTextInputColor('#DC2626');
             setErrorText('Bitte gib ein gültiges Passwort ein.');
@@ -81,7 +80,7 @@ const RegisterScreen_3 =({ navigation }) => {
                     </Row>
                     <Row>
                         <Col>
-                            <SubmitButton buttonText={'Konto Anlegen'} onPress={() => checkPassword(password)}/>
+                            <SubmitButton buttonText={'Konto Anlegen'} onPress={() => register('', password, '', '')}/>
                         </Col>
                     </Row>
                     <Row>

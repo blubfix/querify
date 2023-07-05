@@ -71,7 +71,7 @@ const RegisterScreen_4 =({ navigation }) => {
                     </Row>
                     <Row>
                         <Col>
-                            <SubmitButton buttonText={'Loslegen'} onPress={() => console.log('Hello')}/>
+                            <SubmitButton buttonText={'Loslegen'} onPress={() => navigation.navigate('CreateQuestionaire')}/>
                         </Col>
                     </Row>
                 </Grid>

@@ -51,7 +51,7 @@ const LoginScreen =({ navigation }) => {
         } else {
             setTextInputColor('#E3E5E5');
             setErrorText('');
-            navigation.navigate("RegisterScreen_2")
+            navigation.navigate("CreateQuestionaire")
         }
     }
 
