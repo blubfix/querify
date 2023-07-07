@@ -17,6 +17,12 @@ import AccountScreen from './src/Pages/accountScreen';
 import InboxScreen from './src/Pages/inboxScreen';
 import CalendarScreen from './src/Pages/calendarScreen';
 import StatisticsScreen from './src/Pages/statisticScreen';
+import CreateJaNein from './src/Pages/createJaNeinScreen';
+import CreateMehrfach from './src/Pages/createMehrfachScreen';
+import CreateFreitext from './src/Pages/createFreitextScreen';
+import CreateStimmungsabfrage from './src/Pages/createStimmungsabfrageScreen';
+import CreateErinnerung from './src/Pages/createErinnerungScreen';
+
 
 // Erstellen einer Instanz der Bottom-Tab-Navigators
 const Tab = createBottomTabNavigator();
@@ -55,6 +61,18 @@ export default function App() {
                 />
                 <Stack.Screen name="StatisticsScreen" component={StatisticsScreen} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
                 />
+                <Stack.Screen name="CreateJaNein" component={CreateJaNein} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={1}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
+                />
+                <Stack.Screen name="CreateMehrfach" component={CreateMehrfach} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={1}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
+                />
+                <Stack.Screen name="CreateFreitext" component={CreateFreitext} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={1}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
+                />
+                <Stack.Screen name="CreateStimmungsabfrage" component={CreateStimmungsabfrage} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={1}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
+                />
+                <Stack.Screen name="CreateErinnerung" component={CreateErinnerung} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={1}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
+                />
+
+
 
 
 

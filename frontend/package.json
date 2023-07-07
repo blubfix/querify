@@ -39,6 +39,7 @@
     "react-native-calendars": "^1.1299.0",
     "react-native-date-picker": "^4.2.6",
     "react-native-gesture-handler": "~2.9.0",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-linear-gradient": "^2.6.2",
     "react-native-paper": "^5.3.1",
     "react-native-paper-grid": "^0.1.12",

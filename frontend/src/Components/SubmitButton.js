@@ -6,7 +6,7 @@ import { useFonts, Inter_500Medium  } from '@expo-google-fonts/inter';
 
 const { width, height } = Dimensions.get("window");
 
-const SubmitButton = (probs) => {
+const SubmitButton = (props) => {
 
     const [fontsLoaded] = useFonts({
         Inter_500Medium,
@@ -18,9 +18,9 @@ const SubmitButton = (probs) => {
 
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.button} onPress={probs.onPress}>
+            <TouchableOpacity style={styles.button} onPress={props.onPress}>
                 <LinearGradient colors={['#4F73E7', '#734498']} start={[0, 0]} end={[1, 0]} style={styles.linearGradient}>
-                    <Text style={styles.text}>{probs.buttonText}</Text>
+                    <Text style={styles.text}>{props.buttonText}</Text>
                     <MaterialCommunityIcons style={styles.arrowIcon} name='arrow-right' color={'white'} size={20}/>
                 </LinearGradient>
             </TouchableOpacity>

@@ -49,12 +49,12 @@ const CreateQuestionaireScreen =({ navigation }) => {
 
                     <Row size={0.27}>
                         <Col inline style={styles.buttonContainer}>
-                            <TouchableOpacity style={styles.questionaireButton}>
+                            <TouchableOpacity style={styles.questionaireButton} onPress={() => navigation.navigate('CreateJaNein')}>
                                 <Image style={styles.questionaireImage} source={require('../Images/Ja-Nein.png')} />
                                 <Text style={styles.buttonText}>Ja/Nein Umfrage</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={styles.questionaireButton}>
+                            <TouchableOpacity style={styles.questionaireButton} onPress={() => navigation.navigate('CreateMehrfach')}>
                                 <Image style={styles.questionaireImage} source={require('../Images/Mehrfach-Auswahl.png')} />
                                 <Text style={styles.buttonText}>Mehrfach-Auswahl</Text>
                             </TouchableOpacity>
@@ -63,12 +63,12 @@ const CreateQuestionaireScreen =({ navigation }) => {
                     
                     <Row size={0.27}>
                         <Col inline style={styles.buttonContainer}>
-                            <TouchableOpacity style={styles.questionaireButton}>
+                            <TouchableOpacity style={styles.questionaireButton} onPress={() => navigation.navigate('CreateFreitext')}>
                                 <Image style={styles.questionaireImage} source={require('../Images/Freitexte.png')} />
                                 <Text style={styles.buttonText}>Freitext Antwort</Text>
                             </TouchableOpacity>
                             
-                            <TouchableOpacity style={styles.questionaireButton}>
+                            <TouchableOpacity style={styles.questionaireButton} onPress={() => navigation.navigate('CreateStimmungsabfrage')}>
                                 <Image style={styles.questionaireImage} source={require('../Images/Stimmungsbild.png')} />
                                 <Text style={styles.buttonText}>Stimmungsbild</Text>
                             </TouchableOpacity>
@@ -77,7 +77,7 @@ const CreateQuestionaireScreen =({ navigation }) => {
                     
                     <Row size={0.27}>
                         <Col inline style={styles.buttonContainer}>
-                            <TouchableOpacity style={styles.questionaireButton}>
+                            <TouchableOpacity style={styles.questionaireButton} onPress={() => navigation.navigate('CreateErinnerung')}>
                                 <Image style={styles.questionaireImage} source={require('../Images/Erinnerung.png')} />
                                 <Text style={styles.buttonText}>Erinnerung</Text>
                             </TouchableOpacity>
