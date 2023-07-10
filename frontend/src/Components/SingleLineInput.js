@@ -24,7 +24,7 @@ const SingleLineInput = (props) => {
 const styles = StyleSheet.create({
     textInput: {
         width: width*0.9,
-        height: height*0.06,
+        height: 50,
         alignSelf: 'center',
         borderRadius: 10,
         borderWidth: 1,

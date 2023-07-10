@@ -7,6 +7,7 @@ const { width, height } = Dimensions.get("window");
 
 const DescriptionInput = (props) => {
   const [chars, setChars] = useState(0);
+  const {placeholder = 'Details über diese Umfrage'} = props;
 
   const [fontsLoaded] = useFonts({
     Inter_400Regular,
@@ -30,7 +31,7 @@ const DescriptionInput = (props) => {
         style={{...styles.textInput, borderColor: props.borderColor}} 
         onChangeText={(text) => {props.onChangeText(); changeChars(text);}}
         value={props.value}
-        placeholder='Details über diese Umfrage'
+        placeholder={placeholder}
         multiline={true}
         numberOfLines={4}
         maxLength={400}
@@ -43,7 +44,7 @@ const DescriptionInput = (props) => {
 const styles = StyleSheet.create({
     textInput: {
       minWidth: '100%',
-      height: height*0.15,
+      height: 120,
       alignSelf: 'center',
       borderRadius: 5,
       borderWidth: 1,

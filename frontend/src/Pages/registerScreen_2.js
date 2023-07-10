@@ -39,9 +39,9 @@ const RegisterScreen_2 =({ navigation }) => {
     return (
         <PaperProvider>
                 <Grid style={styles.container} container>
-                    <Row size={0.5}>
+                    <Row>
                         <Col>
-                            <Row size={0.8}>
+                            <Row>
                                 <Col>
                                     <Text style={styles.headerText}>Wie lautet dein Vorname?</Text>
                                     <Text style={styles.subHeaderText}>Gib deinen Vornamen an, welcher in deinem Profil angezeigt werden soll.</Text>
@@ -57,13 +57,12 @@ const RegisterScreen_2 =({ navigation }) => {
                             </Row>
                         </Col>
                     </Row>
+                    <Row size={0.05}/>
                     <Row>
                         <Col>
                             <SubmitButton buttonText={'Weiter'} onPress={() => navigation.navigate("RegisterScreen_3")}/>
                         </Col>
                     </Row>
-
-
                 </Grid>
         </PaperProvider>
     );

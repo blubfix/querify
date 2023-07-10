@@ -40,7 +40,7 @@ const DateInput = (props) => {
 const styles = StyleSheet.create({
     textInput: {
       minWidth: '100%',
-      height: height*0.06,
+      height: 50,
       alignSelf: 'center',
       borderRadius: 5,
       borderWidth: 1,

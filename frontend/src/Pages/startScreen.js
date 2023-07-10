@@ -42,20 +42,20 @@ export default function StartScreen({ navigation }) {
                         <Image
                             style={styles.Logo}
                             source={require('../Images/Logo.png')} />
-                        <Text style={{ color: "#00B3FF", alignSelf:"center", fontSize:96, fontFamily:'Italiana_400Regular' }}>querify</Text>
+                        <Text style={{ color: "#00B3FF", alignSelf:"center", fontSize:96, fontFamily:'Italiana_400Regular' }} onPress={() => navigation.navigate('CreateQuestionaire')}>querify</Text>
                     </Col>
                 </Row>
-                <Row >
+                <Row>
                     <Col>
                         <View style={{ display: "flex", alignItems: "center", }}>
-                            <SubmitButton buttonText={"Anmelden"} onPress={() => navigation.navigate("LoginScreen")} />
+                            <SubmitButton buttonText={"Anmelden"} onPress={() => navigation.navigate("LoginScreen")}/>
                         </View>
                     </Col>
                 </Row>
                 <Row>
                     <Col>
                         <View style={{ display: "flex", alignItems: "center", }}>
-                            <SubmitButton buttonText={"Konto erstellen"} onPress={() => navigation.navigate("RegisterScreen_1")} />
+                            <SubmitButton buttonText={"Konto erstellen"} onPress={() => navigation.navigate("RegisterScreen_1")}/>
                         </View>
                     </Col>
                 </Row>

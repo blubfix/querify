@@ -51,7 +51,7 @@ const RegisterScreen_1 =({ navigation }) => {
     return (
         <PaperProvider>
                 <Grid style={styles.container} container>
-                    <Row size={0.4}>
+                    <Row>
                         <Col>
                             <Row>
                                 <Col>
@@ -74,14 +74,14 @@ const RegisterScreen_1 =({ navigation }) => {
                             </Row>
                         </Col>
                     </Row>
+                    <Row size={0.05}/>
                     <Row>
                         <Col>
                             <SubmitButton buttonText={'Weiter'} onPress={() => checkMail(textInputText)}/>
                         </Col>
                     </Row>
-
-
                 </Grid>
+
         </PaperProvider>
     );
 }

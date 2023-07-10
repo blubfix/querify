@@ -1,5 +1,5 @@
 import { StyleSheet, TextInput, View, Dimensions, Text } from 'react-native'
-import {React, useState} from 'react'
+import { React, useState } from 'react'
 import { useFonts, Inter_400Regular  } from '@expo-google-fonts/inter';
 import { Manrope_400Regular, Manrope_600SemiBold, Manrope_300Light } from '@expo-google-fonts/manrope';
 
@@ -7,6 +7,7 @@ const { width, height } = Dimensions.get("window");
 
 const TitleInput = (props) => {
   const [chars, setChars] = useState(0);
+  const {placeholder = 'Name deiner Umfrage'} = props;
 
   const [fontsLoaded] = useFonts({
     Inter_400Regular,
@@ -30,7 +31,7 @@ const TitleInput = (props) => {
         style={{...styles.textInput, borderColor: props.borderColor}} 
         onChangeText={(title) => {props.onChangeText(); changeChars(title);}}
         value={props.value}
-        placeholder='Name deiner Umfrage'
+        placeholder={placeholder}
         maxLength={30}
       />
       <Text style={styles.charText}>{chars}/30</Text>
@@ -41,7 +42,7 @@ const TitleInput = (props) => {
 const styles = StyleSheet.create({
     textInput: {
       minWidth: '100%',
-      height: height*0.06,
+      height: 50,
       alignSelf: 'center',
       borderRadius: 5,
       borderWidth: 1,

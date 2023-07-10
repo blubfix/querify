@@ -94,7 +94,7 @@ const LoginScreen =({ navigation }) => {
 
                         </Col>
                     </Row>
-                    <Row size={0.1}>
+                    <Row>
                         <Col>
                             <SubmitButton buttonText={'Weiter'} onPress={() => checkCredentials(mail, password)}/>
                         </Col>

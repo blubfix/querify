@@ -51,10 +51,9 @@ const CreateJaNein =({ navigation }) => {
 
 
     return (
-
         <PaperProvider>
             <Grid style={styles.container} container>  
-                <KeyboardAwareScrollView contentContainerStyle={styles.keyboardContainer} resetScrollToCoords={{ x: 0, y: 0 }} scrollEnabled={true}> 
+                <KeyboardAwareScrollView contentContainerStyle={styles.keyboardContainer} resetScrollToCoords={{ x: 0, y: 0 }} scrollEnabled={false} extraScrollHeight={40}> 
                     <Row>
                         <Col>
                             <Text style={styles.headerText}>Erstelle eine Ja/Nein Umfrage</Text>
@@ -80,12 +79,8 @@ const CreateJaNein =({ navigation }) => {
                             <DateInput value={date} onChangeText={setDate} borderColor={'#D0D5DD'}/>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col>
-                            <SubmitButton buttonText={'Weiter'}/>
-                        </Col>
-                    </Row>
                 </KeyboardAwareScrollView>
+                <SubmitButton buttonText={'Weiter'} position={'absolute'} bottom={120}/>
                 <BottomNavigation buttonColors={['#6F6F70', '#6F6F70', '#6F6F70', '#6F6F70']}/>
             </Grid>
         </PaperProvider>

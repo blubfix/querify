@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         width: width*1,
-        height: width*0.25,
+        height: 100,
         backgroundColor: 'rgba(111, 111, 112, 0.12)',
         flexDirection: 'row',
         justifyContent: 'space-evenly'

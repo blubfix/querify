@@ -44,7 +44,7 @@ const RegisterScreen_4 =({ navigation }) => {
     return (
         <PaperProvider>
                 <Grid style={styles.container} container>
-                    <Row size={0.35}>
+                    <Row>
                         <Col>
                             <Row>
                                 <Col>
@@ -133,19 +133,6 @@ const styles = StyleSheet.create({
         alignSelf: "flex-start",
         marginBottom: 15,
         fontFamily: 'Manrope_400Regular'
-    },
-
-    checkboxText: {
-        fontSize: 14,
-        fontWeight: '400',
-        marginLeft: 10,
-        fontFamily: 'Manrope_400Regular'
-    },
-    
-    checkbox: {
-        alignSelf: 'center',
-        color: '#734498',
-        borderWidth: 1.5
     },
 
     submitText: {

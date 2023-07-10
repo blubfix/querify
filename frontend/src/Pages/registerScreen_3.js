@@ -55,7 +55,7 @@ const RegisterScreen_3 =({ navigation }) => {
     return (
         <PaperProvider>
                 <Grid style={styles.container} container>
-                    <Row size={0.37}>
+                    <Row>
                         <Col>
                             <Row>
                                 <Col>
@@ -78,22 +78,18 @@ const RegisterScreen_3 =({ navigation }) => {
                             </Row>
                         </Col>
                     </Row>
+                    <Row size={0.05}/>
                     <Row>
-                        <Col>
-                            <SubmitButton buttonText={'Konto Anlegen'} onPress={() => register('', password, '', '')}/>
-                        </Col>
+                        <SubmitButton buttonText={'Konto Anlegen'} onPress={() => register('', password, '', '')}/>
                     </Row>
                     <Row>
-                        <Col size={0.14}/>
+                        <Col size={0.12}/>
                         <Col size={0.72}>
                             <Text style={styles.submitText}>
                                 Indem du ein Konto erstellst, stimmst du der <Text style={styles.submitTextPurple}>Datenschutzrichtlinie</Text> und den <Text style={styles.submitTextPurple}>Nutzungsbedingungen</Text> von querify zu.
                             </Text>
                         </Col>
                     </Row>
-
-
-
                 </Grid>
         </PaperProvider>
     );
