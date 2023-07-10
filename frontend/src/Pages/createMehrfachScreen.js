@@ -65,8 +65,8 @@ const CreateMehrfach =({ navigation }) => {
     return (
         <PaperProvider>
             <Grid style={styles.container} container> 
-                <KeyboardAwareScrollView contentContainerStyle={styles.keyboardContainer} keyboardShouldPersistTaps='handled' resetScrollToCoords={{ x: 0, y: 0 }} scrollEnabled={false} extraScrollHeight={40}> 
-                    <ScrollView style={styles.scrollConatainer} keyboardShouldPersistTaps='handled'>
+                <KeyboardAwareScrollView contentContainerStyle={styles.keyboardContainer} keyboardShouldPersistTaps='handled' resetScrollToCoords={{ x: 0, y: 0 }} scrollEnabled={true} bounces={false}> 
+                    <ScrollView style={styles.scrollConatainer} keyboardShouldPersistTaps='handled' bounces={false}>
 
                     <Row>
                         <Col>
@@ -140,7 +140,7 @@ const CreateMehrfach =({ navigation }) => {
                 </KeyboardAwareScrollView>
                 <BottomNavigation buttonColors={['#6F6F70', '#6F6F70', '#6F6F70', '#6F6F70']}/>
             </Grid>
-            <SubmitButton buttonText={'Weiter'} position={'absolute'} bottom={120}/>
+            <SubmitButton buttonText={'Weiter'} position={'absolute'} bottom={120} onPress={() => navigation.navigate('QuestionaireOptions')}/>
 
         </PaperProvider>
     );

@@ -22,6 +22,7 @@ import CreateMehrfach from './src/Pages/createMehrfachScreen';
 import CreateFreitext from './src/Pages/createFreitextScreen';
 import CreateStimmungsabfrage from './src/Pages/createStimmungsabfrageScreen';
 import CreateErinnerung from './src/Pages/createErinnerungScreen';
+import QuestionaireOptions from './src/Pages/questionaireOptionsScreen';
 
 
 // Erstellen einer Instanz der Bottom-Tab-Navigators
@@ -71,14 +72,8 @@ export default function App() {
                 />
                 <Stack.Screen name="CreateErinnerung" component={CreateErinnerung} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={1}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
                 />
-
-
-
-
-
-
-
-
+                <Stack.Screen name="QuestionaireOptions" component={QuestionaireOptions} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={1}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
+                />
 
             </Stack.Navigator>
         </NavigationContainer>

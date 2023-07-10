@@ -80,7 +80,7 @@ const CreateJaNein =({ navigation }) => {
                         </Col>
                     </Row>
                 </KeyboardAwareScrollView>
-                <SubmitButton buttonText={'Weiter'} position={'absolute'} bottom={120}/>
+                <SubmitButton buttonText={'Weiter'} position={'absolute'} bottom={120} onPress={() => navigation.navigate('QuestionaireOptions')}/>
                 <BottomNavigation buttonColors={['#6F6F70', '#6F6F70', '#6F6F70', '#6F6F70']}/>
             </Grid>
         </PaperProvider>
