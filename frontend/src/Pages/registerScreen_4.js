@@ -23,11 +23,6 @@ import { Poppins_500Medium } from '@expo-google-fonts/poppins';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const RegisterScreen_4 =({ navigation }) => {
-    const [checked, setChecked] = React.useState(false);
-    const [textInputColor, setTextInputColor] = useState('#E3E5E5')
-    const [textInputText, setTextInputText] = useState('')
-    const [errorText, setErrorText] = useState('')
-
 
     const [fontsLoaded] = useFonts({
         Inter_400Regular,
@@ -57,7 +52,6 @@ const RegisterScreen_4 =({ navigation }) => {
                                             <Text style={styles.subHeaderTextInter}>Du hast dein querify-Konto vollständig angelegt!</Text>
                                         </LinearGradient>
                                     </View>
-                                    
                                 </Col>
                             </Row>
                             <Row >

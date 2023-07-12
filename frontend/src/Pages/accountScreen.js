@@ -128,7 +128,8 @@ const styles = StyleSheet.create({
     container: {
         height: '100%',
         width: '100%',
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        paddingHorizontal: '8%'
     },
 
 
@@ -157,7 +158,7 @@ const styles = StyleSheet.create({
     },
 
     premiumButton: {
-        width: '90%',
+        width: '100%',
         minHeight: '90%',
         backgroundColor: '#72479C',
         alignSelf: 'center',
@@ -177,7 +178,7 @@ const styles = StyleSheet.create({
     },
 
     accountButton: {
-        width: '80%',
+        width: '100%',
         flexDirection: 'row',
         marginBottom: '5%',
         justifyContent: 'space-between'
@@ -203,7 +204,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Inter_700Bold',
         fontSize: 18,
         color: '#090A0A',
-        marginLeft: '10%',
         marginBottom: '5%'
     },
 

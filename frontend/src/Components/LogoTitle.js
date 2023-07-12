@@ -16,7 +16,7 @@ export default function LogoTitle(probs) {
       />
       </View>
       <View>
-        <ProgressBar style={styles.statusBar} progress={probs.progress} color={'#6171A9'}/>
+        <ProgressBar style={styles.statusBar} progress={probs.progress} indeterminate={false}  color={'#6171A9'}/>
       </View>    
     </View>
   );

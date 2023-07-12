@@ -23,6 +23,8 @@ import CreateFreitext from './src/Pages/createFreitextScreen';
 import CreateStimmungsabfrage from './src/Pages/createStimmungsabfrageScreen';
 import CreateErinnerung from './src/Pages/createErinnerungScreen';
 import QuestionaireOptions from './src/Pages/questionaireOptionsScreen';
+import ShareQuestionaire from './src/Pages/shareQuestionaireScreen';
+import ShareReminder from './src/Pages/shareReminderScreen';
 
 
 // Erstellen einer Instanz der Bottom-Tab-Navigators
@@ -74,6 +76,11 @@ export default function App() {
                 />
                 <Stack.Screen name="QuestionaireOptions" component={QuestionaireOptions} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={1}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
                 />
+                <Stack.Screen name="ShareQuestionaire" component={ShareQuestionaire} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={1}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
+                />
+                <Stack.Screen name="ShareReminder" component={ShareReminder} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={1}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
+                />
+
 
             </Stack.Navigator>
         </NavigationContainer>

@@ -76,7 +76,7 @@ const CreateErinnerung =({ navigation }) => {
                         </Col>
                     </Row>
                 </KeyboardAwareScrollView>
-                <SubmitButton buttonText={'Speichern'} position={'absolute'} bottom={120}/>
+                <SubmitButton buttonText={'Speichern'} position={'absolute'} bottom={120} onPress={() => navigation.navigate('ShareReminder')}/>
                 <BottomNavigation buttonColors={['#6F6F70', '#6F6F70', '#6F6F70', '#6F6F70']}/>
             </Grid>
         </PaperProvider>
