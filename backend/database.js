@@ -156,19 +156,6 @@ async function getAllQuestions() {
   }
 }
 
-async function getQuestionsByUser(userId) {
-  try {
-    const result = await connection.query(
-      `SELECT questionId, title, createdAt FROM question WHERE userId = '${userId}'`
-    );
-    console.log("DB Result: getQuestionsByUser", result);
-    return result;
-  } catch (e) {
-    console.error(e);
-  }
-}
-
-
 // ++++++++++++ answerOption ++++++++++++
 
 async function addAnswerOption(answerOptionId, answerText, questionId) {
