@@ -201,6 +201,28 @@
       "response": []
     },
     {
+      "name": "getQuestionsByUser",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": []
+        },
+        "url": {
+          "raw": "http://localhost:3001/question/ZZZZZZ9999",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3001",
+          "path": ["question", "ZZZZZZ9999"]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "createAnswerOption",
       "request": {
         "method": "POST",
@@ -288,7 +310,29 @@
       "response": []
     },
     {
-      "name": "getAnswersQivenByAnswerOptionId",
+      "name": "getAnswersGivenByQuestion",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "urlencoded",
+          "urlencoded": []
+        },
+        "url": {
+          "raw": "http://localhost:3001/answerGiven/BCBCBC3131",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3001",
+          "path": ["answerGiven", "BCBCBC3131"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "getAnswersQivenByUserAndQuestion",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
       },

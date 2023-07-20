@@ -156,6 +156,19 @@ async function getAllQuestions() {
   }
 }
 
+async function getQuestionsByUser(userId) {
+  try {
+    const result = await connection.query(
+      `SELECT questionId, title, createdAt FROM question WHERE userId = '${userId}'`
+    );
+    console.log("DB Result: getQuestionsByUser", result);
+    return result;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+
 // ++++++++++++ answerOption ++++++++++++
 
 async function addAnswerOption(answerOptionId, answerText, questionId) {
@@ -223,23 +236,6 @@ async function addAnswerGiven(answerOptionId, userId, answerGivenId, questionId)
   }
 }
 
-
-async function getAnswerGivenByAnswerOption(answerOptionId) {
-  try {
-    const result = await connection.query(
-      `SELECT answerGivenId, userId FROM answerGiven WHERE answerOptionId = ?`,
-      [answerOptionId]
-    );
-    if (result.length === 0) {
-      return null;
-    }
-    return result;
-  } catch (e) {
-    console.error(e);
-    throw e;
-  }
-}
-
 async function getAnswerGivenByQuestion(questionId) {
   try {
     const result = await connection.query(
@@ -256,16 +252,28 @@ async function getAnswerGivenByQuestion(questionId) {
   }
 }
 
+async function getAnswersByUserAndQuestion(userId, questionId) {
+  try {
+    const result = await connection.query(
+      `SELECT * FROM answerGiven WHERE userId = '${userId}' AND questionId = '${questionId}'`
+    );
+    console.log("DB Result: getAnswersByUserAndQuestion", result);
+    return result;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 module.exports = {
   getAllUsers,
   getUserByEmail,
   getUserIdByEmailAndPassword,
   getUserById,
   connectToDb,
-  getAnswerGivenByAnswerOption,
   getAnswerGivenByQuestion,
   getAnswerOptionById,
   getAnswerOptionByQuestionId,
+  getAnswersByUserAndQuestion,
   addAnswerGiven,
   addAnswerOption,
   createQuestion,

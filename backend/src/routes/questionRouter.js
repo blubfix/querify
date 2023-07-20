@@ -159,6 +159,19 @@ questionRouter.route("/user/:userId")
     }
   });
 
-
+questionRouter.route("/user/:userId").get(async (req, res) => {
+  try {
+    const { userId } = req.params; // Use req.params instead of req.body
+    const result = await database.getQuestionsByUser(userId);
+    if (result.length === 0) {
+      res.status(404).send("There are no questions by this user");
+    } else {
+      res.status(200).send(result);
+    }
+  } catch (e) {
+    console.error(e);
+    res.status(500).send(e);
+  }
+});
 
 module.exports = questionRouter;
