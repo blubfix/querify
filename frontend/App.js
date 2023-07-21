@@ -25,6 +25,11 @@ import CreateErinnerung from './src/Pages/createErinnerungScreen';
 import QuestionaireOptions from './src/Pages/questionaireOptionsScreen';
 import ShareQuestionaire from './src/Pages/shareQuestionaireScreen';
 import ShareReminder from './src/Pages/shareReminderScreen';
+import AnswerJaNein from './src/Pages/answerJaNeinScreen';
+import AnswerMehrfach from './src/Pages/answerMehrfachScreen';
+import AnswerFreitext from './src/Pages/answerFreitextScreen';
+import AnswerStimmungsbildStars from './src/Pages/answerStimmungsbildStarsScreen';
+import AnswerStimmungsbildLikert from './src/Pages/answerStimmungsbildLikertScreen';
 
 
 // Erstellen einer Instanz der Bottom-Tab-Navigators
@@ -80,6 +85,18 @@ export default function App() {
                 />
                 <Stack.Screen name="ShareReminder" component={ShareReminder} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={1}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
                 />
+                <Stack.Screen name="AnswerJaNein" component={AnswerJaNein} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={1}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
+                />
+                <Stack.Screen name="AnswerMehrfach" component={AnswerMehrfach} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={1}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
+                />
+                <Stack.Screen name="AnswerFreitext" component={AnswerFreitext} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={1}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
+                />
+                <Stack.Screen name="AnswerStimmungsbildStars" component={AnswerStimmungsbildStars} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={1}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
+                />
+                <Stack.Screen name="AnswerStimmungsbildLikert" component={AnswerStimmungsbildLikert} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={1}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
+                />
+
+
 
 
             </Stack.Navigator>

@@ -48,8 +48,6 @@ const CreateJaNein =({ navigation }) => {
 
     }
   
-
-
     return (
         <PaperProvider>
             <Grid style={styles.container} container>  
@@ -109,9 +107,6 @@ const styles = StyleSheet.create({
         width: '100%',
         backgroundColor: 'white'
     }
-
-    
-
 
 })
 

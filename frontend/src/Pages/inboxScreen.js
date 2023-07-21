@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { Image, Button, StyleSheet, View, Alert, useWindowDimensions} from "react-native";
+import { Image, Button, StyleSheet, View, Alert, useWindowDimensions, TouchableOpacity} from "react-native";
 import {
     MD3DarkTheme as DefaultTheme,
     Provider as PaperProvider,
@@ -49,6 +49,22 @@ const InboxScreen =({ navigation }) => {
                             </Row>
                             <Row>
                                 <Col>
+                                    <TouchableOpacity onPress={() => navigation.navigate('AnswerJaNein')}>
+                                        <Text>answerJaNein</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => navigation.navigate('AnswerMehrfach')}>
+                                        <Text>AnswerMehrfach</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => navigation.navigate('AnswerFreitext')}>
+                                        <Text>AnswerFreitext</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => navigation.navigate('AnswerStimmungsbildStars')}>
+                                        <Text>AnswerStimmungsbildStars</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={() => navigation.navigate('AnswerStimmungsbildLikert')}>
+                                        <Text>AnswerStimmungsbildLikert</Text>
+                                    </TouchableOpacity>
+
                                 </Col>
                             </Row>
                             <Row >

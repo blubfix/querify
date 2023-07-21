@@ -20,28 +20,28 @@ const BottomNavigation = (props) => {
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate("AccountScreen")}>
-                <MaterialCommunityIcons style={styles.arrowIcon} name='account' color={props.buttonColors[0]} size={40}/>
+                <MaterialCommunityIcons style={styles.arrowIcon} name='account' color={props.buttonColors[0]} size={30}/>
                 <Text style={styles.iconButtonText}>Konto</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate("InboxScreen")}>
-                <MaterialCommunityIcons style={styles.arrowIcon} name='inbox' color={props.buttonColors[1]} size={40}/>
+                <MaterialCommunityIcons style={styles.arrowIcon} name='inbox' color={props.buttonColors[1]} size={30}/>
                 <Text style={styles.iconButtonText}>Inbox</Text>             
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.plusButton} onPress={() => navigation.navigate("CreateQuestionaire")}>
                 <LinearGradient colors={['#AF3139', '#72479C']} start={[0, 0]} end={[0, 1]} style={styles.linearGradient}>
-                    <MaterialCommunityIcons style={styles.arrowIcon} name='plus' color={'white'} size={70}/>
+                    <MaterialCommunityIcons style={styles.arrowIcon} name='plus' color={'white'} size={60}/>
                 </LinearGradient>              
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate("CalendarScreen")}>
-                <MaterialCommunityIcons style={styles.arrowIcon} name='calendar' color={props.buttonColors[2]} size={40}/>
+                <MaterialCommunityIcons style={styles.arrowIcon} name='calendar' color={props.buttonColors[2]} size={30}/>
                 <Text style={styles.iconButtonText}>Kalender</Text>                
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.iconButton} onPress={() => navigation.navigate("StatisticsScreen")}>
-                <MaterialCommunityIcons style={styles.arrowIcon} name='poll' color={props.buttonColors[3]} size={40}/>
+                <MaterialCommunityIcons style={styles.arrowIcon} name='poll' color={props.buttonColors[3]} size={30}/>
                 <Text style={styles.iconButtonText}>Statistik</Text>
             </TouchableOpacity>
     
