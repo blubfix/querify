@@ -50,7 +50,7 @@ userRouter.get("/", async (req, res) => {
   }
 });
 
-userRouter.post("/login", async (req, res) => {
+userRouter.get("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     const result = await database.login(email, password);

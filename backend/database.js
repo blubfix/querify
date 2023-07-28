@@ -135,7 +135,7 @@ async function getQuestionById(questionId) {
 async function getQuestionsByUser(userId) {
   try {
     const result = await connection.query(
-      `SELECT questionId, title, createdAt, userId FROM question WHERE userId = '${userId}'`
+      `SELECT * FROM question WHERE userId = '${userId}'`
     );
     console.log("DB Result: getQuestionsByUser", result);
     return result;

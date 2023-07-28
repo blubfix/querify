@@ -48,22 +48,6 @@ answerGivenRouter.post("/", async (req, res) => {
   }
 });
 
-answerGivenRouter.get("/question/:questionId/answergiven", async (req, res) => {
-  try {
-    const { questionId } = req.params;
-    // Check if questionId is valid
-    const question = await database.getQuestionById(questionId);
-    if (!question) {
-      return res.status(404).send("No question with this Id available");
-    }
-    // Get answerGiven by questionId from the database
-    const answerGiven = await database.getAnswerGivenByQuestion(questionId);
-    res.status(200).send(answerGiven);
-  } catch (e) {
-    console.error(e);
-    res.status(500).send("Error fetching answerGiven");
-  }
-});
 
 answerGivenRouter.get("/question/:questionId", async (req, res) => {
   try {
@@ -73,7 +57,7 @@ answerGivenRouter.get("/question/:questionId", async (req, res) => {
     if (!question) {
       return res.status(404).send("No question with this Id available");
     }
-    // Get answerGiven from the database
+    // Get answerGiven by questionId from the database
     const answerGiven = await database.getAnswerGivenByQuestion(questionId);
     res.status(200).send(answerGiven);
   } catch (e) {

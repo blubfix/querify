@@ -28,7 +28,6 @@ questionRouter.post("/", async (req, res) => {
       type,
       userId,
       qrCode,
-      questionLink,
       identifikation,
       wiederverwendung,
       ergebniseinsicht,
@@ -63,10 +62,12 @@ questionRouter.post("/", async (req, res) => {
     if (!user) {
       return res.status(400).send({ error: `Invalid userId ${userId}` });
     }
-    const validTypes = ["poll", "multi", "free"];
+    const validTypes = ["poll", "multi", "free", "feeling"];
     if (!validTypes.includes(type)) {
       return res.status(400).send({ error: `Invalid question type ${type}` });
     }
+
+    const questionLink = `https://querify.com/question/${questionId}`;
 
     await database.createQuestion(
       questionId,
