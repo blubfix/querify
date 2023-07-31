@@ -1,333 +1,482 @@
 {
 	"info": {
-		"_postman_id": "076aa74d-e94c-4ccd-a821-74e3e0245082",
+		"_postman_id": "ac9ad092-2cfc-49ef-8a55-00ccf6c165b2",
 		"name": "Wishhz",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25129183"
+		"_exporter_id": "24213899"
 	},
 	"item": [
 		{
-			"name": "signUp",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "email",
-							"value": "udo@Obermaier.gmail.com",
-							"type": "text"
+			"name": "Users",
+			"item": [
+				{
+					"name": "getAllUsers",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
 						},
-						{
-							"key": "password",
-							"value": "kjdg65jksdh",
-							"type": "text"
+						"url": {
+							"raw": "http://localhost:3001/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"user"
+							]
 						}
-					]
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:3001/user/signUp",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"user",
-						"signUp"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "getAllUsers",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": []
-				},
-				"url": {
-					"raw": "http://localhost:3001/user",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"user"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "login/getUserId",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "email",
-							"value": "Tobi@mail.de",
-							"type": "text"
+				{
+					"name": "signUp (and get whole user)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "udo@Obermaier.gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "AAA111bbb!!!",
+									"description": "at least one digit, at least one lowercase letter, at least one uppercase letter and at least 8 characters",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Udo",
+									"type": "text"
+								},
+								{
+									"key": "geburtstag",
+									"value": "1998-05-23",
+									"description": "YYYY-MM-DD",
+									"type": "text"
+								}
+							]
 						},
-						{
-							"key": "password",
-							"value": "pw123",
-							"type": "text"
-						},
-						{
-							"key": "",
-							"value": "",
-							"type": "text"
+						"url": {
+							"raw": "http://localhost:3001/user/signUp",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"user",
+								"signUp"
+							]
 						}
-					]
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:3001/user/login",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"user",
-						"login"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "createQuestion",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "title",
-							"value": "Grillfest 24.03.2023",
-							"type": "text"
+				{
+					"name": "login (and get whole user)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "Tobi@mail.de",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "pw123",
+									"type": "text"
+								}
+							]
 						},
-						{
-							"key": "userId",
-							"value": "AAAAAA1111",
-							"type": "text"
-						},
-						{
-							"key": "type",
-							"value": "free",
-							"type": "text"
+						"url": {
+							"raw": "http://localhost:3001/user/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"user",
+								"login"
+							]
 						}
-					]
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:3001/question",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"question"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "getAllQuestions",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": []
-				},
-				"url": {
-					"raw": "http://localhost:3001/question",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"question"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "getQuestionById",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": []
-				},
-				"url": {
-					"raw": "http://localhost:3001/question/ZZZZZZ9999",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"question",
-						"ZZZZZZ9999"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "createAnswerOption",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "answerText",
-							"value": "Morgen Mittag",
-							"type": "text"
+				{
+					"name": "getUserId",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "Tobi@mail.de",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "pw123",
+									"type": "text"
+								}
+							]
 						},
-						{
-							"key": "questionId",
-							"value": "ZZZZZZ9999",
-							"type": "text"
+						"url": {
+							"raw": "http://localhost:3001/user/userId",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"user",
+								"userId"
+							]
 						}
-					]
-				},
-				"url": {
-					"raw": "http://localhost:3001/answerOption",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"answerOption"
-					]
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "getAllAnswerOptionsByQuestionId",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": []
-				},
-				"url": {
-					"raw": "http://localhost:3001/answerOption/ABABAB1212",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"answerOption",
-						"ABABAB1212"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "postAnswerGiven",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "questionId",
-							"value": "ZZZZZZ9999",
-							"type": "text"
+			"name": "Questions",
+			"item": [
+				{
+					"name": "getAllQuestions",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
 						},
-						{
-							"key": "userId",
-							"value": "BBBBBB2222",
-							"type": "text"
-						},
-						{
-							"key": "answerOptionId",
-							"value": "BCBCBC3131",
-							"type": "text"
+						"url": {
+							"raw": "http://localhost:3001/question",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"question"
+							]
 						}
-					]
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:3001/answerGiven",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"answerGiven"
-					]
+				{
+					"name": "createQuestion",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "title",
+									"value": "Wann habt ihr Zeit für ein Grillfest?",
+									"type": "text"
+								},
+								{
+									"key": "userId",
+									"value": "DDDDDD4444",
+									"type": "text"
+								},
+								{
+									"key": "type",
+									"value": "multi",
+									"description": "[\"poll\", \"multi\", \"free\", \"feeling\"];",
+									"type": "text"
+								},
+								{
+									"key": "qrCode",
+									"value": "ABC123",
+									"type": "text"
+								},
+								{
+									"key": "identifikation",
+									"value": "anonyme Abstimmung",
+									"description": "\"anonyme Abstimmung\",\n\"nach Namen fragen, anderen aber nicht anzeigen\",\n\"nach Namen fragen & für alle anzeigen\",",
+									"type": "text"
+								},
+								{
+									"key": "wiederverwendung",
+									"value": "als Vorlage gespeichert",
+									"description": "\"als Vorlage gespeichert\",\n\"60 Tagen nach dem Umfragestichtag gelöscht\",",
+									"type": "text"
+								},
+								{
+									"key": "ergebniseinsicht",
+									"value": "vor ihrer Abstimmung sehen",
+									"description": "\"vor ihrer Abstimmung sehen\",\n\"nach ihrer Abstimmung sehen\",\n\"nach dem Umfragestichtag\",",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/question",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"question"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getQuestionById",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "http://localhost:3001/question/EFGHIJ5678",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"question",
+								"EFGHIJ5678"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getQuestionsByUser",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "http://localhost:3001/question/user/AAAAAA1111",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"question",
+								"user",
+								"AAAAAA1111"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "getAnswersQivenByAnswerOptionId",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": []
+			"name": "AnswerOptions",
+			"item": [
+				{
+					"name": "getAllAnswerOptionsByQuestionId",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "http://localhost:3001/answerOption/question/EFGHIJ5678",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"answerOption",
+								"question",
+								"EFGHIJ5678"
+							]
+						}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:3001/answerGiven/ABABAB1212",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3001",
-					"path": [
-						"answerGiven",
-						"ABABAB1212"
-					]
+				{
+					"name": "createAnswerOption",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "questionId",
+									"value": "EFGHIJ5678",
+									"type": "text"
+								},
+								{
+									"key": "answerText",
+									"value": "Ein Tolles",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/answerOption",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"answerOption"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
+		},
+		{
+			"name": "AnswerGiven",
+			"item": [
+				{
+					"name": "getAnswersGivenByQuestion",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "http://localhost:3001/answerGiven/question/EFGHIJ5678",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"answerGiven",
+								"question",
+								"EFGHIJ5678"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "postAnswerGiven",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "questionId",
+									"value": "EFGHIJ5678",
+									"type": "text"
+								},
+								{
+									"key": "userId",
+									"value": "CCCCCC3333",
+									"type": "text"
+								},
+								{
+									"key": "answerOptionId",
+									"value": "UiAVsZ6143",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3001/answerGiven",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"answerGiven"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getAnswersQivenByUserAndQuestion",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "http://localhost:3001/answerGiven/user/CCCCCC3333/question/EFGHIJ5678",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"answerGiven",
+								"user",
+								"CCCCCC3333",
+								"question",
+								"EFGHIJ5678"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }

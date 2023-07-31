@@ -7,6 +7,7 @@ const pool = mariadb.createPool({
   password: "alfred1",
   database: "wishhzDB",
   connectionLimit: 5,
+  
 });
 
 async function connectToDb() {
@@ -40,7 +41,7 @@ async function createTables() {
         title VARCHAR(255),
         createdAt TIMESTAMP,
         userId VARCHAR(100),
-        type ENUM('poll', 'multi', 'free'),
+        type ENUM('poll', 'multi', 'free', 'feeling'),
         qrCode TEXT,
         questionLink VARCHAR(255),
         identifikation ENUM('anonyme Abstimmung', 'nach Namen fragen, anderen aber nicht anzeigen', 'nach Namen fragen & für alle anzeigen'),
@@ -105,7 +106,7 @@ async function createData() {
       ('YYYYYY8888', 'Was ist deine Lieblingsfarbe?', CURRENT_TIMESTAMP, 'BBBBBB2222', 'multi', 'qrCodeBase64', 'https://querify.com/question/YYYYYY8888', 'nach Namen fragen, anderen aber nicht anzeigen', 'nach ihrer Abstimmung sehen', 'als Vorlage gespeichert'),
       ('EFGHIJ5678', 'Welches Buch hast du zuletzt gelesen?', CURRENT_TIMESTAMP, 'AAAAAA1111', 'poll', 'qrCodeBase64', 'https://querify.com/question/EFGHIJ5678', 'nach Namen fragen & für alle anzeigen', 'nach dem Umfragestichtag', '60 Tagen nach dem Umfragestichtag gelöscht'),
       ('KLMNOP9999', 'Wie viel Zeit verbringst du täglich mit dem Lesen von Nachrichten?', CURRENT_TIMESTAMP, 'CCCCCC3333', 'free', 'qrCodeBase64', 'https://querify.com/question/KLMNOP9999', 'anonyme Abstimmung', 'nach ihrer Abstimmung sehen', 'als Vorlage gespeichert'),
-      ('UVWXYZ7777', 'Welches Land möchtest du gerne bereisen?', CURRENT_TIMESTAMP, 'DDDDDD4444', 'poll', 'qrCodeBase64', 'https://querify.com/question/UVWXYZ7777', 'anonyme Abstimmung', 'vor ihrer Abstimmung sehen', 'als Vorlage gespeichert')`
+      ('UVWXYZ7777', 'Welches Land möchtest du gerne bereisen?', CURRENT_TIMESTAMP, 'DDDDDD4444', 'feeling', 'qrCodeBase64', 'https://querify.com/question/UVWXYZ7777', 'anonyme Abstimmung', 'vor ihrer Abstimmung sehen', 'als Vorlage gespeichert')`
     );
     console.log("DONE!");
 
@@ -116,7 +117,7 @@ async function createData() {
       ('BCBCBC3131', 'Blau', 'YYYYYY8888'),
       ('DEDEDE4545', 'Paraquay', 'UVWXYZ7777'),
       ('FGFGFG6767', 'Rot', 'YYYYYY8888'),
-      ('HIHIHI8989', '>2 Stunden', 'KLMNOP9999')`
+      ('HIHIHI8989', 'sehr gut', 'KLMNOP9999')`
     );
     console.log("DONE!");
 

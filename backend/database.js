@@ -105,18 +105,16 @@ async function getUserIdByEmailAndPassword(email, password) {
 
 // ++++++++++++ question ++++++++++++
 
-
-async function createQuestion(questionId, title, type, userId) {
+async function createQuestion(questionId, title, type, userId, qrCode, questionLink, identifikation, wiederverwendung, ergebniseinsicht) {
   try {
     await connection.query(
-      `INSERT INTO question (questionId, createdAt, title, type, userId) VALUES ('${questionId}', LOCALTIME, '${title}', '${type}', '${userId}')`
+      `INSERT INTO question (questionId, createdAt, title, type, userId, qrCode, questionLink, identifikation, wiederverwendung, ergebniseinsicht) VALUES ('${questionId}', LOCALTIME, '${title}', '${type}', '${userId}', '${qrCode}', '${questionLink}', '${identifikation}', '${wiederverwendung}', '${ergebniseinsicht}')`
     );
     console.log("data (question) inserted");
   } catch (e) {
     console.error(e);
   }
 }
-
 
 async function getQuestionById(questionId) {
   try {
@@ -125,7 +123,7 @@ async function getQuestionById(questionId) {
     );
     console.log("DB Result: getAnswerOptionByID", result);
     if (result.length === 0) {
-      console.log("No question with this Id avilable");
+      console.log("No question with this Id available");
       return null;
     }
     return result;
@@ -137,7 +135,7 @@ async function getQuestionById(questionId) {
 async function getQuestionsByUser(userId) {
   try {
     const result = await connection.query(
-      `SELECT questionId, title, createdAt, userId FROM question WHERE userId = '${userId}'`
+      `SELECT * FROM question WHERE userId = '${userId}'`
     );
     console.log("DB Result: getQuestionsByUser", result);
     return result;
@@ -165,12 +163,12 @@ async function addAnswerOption(answerOptionId, answerText, questionId) {
     const result = await connection.query(
       `INSERT INTO answerOption (answerOptionId, answerText, questionId) VALUES ('${answerOptionId}', '${answerText}', '${questionId}')`
     );
-    console.log("data (answerOption) inserted", result);
+    console.log("answerOption erstellt", result);
     if (result.length === 0) {
-      console.log("No question with this Id avilable");
+      console.log("No question with this Id available");
       return null;
     }
-    return result;
+    return "answerOption erstellt"; 
   } catch (e) {
     console.error(e);
     throw e;
@@ -195,21 +193,21 @@ async function getAnswerOptionById(answerOptionId) {
 
 async function getAnswerOptionByQuestionId(questionId) {
   try {
+    console.log("Question ID:", questionId); // Konsolenausgabe der Frage-ID
     const result = await connection.query(
       `SELECT * FROM answerOption WHERE questionId = '${questionId}'`
     );
     console.log("DB Result: getAnswerOptionByQuestionID", result);
     if (result.length === 0) {
-      console.log("No answerOption with this question Id avilable");
+      console.log("No answerOption with this question Id available");
       return null;
     }
     return result;
   } catch (e) {
     console.error(e);
+    throw e;
   }
 }
-
-
 
 // ++++++++++++ answerGiven ++++++++++++
 
@@ -218,22 +216,7 @@ async function addAnswerGiven(answerOptionId, userId, answerGivenId, questionId)
     await connection.query(
       `INSERT INTO answerGiven (answerOptionId, userId, answerGivenId, questionId) VALUES ('${answerOptionId}', '${userId}', '${answerGivenId}', '${questionId}')`
     );
-  } catch (e) {
-    console.error(e);
-    throw e;
-  }
-}
-
-async function getAnswerGivenByAnswerOption(answerOptionId) {
-  try {
-    const result = await connection.query(
-      `SELECT answerGivenId, userId FROM answerGiven WHERE answerOptionId = ?`,
-      [answerOptionId]
-    );
-    if (result.length === 0) {
-      return null;
-    }
-    return result;
+    console.log("AnswerGiven inserted:", answerGivenId);
   } catch (e) {
     console.error(e);
     throw e;
@@ -256,16 +239,28 @@ async function getAnswerGivenByQuestion(questionId) {
   }
 }
 
+async function getAnswersByUserAndQuestion(userId, questionId) {
+  try {
+    const result = await connection.query(
+      `SELECT * FROM answerGiven WHERE userId = '${userId}' AND questionId = '${questionId}'`
+    );
+    console.log("DB Result: getAnswersByUserAndQuestion", result);
+    return result;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 module.exports = {
   getAllUsers,
   getUserByEmail,
   getUserIdByEmailAndPassword,
   getUserById,
   connectToDb,
-  getAnswerGivenByAnswerOption,
   getAnswerGivenByQuestion,
   getAnswerOptionById,
   getAnswerOptionByQuestionId,
+  getAnswersByUserAndQuestion,
   addAnswerGiven,
   addAnswerOption,
   createQuestion,

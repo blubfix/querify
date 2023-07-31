@@ -48,22 +48,6 @@ answerGivenRouter.post("/", async (req, res) => {
   }
 });
 
-answerGivenRouter.get("/answerOption/:answerOptionId", async (req, res) => {
-  try {
-    const { answerOptionId } = req.params;
-    // Check if answerOptionId is valid
-    const answerOption = await database.getAnswerOptionById(answerOptionId);
-    if (!answerOption) {
-      return res.status(404).send("No answerOption with this Id available");
-    }
-    // Get answerGiven from the database
-    const answerGiven = await database.getAnswerGivenByAnswerOption(answerOptionId);
-    res.status(200).send(answerGiven);
-  } catch (e) {
-    console.error(e);
-    res.status(500).send("Error fetching answerGiven");
-  }
-});
 
 answerGivenRouter.get("/question/:questionId", async (req, res) => {
   try {
@@ -73,7 +57,7 @@ answerGivenRouter.get("/question/:questionId", async (req, res) => {
     if (!question) {
       return res.status(404).send("No question with this Id available");
     }
-    // Get answerGiven from the database
+    // Get answerGiven by questionId from the database
     const answerGiven = await database.getAnswerGivenByQuestion(questionId);
     res.status(200).send(answerGiven);
   } catch (e) {
@@ -81,5 +65,32 @@ answerGivenRouter.get("/question/:questionId", async (req, res) => {
     res.status(500).send("Error fetching answerGiven");
   }
 });
+
+answerGivenRouter.get(
+  "/user/:userId/question/:questionId",
+  async (req, res) => {
+    try {
+      const { userId, questionId } = req.params;
+      // Check if userId and questionId are valid
+      const user = await database.getUserById(userId);
+      if (!user) {
+        return res.status(404).send("No user with this Id available");
+      }
+      const question = await database.getQuestionById(questionId);
+      if (!question) {
+        return res.status(404).send("No question with this Id available");
+      }
+      // Get answers from the database
+      const answers = await database.getAnswersByUserAndQuestion(
+        userId,
+        questionId
+      );
+      res.status(200).send(answers);
+    } catch (e) {
+      console.error(e);
+      res.status(500).send("Error fetching answers");
+    }
+  }
+);
 
 module.exports = answerGivenRouter;
