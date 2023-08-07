@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { Image, Button, StyleSheet, View, Alert, useWindowDimensions, TouchableOpacity} from "react-native";
+import { SectionList, Image, Button, StyleSheet, View, Alert, useWindowDimensions, TouchableOpacity } from "react-native";
 import {
     MD3DarkTheme as DefaultTheme,
     Provider as PaperProvider,
@@ -14,13 +14,14 @@ import {
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Col, Row, Grid } from "react-native-paper-grid";
 import SubmitButton from "../Components/SubmitButton";
+import StatButton from "../Components/StatButton";
 import SingleLineInput from "../Components/SingleLineInput";
 import CheckBox from 'expo-checkbox';
-import { useFonts, Inter_700Bold, Inter_400Regular, Inter_500Medium  } from '@expo-google-fonts/inter';
+import { useFonts, Inter_700Bold, Inter_400Regular, Inter_500Medium } from '@expo-google-fonts/inter';
 import { Manrope_400Regular, Manrope_600SemiBold, Manrope_700Bold, Manrope_300Light } from '@expo-google-fonts/manrope'
 import BottomNavigation from "../Components/BottomNavigation";
 
-const InboxScreen =({ navigation }) => {
+const InboxScreen = ({ navigation }) => {
 
     const [fontsLoaded] = useFonts({
         Inter_400Regular,
@@ -39,52 +40,52 @@ const InboxScreen =({ navigation }) => {
 
     return (
         <PaperProvider>
-                <Grid style={styles.container} container>
-                    <Row size={0.55}>
-                        <Col>
-                            <Row>
-                                <Col>
-                                    <Text style={styles.headerText}>Inbox</Text>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                    <TouchableOpacity onPress={() => navigation.navigate('AnswerJaNein')}>
-                                        <Text>answerJaNein</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => navigation.navigate('AnswerMehrfach')}>
-                                        <Text>AnswerMehrfach</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => navigation.navigate('AnswerFreitext')}>
-                                        <Text>AnswerFreitext</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => navigation.navigate('AnswerStimmungsbildStars')}>
-                                        <Text>AnswerStimmungsbildStars</Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={() => navigation.navigate('AnswerStimmungsbildLikert')}>
-                                        <Text>AnswerStimmungsbildLikert</Text>
-                                    </TouchableOpacity>
+            <Grid style={styles.container} container>
+                <Row size={0.75}>
+                    <Col>
+                        <Row>
+                            <Col>
+                                <Text style={styles.headerText}>Inbox</Text>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <SectionList
+                                    sections={[
+                                        { title: 'This month', data: ['Devin', 'Dan', 'Dominic'] },
+                                        {
+                                            title: 'This week',
+                                            data: [
+                                                'Jackson',
+                                                'James',
+                                                'Jillian',
+                                                'Jimmy',
+                                                'Joel',
+                                                'John',
+                                                'Julie',
+                                            ],
+                                        },
+                                    ]}
+                                    renderItem={({ item }) => <StatButton buttonHeading={'Umfrage XYZ'} buttonText={item} position={'relative'} onDots={() => navigation.navigate('QuestionaireOptions')} />}
+                                    renderSectionHeader={({ section }) => (
+                                        <Text style={styles.textStyle}>{section.title}</Text>
+                                    )}
+                                    keyExtractor={item => `basicListEntry-${item}`}
+                                />
+                            </Col>
+                        </Row>
+                        <Row >
+                            <Col>
+                            </Col>
+                        </Row>
 
-                                </Col>
-                            </Row>
-                            <Row >
-                                <Col>
-                                </Col>
-                            </Row>
+                    </Col>
+                </Row>
 
-                        </Col>
-                    </Row>
-                    <Row size={0.1}>
-                    </Row>
-                        <Col>
-                        </Col>
-                    <Row>
-                        <Col>
-                        </Col>
-                    </Row>
 
-                    <BottomNavigation buttonColors={['#6F6F70', '#778DE3', '#6F6F70', '#6F6F70']}/>
-                </Grid>
+
+                <BottomNavigation buttonColors={['#6F6F70', '#778DE3', '#6F6F70', '#6F6F70']} />
+            </Grid>
         </PaperProvider>
     );
 }
@@ -143,7 +144,7 @@ const styles = StyleSheet.create({
         marginLeft: 10,
         fontFamily: 'Manrope_400Regular'
     },
-    
+
     checkbox: {
         alignSelf: 'center',
         color: '#734498',

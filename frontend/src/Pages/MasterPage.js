@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { Image, Button, StyleSheet, View, Alert, useWindowDimensions } from "react-native";
+import { SectionList, Image, Button, StyleSheet, View, Alert, useWindowDimensions } from "react-native";
 import {
     MD3DarkTheme as DefaultTheme,
     Provider as PaperProvider,
@@ -22,7 +22,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import { TouchableOpacity } from "react-native-web";
 import SubmitButton from "../Components/SubmitButton";
-
+import StatButton from "../Components/StatButton";
 
 
 const CreateRoute = () => <Text>Test</Text>;
@@ -30,6 +30,23 @@ const CreateRoute = () => <Text>Test</Text>;
 const ListRoute = () => <Text>Albums</Text>;
 
 const SettingsRoute = () => <Text>Recents</Text>;
+
+const numbersMap = [
+    { customerNo: "908-1", time: "2:20" },
+    { customerNo: "908-2", time: "2:20" },
+    { customerNo: "908-3", time: "2:20" },
+];
+
+function ItemList(props) {
+    return (
+        <div>
+            {props.sizes.map((s) => (
+                <StatButton key={s.customerNo} buttonHeading={'U: Frühlingsfest 2023 '} buttonText={'Celine'} position={'absolute'} bottom={0} onPress={() => navigation.navigate('RegisterScreen_1')} onDots={() => navigation.navigate('InboxScreen')} onRedirect={() => navigation.navigate('CalendarScreen')} />
+            ))}
+        </div>
+    );
+}
+
 
 export default function MasterPage({ navigation }) {
     const createTwoButtonAlert = () =>
@@ -70,284 +87,40 @@ export default function MasterPage({ navigation }) {
 
     return (
         <PaperProvider theme={theme} >
-            <LinearGradient colors={['#FDFCFB', '#E3D2C4']} style={styles.linearGradient}>
-
-                <View style={styles.NavButton}>
-                    <Text style={styles.NavText}>
-                        Anmeldung
-                    </Text>
-                </View>
-                <Grid container style={styles.ContainerQuestionaire}>
-
-                    <Row>
-                        <Col>
-                            <View style={styles.pageWideButton}>
-                                <Button
-
-
-                                    color="#303030"
-                                    onPress={() => navigation.navigate("Home")}
-
-                                    title="Account erstellen"
-                                    accessibilityLabel="Learn more about this purple button"
-                                />
-                            </View>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <View style={styles.bigBox}>
-                                <Grid container style={{ justifyContent: "space-around" }}>
-
-                                    <Row>
-                                        <Col>
-                                            <View style={styles.bigBoxHeadingBox}>
-                                                <Text style={styles.bigBoxHeading}>
-                                                    This is a Master Input with lots of Text
-                                                </Text>
-                                            </View>
-                                        </Col>
-                                    </Row>
-                                    <Row>
-                                        <Col>
-                                            <TextInput
-                                                style={styles.textInput}
-                                                mode="flat"
-                                                backgroundColor="#F5F1F3"
-                                                borderRadius={10}
-                                                activeUnderlineColor="#FDFCFBAA"
-                                                underlineStyle={styles.textInputUnderline}
-                                                textColor="#303030"
-                                                placeholder="Deine Name"
-                                                value={text}
-                                                onChangeText={text => setText(text)}
-                                            />
-                                        </Col>
-                                        
-                                    </Row>
-                                    <SubmitButton buttonText={"Weiter"} onPress={() => console.log('Hello')}/>
-                                </Grid>
-
-
-                            </View>
-                        </Col>
-                    </Row>
-                    
-                </Grid>
-            </LinearGradient>
+                 <SectionList
+        sections={[
+          {title: 'This month', data: ['Devin', 'Dan', 'Dominic']},
+          {
+            title: 'This week',
+            data: [
+              'Jackson',
+              'James',
+              'Jillian',
+              'Jimmy',
+              'Joel',
+              'John',
+              'Julie',
+            ],
+          },
+        ]}
+        renderItem={({ item }) => <StatButton buttonHeading={'Umfrage XYZ'} buttonText={item} position={'relative'} onDots={() => navigation.navigate('QuestionaireOptions')} />}
+        renderSectionHeader={({section}) => (
+          <Text style={styles.textStyle}>{section.title}</Text>
+        )}
+        keyExtractor={item => `basicListEntry-${item}`}
+      />
         </PaperProvider >
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: "space-evenly",
-    },
-    ContainerQuestionaire: {
-        justifyContent: "space-evenly",
-        maxHeight: "90%",
+    ListStyle: {
+        marginTop: 50,
+      },
 
-    },
-    linearGradient: {
-        flex: 1,
-
-        borderRadius: 5
-    },
-    pageWideButton: {
-        padding: 10,
-
-        width: "90%",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 7,
-        },
-        shadowOpacity: 0.10,
-        shadowRadius: 9.51,
-
-        borderRadius: 10,
-        backgroundColor: "#F5F1F3",
-
-        alignSelf: "center",
-        alignContent: "center",
-        justifyContent: "center",
-    },
-    bigBoxHeadingBox: {
-        padding: 10,
-
-        width: "90%",
-        marginBottom: "1%",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 7,
-        },
-        shadowOpacity: 0.10,
-        shadowRadius: 9.51,
-
-        borderRadius: 10,
-        backgroundColor: "#F5F1F3",
-
-        alignSelf: "center",
-        alignContent: "center",
-        justifyContent: "center",
-    },
-    bigBoxHeading: {
-        alignSelf: 'center',
-        color: "#303030",
-        fontSize: 25,
-        textAlign: "center",
-    },
-    round: {
-        padding: 10,
-        margin: 10,
-        width: 100,
-        height: 100,
-
-
-
-        borderRadius: 50,
-        backgroundColor: "#F5F1F3",
-        borderWidth: 2,
-        alignSelf: "center",
-        alignContent: "center",
-        justifyContent: "center"
-
-
-    },
-    bigBox: {
-        width: "90%",
-        height: "50%",
-        marginTop: "20%",
-        backgroundColor: "#F5F1F380",
-        borderRadius: 10,
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 7,
-        },
-        shadowOpacity: 0.10,
-        shadowRadius: 9.51,
-
-        elevation: 15,
-        alignContent: "center",
-        alignSelf: "center",
-
-
-    },
-    smallBox: {
-        width: "90%",
-        height: "40%",
-        marginTop: "3%",
-        backgroundColor: "#F5F1F3",
-        borderWidth: 1,
-        borderColor: "#E0E0E080",
-        borderRadius: 5,
-        justifyContent: "center",
-        alignSelf: "center"
-
-    },
-    answerBox: {
-        padding: "1%",
-        width: "80%",
-
-
-        backgroundColor: "#F5F1F3",
-        borderRadius: 10,
-        alignSelf: "center",
-        justifyContent: "center",
-
-
-    },
-    textInput: {
-        width: "80%",
-
-        backgroundColor: "#FFFFFF00",
-        alignContent: "center",
-        textAlign: "center",
-        alignSelf: "center",
-        fontSize: 20,
-
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 7,
-        },
-        shadowOpacity: 0.10,
-        shadowRadius: 9.51,
-
-    },
-    textInputUnderline: {
-        width: "95%",
-        marginStart: "2.5%",
-    },
-    mainHeadingBox: {
-        marginTop: "10%",
-        marginBottom: "5%"
-    },
-
-    ButtonText: {
-        color: "#F5F1F3",
-        alignSelf: "center",
-        fontSize: 30,
-
-
-    },
-    answerText: {
-        color: "#303030",
-        alignSelf: "center",
-        fontSize: 25
-    },
-
-    buttonHeading: {
-        alignSelf: 'center',
-        color: "#303030",
-        fontSize: 30,
-    },
-    questionnaireHeading: {
-        alignSelf: 'center',
-        color: "#303030",
-        textAlign: "center",
-        fontSize: 30,
-    },
-
-    textSurface: {
-        padding: 10,
-
-        borderRadius: 5,
-        alignSelf: "center",
-        width: "100%",
-        alignSelf: "center",
-    },
-    NavButton: {
-
-        height: "8%",
-        maxHeight: 70,
-        width: "80%",
-        backgroundColor: "#CD7389CC",
-        marginTop: "15%",
-        borderTopRightRadius: 10,
-        borderBottomRightRadius: 10,
-
-        justifyContent: "center"
-    },
-    NavText: {
-        alignSelf: 'center',
-        color: "#F5F1F3",
-        fontSize: 30,
-
-
-
-    },
-
-    BottomNavBar: {
-        width: "100%",
-
-        color: "#FFFFFF",
-        borderRadius: 20,
-
-    },
+    textStyle:{
+        color:'black',
+    }
 });
 
 const theme = {
