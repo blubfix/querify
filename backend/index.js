@@ -5,6 +5,9 @@ const database = require('./database.js');
 server.use(express.urlencoded({ extended: false }));
 server.use(bodyParser.json());
 
+//!
+//TODO: create a authmiddleware to check if the user is loggedin and then he can post and get data
+
 const questionRouter = require("./src/routes/questionRouter.js");
 const answerGivenRouter = require("./src/routes/answerGivenRouter.js");
 const userRouter = require("./src/routes/userRouter.js");

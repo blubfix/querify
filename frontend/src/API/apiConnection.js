@@ -1,26 +1,28 @@
+import axios from './axios';
 
-const url = 'http://192.168.178.161:3001';
+// read user
+const getUser = () => {
+    return axios.get('/user');
+};
+// login user
+const postUserLogin = (data) => {
+    return axios.post('/user/login', data);
+};
+// signup user
+const postUserSignUp = (data) => {
+    return axios.post('/user/signUp', data);
+};
 
 
-const getUser = async () => {
-    const apiroute = "/user";
-
-    console.log(url+apiroute)
-
-    try {
-        const response = await fetch(url+apiroute);
-        const json = await response.json();
-        console.log(json)
-    }
-    catch (error) {
-        console.error(error);
-    }
-    finally {
-        const loading = false;
-    }
-}
+// read question
+const getQuestion = () => {
+    return  axios.get('/question');
+};
 
 
 export default {
-    getUser
+    getQuestion,
+    getUser,
+    postUserLogin,
+    postUserSignUp,
 }

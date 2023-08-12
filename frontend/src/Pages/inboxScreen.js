@@ -23,6 +23,7 @@ import BottomNavigation from "../Components/BottomNavigation";
 
 const InboxScreen = ({ navigation }) => {
 
+
     const [fontsLoaded] = useFonts({
         Inter_400Regular,
         Inter_500Medium,
@@ -66,7 +67,8 @@ const InboxScreen = ({ navigation }) => {
                                             ],
                                         },
                                     ]}
-                                    renderItem={({ item }) => <StatButton buttonHeading={'Umfrage XYZ'} buttonText={item} position={'relative'} onDots={() => navigation.navigate('QuestionaireOptions')} />}
+                                    // renderItem={({ item }) => < StatButton buttonHeading={'Umfrage XYZ'} buttonText={item} position={'relative'} onDots={() => navigation.navigate('QuestionaireOptions')} />}
+                                    renderItem={({ item }) => < StatButton buttonHeading={'Umfrage XYZ'} buttonText={item} position={'relative'} onDots={() => navigation.navigate('QuestionaireOptions')} />}
                                     renderSectionHeader={({ section }) => (
                                         <Text style={styles.textStyle}>{section.title}</Text>
                                     )}

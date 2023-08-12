@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Image, Button, StyleSheet, View, Alert, useWindowDimensions} from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
     MD3DarkTheme as DefaultTheme,
     Provider as PaperProvider,
@@ -20,11 +21,14 @@ import { useFonts, Inter_700Bold, Inter_400Regular, Inter_500Medium  } from '@ex
 import { Manrope_400Regular, Manrope_300Light } from '@expo-google-fonts/manrope';
 import { Poppins_500Medium } from '@expo-google-fonts/poppins';
 
+import API from '../API/apiConnection'
+
 const RegisterScreen_3 =({ navigation }) => {
     const [checked, setChecked] = React.useState(false);
     const [textInputColor, setTextInputColor] = useState('#E3E5E5')
     const [password, setPassword] = useState('')
     const [errorText, setErrorText] = useState('')
+    const [userData, setUserData] = useState(null)
 
 
     const [fontsLoaded] = useFonts({
@@ -40,14 +44,79 @@ const RegisterScreen_3 =({ navigation }) => {
         return null;
     }
 
-    const register = (mail, password, name, birthday) => {
+    const createAccount = async () => {
+        if (register(password)) {
+            await saveUserData();
+            await loadUserData();
+            var data = {
+                email: userData.email,
+                password: userData.password,
+                name: userData.name,
+                geburtstag: userData.birthday
+            };
+            console.log(data)
+            API.postUserSignUp(data)
+                .then((resp) => {
+                    console.log(resp.data);
+                    navigation.navigate("RegisterScreen_4")
+                })
+                .catch((e) => {
+                    console.log(e);
+                    setTextInputColor('#DC2626');
+                    setErrorText('Bitte überprüfe deine Eingabe!');
+    
+                });
+        }
+        else {
+            console.log("Something went wrong!");
+        }
+    }
+
+    const saveUserData = async () => {
+        try {
+            // Load existing user data from AsyncStorage
+            const existingDataString = await AsyncStorage.getItem('userData');
+            const existingData = existingDataString
+                ? JSON.parse(existingDataString)
+                : {};
+
+            // Merge new data with existing data
+            const newData = {
+                ...existingData,
+                password: password
+            };
+            console.log(newData);
+
+            // Save merged data back to AsyncStorage
+            await AsyncStorage.setItem('userData', JSON.stringify(newData));
+            setUserData(newData);
+        } catch (error) {
+            console.error('Error saving user data:', error);
+        }
+    };
+
+    const loadUserData = async () => {
+        try {
+            // Load user data from AsyncStorage
+            const userDataString = await AsyncStorage.getItem('userData');
+            if (userDataString) {
+                const userData = JSON.parse(userDataString);
+                setUserData(userData);
+            }
+        } catch (error) {
+            console.error('Error loading user data:', error);
+        }
+    };
+
+    const register = (password) => {
         if (password.length<6) {
             setTextInputColor('#DC2626');
             setErrorText('Bitte gib ein gültiges Passwort ein.');
+            return false;
         } else {
             setTextInputColor('#E3E5E5');
             setErrorText('');
-            navigation.navigate("RegisterScreen_4")
+            return true;
         }
 
     }
@@ -80,7 +149,7 @@ const RegisterScreen_3 =({ navigation }) => {
                     </Row>
                     <Row size={0.05}/>
                     <Row>
-                        <SubmitButton buttonText={'Konto Anlegen'} onPress={() => register('', password, '', '')}/>
+                        <SubmitButton buttonText={'Konto Anlegen'} onPress={() => createAccount()}/>
                     </Row>
                     <Row>
                         <Col size={0.12}/>

@@ -2,7 +2,10 @@ import React from 'react';
 import { View, TouchableOpacity, StyleSheet, Text, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-
+import {
+    Appbar,
+    Menu,
+} from "react-native-paper";
 
 import { useFonts, Inter_500Medium } from '@expo-google-fonts/inter';
 import { Col, Row, Grid } from "react-native-paper-grid";
@@ -10,6 +13,9 @@ import { Col, Row, Grid } from "react-native-paper-grid";
 const { width, height } = Dimensions.get("window");
 
 function StatButton (props)  {
+    const [visible, setVisible] = React.useState(false);
+    const openMenu = () => setVisible(true);
+    const closeMenu = () => setVisible(false);
     const { bottom = 0 } = props;
     const { position = 'relative' } = props;
 
@@ -30,7 +36,24 @@ function StatButton (props)  {
                             <Col>
                                 <Row>
                                     <MaterialCommunityIcons style={styles.redirectIcon} name='arrow-right-top' color={'white'} size={20} onPress={props.onRedirect} />
-                                    <MaterialCommunityIcons style={styles.dotsIcon} name='dots-horizontal' color={'white'} size={20} onPress={props.onDots}/>
+                                    {/* <MaterialCommunityIcons style={styles.dotsIcon} name='dots-horizontal' color={'white'} size={20} onPress={props.onDots}/> */}
+                                    <Menu 
+                                        visible= {visible}
+                                        onDismiss={closeMenu}
+                                        anchor = {
+                                            <Appbar.Action
+                                                icon='dots-horizontal'
+                                                onPress={openMenu}
+                                                />
+                                        }>
+                                            <Menu.Item
+                                                onPress={() => {
+                                                    console.log('Option1')
+                                                }}
+                                                leadingIcon='redo'
+                                                title='Option 1'
+                                                />
+                                        </Menu>
                                 </Row>
                                 <Row>
                                     <Text style={styles.heading}>{props.buttonHeading}</Text>

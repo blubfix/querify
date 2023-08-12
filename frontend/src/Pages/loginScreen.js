@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Image, Button, StyleSheet, View, Alert, useWindowDimensions} from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
     MD3DarkTheme as DefaultTheme,
     Provider as PaperProvider,
@@ -20,12 +21,15 @@ import CheckBox from 'expo-checkbox';
 import { useFonts, Inter_700Bold, Inter_400Regular, Inter_500Medium  } from '@expo-google-fonts/inter';
 import { Manrope_400Regular, Manrope_600SemiBold, Manrope_700Bold, Manrope_300Light } from '@expo-google-fonts/manrope'
 
+import API from '../API/apiConnection'
+
 const LoginScreen =({ navigation }) => {
     const [checked, setChecked] = React.useState(false);
     const [textInputColor, setTextInputColor] = useState('#E3E5E5')
     const [mail, setMail] = useState('')
     const [password, setPassword] = useState('')
     const [errorText, setErrorText] = useState('')
+    const [token, setToken] = useState('');
 
     const [fontsLoaded] = useFonts({
         Inter_400Regular,
@@ -41,6 +45,22 @@ const LoginScreen =({ navigation }) => {
         return null;
     }
 
+    //TODO: check token is already given in the Storage
+    // useEffect(() => {
+    //     getTokenFromStorage();
+    // }, []);
+
+    // const getTokenFromStorage = async () => {
+    //     try {
+    //         const storedToken = await AsyncStorage.getItem('authToken');
+    //         if (storedToken) {
+    //             setToken(storedToken);
+    //         }
+    //     } catch (error) {
+    //         console.error('Error getting token from AsyncStorage:', error);
+    //     }
+    // };
+
     const checkCredentials = async (mail, password) => {
         if (!mail.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
             setTextInputColor('#DC2626');
@@ -51,9 +71,42 @@ const LoginScreen =({ navigation }) => {
         } else {
             setTextInputColor('#E3E5E5');
             setErrorText('');
-            navigation.navigate("CreateQuestionaire")
         }
     }
+
+    const loginUser = async () => {
+        checkCredentials(mail, password)
+        var data = {
+            email: mail,
+            password: password
+        };
+        console.log(data)
+        API.postUserLogin(data)
+            .then((resp) => {
+                console.log(resp.data);
+                //handleLogin(resp)
+                navigation.navigate("CreateQuestionaire")
+            })
+            .catch((e) => {
+                console.log(e);
+                setTextInputColor('#DC2626');
+                setErrorText('Bitte überprüfe E-Mail oder Passwort!');
+
+            });
+    };
+
+    // TODO: Save token to the storage that the user dont need to login after closing the app
+    // const handleLogin = async (resp) => {
+    //     const data = await resp.json();
+
+    //     if (resp.ok) {
+    //         setToken(data.token);
+    //         await AsyncStorage.setItem('authToken', data.token);
+    //         console.log('Login successful. Token:', data.token);
+    //     } else {
+    //         console.log('Login failed:', data.message);
+    //     }
+    // }
 
 
     return (
@@ -96,7 +149,7 @@ const LoginScreen =({ navigation }) => {
                     </Row>
                     <Row>
                         <Col>
-                            <SubmitButton buttonText={'Weiter'} onPress={() => checkCredentials(mail, password)}/>
+                            <SubmitButton buttonText={'Weiter'} onPress={() => loginUser()}/>
                         </Col>
                     </Row>
                     <Row>

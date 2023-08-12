@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
-import { Image, Button, StyleSheet, View, Alert, useWindowDimensions} from "react-native";
+import React, { useState, useEffect } from "react";
+import { Image, Button, StyleSheet, View, Alert, useWindowDimensions } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
     MD3DarkTheme as DefaultTheme,
     Provider as PaperProvider,
@@ -23,7 +24,10 @@ import { Manrope_400Regular } from '@expo-google-fonts/manrope'
 const RegisterScreen_2 =({ navigation }) => {
     const [textInputColor, setTextInputColor] = useState('#E3E5E5')
     const [textInputText, setTextInputText] = useState('')
+    const [name, setName] = useState('')
+    const [birthday, setBirthday] = useState('')
     const [errorText, setErrorText] = useState('')
+    const [userData, setUserData] = useState(null)
 
     const [fontsLoaded] = useFonts({
         Inter_400Regular,
@@ -36,6 +40,35 @@ const RegisterScreen_2 =({ navigation }) => {
         return null;
     }
 
+    const goNextForm = () => {
+        saveUserData()
+        navigation.navigate("RegisterScreen_3")
+    }
+
+    const saveUserData = async () => {
+        try {
+            // Load existing user data from AsyncStorage
+            const existingDataString = await AsyncStorage.getItem('userData');
+            const existingData = existingDataString
+                ? JSON.parse(existingDataString)
+                : {};
+
+            // Merge new data with existing data
+            const newData = {
+                ...existingData,
+                name: name,
+                birthday: birthday
+            };
+            console.log(newData);
+
+            // Save merged data back to AsyncStorage
+            await AsyncStorage.setItem('userData', JSON.stringify(newData));
+            setUserData(newData);
+        } catch (error) {
+            console.error('Error saving user data:', error);
+        }
+    };
+
     return (
         <PaperProvider>
                 <Grid style={styles.container} container>
@@ -45,14 +78,14 @@ const RegisterScreen_2 =({ navigation }) => {
                                 <Col>
                                     <Text style={styles.headerText}>Wie lautet dein Vorname?</Text>
                                     <Text style={styles.subHeaderText}>Gib deinen Vornamen an, welcher in deinem Profil angezeigt werden soll.</Text>
-                                    <SingleLineInput borderColor={textInputColor} value={textInputText} onChangeText={setTextInputText}/>
+                                    <SingleLineInput borderColor={textInputColor} value={name} onChangeText={setName}/>
                                     
                                 </Col>
                             </Row>
                             <Row>
                                 <Col>
                                     <Text style={styles.headerText}>Wie lautet dein Geburtstag?</Text>
-                                    <SingleLineInput borderColor={textInputColor} value={textInputText} onChangeText={setTextInputText}/>
+                                    <SingleLineInput borderColor={textInputColor} value={birthday} onChangeText={setBirthday}/>
                                 </Col>
                             </Row>
                         </Col>
@@ -60,7 +93,7 @@ const RegisterScreen_2 =({ navigation }) => {
                     <Row size={0.05}/>
                     <Row>
                         <Col>
-                            <SubmitButton buttonText={'Weiter'} onPress={() => navigation.navigate("RegisterScreen_3")}/>
+                            <SubmitButton buttonText={'Weiter'} onPress={() => goNextForm()}/>
                         </Col>
                     </Row>
                 </Grid>

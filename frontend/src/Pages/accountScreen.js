@@ -36,6 +36,9 @@ const AccountScreen = ({ navigation }) => {
         return null;
     }
 
+    //!
+    //TODO: Logout and remove the jwt token so the user is not loggedin anymore
+
 
     return (
         <PaperProvider>
@@ -110,7 +113,7 @@ const AccountScreen = ({ navigation }) => {
                     </Row>
                     <Row>
                         <Col>
-                            <TouchableOpacity style={styles.logoutButton}>
+                            <TouchableOpacity style={styles.logoutButton} onPress={() => navigation.navigate('LoginScreen')}>
                                 <MaterialCommunityIcons name='logout-variant' color={'#979C9E'} size={30}/>
                                 <Text style={styles.logoutText}>Abmelden</Text>
                             </TouchableOpacity>

@@ -10,6 +10,8 @@ const pool = mariadb.createPool({
   
 });
 
+//**IMPORTANT: changed table user column geburtstag from dates to varchar * 
+
 async function connectToDb() {
   try {
     connection = await pool.getConnection();
@@ -28,7 +30,7 @@ async function createTables() {
         userId VARCHAR(100),
         email VARCHAR(100),
         password VARCHAR(50),
-        geburtstag DATE,
+        geburtstag VARCHAR(100),
         name VARCHAR(50),
         PRIMARY KEY (userId)
       );`

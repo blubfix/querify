@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Image, Button, StyleSheet, View, Alert, useWindowDimensions} from "react-native";
 import {
     MD3DarkTheme as DefaultTheme,
@@ -20,7 +20,28 @@ import { useFonts, Inter_700Bold, Inter_400Regular, Inter_500Medium  } from '@ex
 import { Manrope_400Regular, Manrope_600SemiBold, Manrope_700Bold, Manrope_300Light } from '@expo-google-fonts/manrope'
 import BottomNavigation from "../Components/BottomNavigation";
 
+import API from "../API/apiConnection"
+
 const StatisticsScreen =({ navigation }) => {
+    const [survey, setSurvey] = useState();
+
+    const getSurvey = () => {
+        API.getQuestion()
+          .then((resp) => {
+            setSurvey(resp.data);
+            //setLoading(false)
+            console.log(resp.data); //TODO: zum testen aktiv
+          })
+          .catch((e) => {
+            console.log(e);
+            //setLoading(false)
+          });
+      };
+    
+      useEffect(() => {
+        getSurvey();
+      }, []);
+    
 
     const [fontsLoaded] = useFonts({
         Inter_400Regular,

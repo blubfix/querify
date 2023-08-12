@@ -1,4 +1,5 @@
 const express = require("express");
+const jwt = require('jsonwebtoken');
 const database = require("../../database");
 const generateIds = require("../functions/generateIds");
 const userRouter = express.Router();
@@ -50,19 +51,28 @@ userRouter.get("/", async (req, res) => {
   }
 });
 
-userRouter.get("/login", async (req, res) => {
+//TODO: check if its working for that => token will already generated
+userRouter.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log(req.body);
     const result = await database.login(email, password);
     if (result.length === 0) {
       res.status(404).send({ error: "Email or password incorrect!" });
     } else {
-      res.status(200).send(result);
+        const user = result[0]; // Assuming the first user in the result array is the authenticated user
+  
+        // Create a JWT token with user information and expiration (30 days)
+        const expiration = Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60; // 30 days from now
+        const token = jwt.sign({ userId: user.id, email: user.email, exp: expiration }, 'secret-key');
+        console.log(token)
+        // Send the token back to the client
+        res.status(200).send({ token });
+      }
+    } catch (e) {
+      console.error(e);
+      res.status(500).send(e);
     }
-  } catch (e) {
-    console.error(e);
-    res.sendStatus(500).send(e);
-  }
 });
 
 userRouter.get("/userId", async (req, res) => {

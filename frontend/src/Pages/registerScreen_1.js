@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { Image, Button, StyleSheet, View, Alert, useWindowDimensions, TextInput} from "react-native";
+import { Image, Button, StyleSheet, View, Alert, useWindowDimensions, TextInput } from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
     MD3DarkTheme as DefaultTheme,
     Provider as PaperProvider,
@@ -24,6 +25,7 @@ const RegisterScreen_1 =({ navigation }) => {
     const [textInputColor, setTextInputColor] = useState('#E3E5E5')
     const [textInputText, setTextInputText] = useState('')
     const [errorText, setErrorText] = useState('')
+    const [userData, setUserData] = useState(null)
 
     const [fontsLoaded] = useFonts({
         Inter_400Regular,
@@ -37,16 +39,42 @@ const RegisterScreen_1 =({ navigation }) => {
         return null;
     }
 
+    const goNextForm = () => {
+        if (checkMail(textInputText)) {
+            saveUserData();
+            navigation.navigate("RegisterScreen_2")
+        }
+        else {
+            console.log("Something went wrong!");
+        }
+    }
+
     const checkMail = async (mail) => {
         if (!mail.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
             setTextInputColor('#DC2626');
             setErrorText('Bitte gib eine gültige E-Mail Adresse ein.');
+            return false;
         } else {
             setTextInputColor('#E3E5E5');
             setErrorText('');
-            navigation.navigate("RegisterScreen_2")
+            return true;
         }
     }
+
+    const saveUserData = async () => {
+        try {
+            const userData = {
+                email: textInputText,
+            };
+
+            // Save user data to AsyncStorage
+            await AsyncStorage.setItem('userData', JSON.stringify(userData));
+            setUserData(userData);
+            console.log(userData);
+        } catch (error) {
+            console.error('Error saving user data:', error);
+        }
+    };
 
     return (
         <PaperProvider>
@@ -77,7 +105,7 @@ const RegisterScreen_1 =({ navigation }) => {
                     <Row size={0.05}/>
                     <Row>
                         <Col>
-                            <SubmitButton buttonText={'Weiter'} onPress={() => checkMail(textInputText)}/>
+                            <SubmitButton buttonText={'Weiter'} onPress={() => goNextForm()}/>
                         </Col>
                     </Row>
                 </Grid>

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from "react";
 import MasterPage from './src/Pages/MasterPage'
 import startScreen from './src/Pages/startScreen'
 import Login from './src/Pages/Login'
@@ -31,6 +31,8 @@ import AnswerFreitext from './src/Pages/answerFreitextScreen';
 import AnswerStimmungsbildStars from './src/Pages/answerStimmungsbildStarsScreen';
 import AnswerStimmungsbildLikert from './src/Pages/answerStimmungsbildLikertScreen';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 // Erstellen einer Instanz der Bottom-Tab-Navigators
 const Tab = createBottomTabNavigator();
@@ -38,8 +40,38 @@ const Stack = createNativeStackNavigator();
 
 
 export default function App() {
+    const [tokenChecked, setTokenChecked] = useState(false); // Add state to track token check
+
+    //TODO: check token if user is already loggedin
+    //
+    // useEffect(() => {
+    //     checkToken(); // Check token when the component mounts
+    // }, []);
+
+    // const checkToken = async () => {
+    //     try {
+    //         const token = await AsyncStorage.getItem('authToken');
+    //         if (token) {
+    //             // Token exists, navigate to CreateQuestionaire
+    //             setTokenChecked(true);
+    //             navigation.navigate('CreateQuestionaire'); // Add this line
+    //         } else {
+    //             // Token doesn't exist, navigate to Login
+    //             setTokenChecked(true);
+    //             navigation.navigate('Login'); // Add this line
+    //         }
+    //     } catch (error) {
+    //         console.error('Error checking token:', error);
+    //     }
+    // };
+    // if (!tokenChecked) {
+    //     // You can show a loading screen or something while checking the token
+    //     return null;
+    // }
+
     
     return (
+        
         <NavigationContainer>
             <Stack.Navigator>
                 <Stack.Screen
@@ -107,7 +139,6 @@ export default function App() {
 function Home() {
     return (
         <Tab.Navigator screenOptions={{ headerShown: false, tabBarStyle: { backgroundColor: '#0C0F16' } }}>
-            
             <Tab.Screen name="MasterPage" component={MasterPage} options={{
                 tabBarLabel: 'MasterPage', // Legt den Textbeschriftung des Tabs auf "Home" fest
                 tabBarIcon: ({ color, size }) => ( // Definiert das Symbol für den Tab
@@ -122,5 +153,6 @@ function Home() {
                 ),
             }} />
         </Tab.Navigator>
+        // <Login/>
     )
 }
