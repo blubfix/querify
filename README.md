@@ -1,2 +1,2 @@
 # querify
-Repository for the new Whishhz App
+Repository for the new Whishhz App.
