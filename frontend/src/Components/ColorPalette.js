@@ -15,18 +15,10 @@ const ColorPalette = (props) => {
     return null;
   }
 
-  selectColor = (colorIndex) => {
-    let borderWidthCopy = [];
-
-    for (let index = 0; index < borderWidth.length; index++) {
-      if (colorIndex == index) {
-        borderWidthCopy.push('2');
-      } else {
-        borderWidthCopy.push('0');
-      }
-    }
-
+  const selectColor = (colorIndex) => {
+    let borderWidthCopy = borderWidth.map((value, index) => (colorIndex === index ? 2 : 0));
     setBorderWidth(borderWidthCopy);
+    props.onColorSelected(colorIndex); // Call the parent's callback with the selected color index
   }
 
   return (

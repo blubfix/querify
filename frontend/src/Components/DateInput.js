@@ -7,6 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 const { width, height } = Dimensions.get("window");
 
 const DateInput = (props) => {
+  const [chars, setChars] = useState(0);
 
   const [fontsLoaded] = useFonts({
     Inter_400Regular,
@@ -19,13 +20,21 @@ const DateInput = (props) => {
     return null;
   }
 
+  const changeChars = (text) => {
+    setChars(text.length);
+  }
+  const handleDateChange = (date) => {
+    changeChars(date);
+    props.onChangeText(date);
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.headerText}>Datum</Text>
       <View style={styles.subContainer}>
         <TextInput 
           style={{...styles.textInput, borderColor: props.borderColor}} 
-          onChangeText={() => {props.onChangeText();}}
+          onChangeText={handleDateChange}
           value={props.value}
           placeholder='Gib den Stichtag ein'
           keyboardType='numbers-and-punctuation'

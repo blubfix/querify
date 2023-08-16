@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { Image, Button, StyleSheet, View, Alert, useWindowDimensions, TouchableOpacity} from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
     MD3DarkTheme as DefaultTheme,
     Provider as PaperProvider,
@@ -35,9 +36,22 @@ const AccountScreen = ({ navigation }) => {
     if (!fontsLoaded) {
         return null;
     }
+    // Function to remove the token from AsyncStorage
+    const removeTokenFromStorage = async () => {
+        try {
+            await AsyncStorage.clear();
+            console.log('Token removed from AsyncStorage');
+        } catch (error) {
+            console.error('Error removing token:', error);
+        }
+    };
 
     //!
     //TODO: Logout and remove the jwt token so the user is not loggedin anymore
+    const logout = () => {
+        removeTokenFromStorage()
+        navigation.navigate('LoginScreen')
+    }
 
 
     return (
@@ -113,7 +127,7 @@ const AccountScreen = ({ navigation }) => {
                     </Row>
                     <Row>
                         <Col>
-                            <TouchableOpacity style={styles.logoutButton} onPress={() => navigation.navigate('LoginScreen')}>
+                            <TouchableOpacity style={styles.logoutButton} onPress={() => logout()}>
                                 <MaterialCommunityIcons name='logout-variant' color={'#979C9E'} size={30}/>
                                 <Text style={styles.logoutText}>Abmelden</Text>
                             </TouchableOpacity>

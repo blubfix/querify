@@ -10,6 +10,7 @@ import {
     Appbar,
     SegmentedButtons,
     TextInput,
+    RadioButton,
 } from "react-native-paper";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Col, Row, Grid } from "react-native-paper-grid";
@@ -19,8 +20,11 @@ import CheckBox from 'expo-checkbox';
 import { useFonts, Inter_700Bold, Inter_400Regular, Inter_500Medium  } from '@expo-google-fonts/inter';
 import { Manrope_400Regular, Manrope_600SemiBold, Manrope_700Bold, Manrope_300Light } from '@expo-google-fonts/manrope'
 import BottomNavigation from "../Components/BottomNavigation";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const QuestionaireOptions =({ navigation }) => {
+import API from "../API/apiConnection";
+
+const QuestionaireOptions =({ navigation, route }) => {
     const [checkedAnonymous, setCheckedAnonymous] = useState(false);
     const [checkedAskNameDontShow, setCheckedAskNameDontShow] = useState(false);
     const [checkedAskNameShow, setCheckedAskNameShow] = useState(false);
@@ -43,6 +47,100 @@ const QuestionaireOptions =({ navigation }) => {
     if (!fontsLoaded) {
         return null;
     }
+
+    const loadUserData = async () => {
+        try {
+            const tempData = await AsyncStorage.getItem("userData");
+            if (tempData) {
+                const parsedUserData = JSON.parse(tempData);
+                return parsedUserData;
+            } else {
+                return null;
+            }
+        } catch (error) {
+            console.error("Error loading Storage:", error);
+        }
+    };
+    
+    const createSurvey = async () => {
+        const data = saveUserData();
+        const userData =  await loadUserData();
+        if (userData) {
+            
+            console.log("userData:", userData)
+            data['userId'] = userData.id;
+            console.log("finalData: ", data);
+            API.postQuestion(data)
+                .then((resp) => {
+                    console.log(resp.data);
+                    navigation.navigate('ShareQuestionaire', resp.data)
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
+        } else {
+            console.log('no user data found');
+        }
+    }
+    
+    const saveUserData = () => {
+        try {
+            // Load existing user data
+            const existingData = route.params;
+            // Merge new data with existing data
+            
+            const options = surveyOptions();
+            const finalData = {
+                ...existingData,
+                identifikation: options.identifikation,
+                ergebniseinsicht: options.ergebniseinsicht,
+                wiederverwendung: options.wiederverwendung,
+                qrCode: 'qrCodeBase64'
+            }
+            delete finalData.color; //TODO: remove this line when color is implemented
+
+            return finalData;
+
+        } catch (error) {
+            console.error('Error saving user data:', error);
+        }
+    };
+
+    const surveyOptions = () => {
+        const options = {};
+
+        if (checkedSaveTemplate) {
+            options['wiederverwendung'] = 'als Vorlage gespeichert';
+        } else {
+            options['wiederverwendung'] = '60 Tagen nach dem Umfragestichtag gelöscht';
+        }
+
+        if (checkedViewResultsBefore) {
+            options['ergebniseinsicht'] = 'vor ihrer Abstimmung sehen';
+        } else if (checkedViewResultsAfter) {
+            options['ergebniseinsicht'] = 'nach ihrer Abstimmung sehen';
+        } else if (checkedViewResultsDeadline) {
+            options['ergebniseinsicht'] = 'nach dem Umfragestichtag';
+        }
+    
+        if (checkedAnonymous) {
+            options['identifikation'] = 'anonyme Abstimmung';
+        } else {
+            if (checkedAskNameDontShow && checkedAskNameShow) {
+                options['identifikation'] = 'nach Namen fragen & für alle anzeigen';
+            } else if (checkedAskNameDontShow) {
+                options['identifikation'] = 'nach Namen fragen, anderen aber nicht anzeigen';
+            } else if (checkedAskNameShow) {
+                options['identifikation'] = 'nach Namen fragen & für alle anzeigen';
+            }
+        }
+
+        console.log('options: ', options);
+        return options;
+    };
+    
+    
+    
 
 
     return (
@@ -175,7 +273,7 @@ const QuestionaireOptions =({ navigation }) => {
 
                     <BottomNavigation buttonColors={['#6F6F70', '#778DE3', '#6F6F70', '#6F6F70']}/>
                 </Grid>
-                <SubmitButton buttonText={'Speichern'} position={'absolute'} bottom={120} onPress={() => navigation.navigate('ShareQuestionaire')}/>
+                <SubmitButton buttonText={'Speichern'} position={'absolute'} bottom={120} onPress={() => createSurvey()}/>
         </PaperProvider>
     );
 }

@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Image, Button, StyleSheet, View, Alert, useWindowDimensions, TextInput, TouchableOpacity} from "react-native";
 import {
     MD3DarkTheme as DefaultTheme,
@@ -22,9 +22,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import BottomNavigation from "../Components/BottomNavigation";
 import * as Clipboard from 'expo-clipboard';
 
-const ShareQuestionaire =({ navigation }) => {
-    const [questionaireURL, setQuestionaireURL] = useState('testURL.de');
-    const [questionaireCode, setQuestionaireCode] = useState('1234');
+const ShareQuestionaire =({ navigation, route }) => {
+    const [questionaireURL, setQuestionaireURL] = useState(route.params.questionLink);
+    const [questionaireCode, setQuestionaireCode] = useState(route.params.questionId);
 
     const [fontsLoaded] = useFonts({
         Inter_400Regular,

@@ -40,36 +40,6 @@ const Stack = createNativeStackNavigator();
 
 
 export default function App() {
-    const [tokenChecked, setTokenChecked] = useState(false); // Add state to track token check
-
-    //TODO: check token if user is already loggedin
-    //
-    // useEffect(() => {
-    //     checkToken(); // Check token when the component mounts
-    // }, []);
-
-    // const checkToken = async () => {
-    //     try {
-    //         const token = await AsyncStorage.getItem('authToken');
-    //         if (token) {
-    //             // Token exists, navigate to CreateQuestionaire
-    //             setTokenChecked(true);
-    //             navigation.navigate('CreateQuestionaire'); // Add this line
-    //         } else {
-    //             // Token doesn't exist, navigate to Login
-    //             setTokenChecked(true);
-    //             navigation.navigate('Login'); // Add this line
-    //         }
-    //     } catch (error) {
-    //         console.error('Error checking token:', error);
-    //     }
-    // };
-    // if (!tokenChecked) {
-    //     // You can show a loading screen or something while checking the token
-    //     return null;
-    // }
-
-    
     return (
         
         <NavigationContainer>
@@ -127,32 +97,73 @@ export default function App() {
                 />
                 <Stack.Screen name="AnswerStimmungsbildLikert" component={AnswerStimmungsbildLikert} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={1}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
                 />
-
-
-
-
             </Stack.Navigator>
         </NavigationContainer>
     )
 }
 
+// function Home() {
+//     return (
+//         <Tab.Navigator screenOptions={{ headerShown: false, tabBarStyle: { backgroundColor: '#0C0F16' } }}>
+//             <Tab.Screen name="MasterPage" component={MasterPage} options={{
+//                 tabBarLabel: 'MasterPage', // Legt den Textbeschriftung des Tabs auf "Home" fest
+//                 tabBarIcon: ({ color, size }) => ( // Definiert das Symbol für den Tab
+//                     <Ionicons name="home" color={color} size={size} /> /* Das Symbol ist ein Home-Icon von Ionicons mit der Farbe und Größe, die der Navigator übergeben hat */
+//                 ),
+//             }} />
+//             <Tab.Screen name="Login" component={Login} options={{
+//                 tabBarLabel: 'Login',
+//                 //tabBarStyle: { display: "none" }, // Legt die Textbeschriftung des Tabs auf "Info" fest
+//                 tabBarIcon: ({ color, size }) => ( // Definiert das Symbol für den Tab
+//                     <Ionicons name="information-outline" color={color} size={size} /> /* Das Symbol ist ein Informations-Icon von Ionicons mit der Farbe und Größe, die der Navigator übergeben hat */
+//                 ),
+//             }} />
+//         </Tab.Navigator>
+//         // <Login/>
+//     )
+// }
+//TODO: check token if user is already loggedin
 function Home() {
-    return (
-        <Tab.Navigator screenOptions={{ headerShown: false, tabBarStyle: { backgroundColor: '#0C0F16' } }}>
-            <Tab.Screen name="MasterPage" component={MasterPage} options={{
-                tabBarLabel: 'MasterPage', // Legt den Textbeschriftung des Tabs auf "Home" fest
-                tabBarIcon: ({ color, size }) => ( // Definiert das Symbol für den Tab
-                    <Ionicons name="home" color={color} size={size} /> /* Das Symbol ist ein Home-Icon von Ionicons mit der Farbe und Größe, die der Navigator übergeben hat */
-                ),
-            }} />
-            <Tab.Screen name="Login" component={Login} options={{
-                tabBarLabel: 'Login',
-                //tabBarStyle: { display: "none" }, // Legt die Textbeschriftung des Tabs auf "Info" fest
-                tabBarIcon: ({ color, size }) => ( // Definiert das Symbol für den Tab
-                    <Ionicons name="information-outline" color={color} size={size} /> /* Das Symbol ist ein Informations-Icon von Ionicons mit der Farbe und Größe, die der Navigator übergeben hat */
-                ),
-            }} />
-        </Tab.Navigator>
-        // <Login/>
-    )
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        checkToken(); // Check token when the component mounts
+    }, []);
+
+    const checkToken = async () => {
+        try {
+            const token = await AsyncStorage.getItem('authToken');
+            if (token) {
+                setIsLoggedIn(true); // User is logged in
+            } else {
+                setIsLoggedIn(false); // User is not logged in
+            }
+        } catch (error) {
+            console.error('Error checking token:', error);
+        }
+    };
+
+    if (!isLoggedIn) {
+        return <Login />;
+    }
+    else {
+        return <CreateQuestionaireScreen />;
+    }
+
+    // return (
+    //     <Tab.Navigator screenOptions={{ headerShown: false, tabBarStyle: { backgroundColor: '#0C0F16' } }}>
+    //         <Tab.Screen name="CreateQuestionaire" component={MasterPage} options={{
+    //             tabBarLabel: 'MasterPage',
+    //             tabBarIcon: ({ color, size }) => (
+    //                 <Ionicons name="home" color={color} size={size} />
+    //             ),
+    //         }} />
+    //         <Tab.Screen name="CreateQuestionaire" component={CreateQuestionaireScreen} options={{
+    //             tabBarLabel: 'Create Questionaire',
+    //             tabBarIcon: ({ color, size }) => (
+    //                 <Ionicons name="create" color={color} size={size} />
+    //             ),
+    //         }} />
+    //     </Tab.Navigator>
+    // );
 }

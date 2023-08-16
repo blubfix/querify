@@ -41,8 +41,8 @@ const RegisterScreen_1 =({ navigation }) => {
 
     const goNextForm = () => {
         if (checkMail(textInputText)) {
-            saveUserData();
-            navigation.navigate("RegisterScreen_2")
+            //saveUserData(); //TODO: not necessary anymore?
+            navigation.navigate("RegisterScreen_2", {email: textInputText})
         }
         else {
             console.log("Something went wrong!");
@@ -61,20 +61,21 @@ const RegisterScreen_1 =({ navigation }) => {
         }
     }
 
-    const saveUserData = async () => {
-        try {
-            const userData = {
-                email: textInputText,
-            };
+    //TODO: not necessary anymore?
+    // const saveUserData = async () => {
+    //     try {
+    //         const userData = {
+    //             email: textInputText,
+    //         };
 
-            // Save user data to AsyncStorage
-            await AsyncStorage.setItem('userData', JSON.stringify(userData));
-            setUserData(userData);
-            console.log(userData);
-        } catch (error) {
-            console.error('Error saving user data:', error);
-        }
-    };
+    //         // Save user data to AsyncStorage
+    //         await AsyncStorage.setItem('userData', JSON.stringify(userData));
+    //         setUserData(userData);
+    //         console.log(userData);
+    //     } catch (error) {
+    //         console.error('Error saving user data:', error);
+    //     }
+    // };
 
     return (
         <PaperProvider>

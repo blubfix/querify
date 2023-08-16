@@ -20,8 +20,12 @@ const DescriptionInput = (props) => {
     return null;
   }
 
-  changeChars = (text) => {
+  const changeChars = (text) => {
     setChars(text.length);
+  }
+  const handleDescriptionChange = (description) => {
+    changeChars(description);
+    props.onChangeText(description);
   }
 
   return (
@@ -29,7 +33,7 @@ const DescriptionInput = (props) => {
       <Text style={styles.headerText}>Beschreibung</Text>
       <TextInput 
         style={{...styles.textInput, borderColor: props.borderColor}} 
-        onChangeText={(text) => {props.onChangeText(); changeChars(text);}}
+        onChangeText={handleDescriptionChange}
         value={props.value}
         placeholder={placeholder}
         multiline={true}

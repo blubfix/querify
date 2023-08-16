@@ -48,6 +48,43 @@ answerGivenRouter.post("/", async (req, res) => {
   }
 });
 
+answerGivenRouter.get("/user/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    // Check if userId is valid
+    const user = await database.getUserById(userId);
+    if (!user) {
+      return res.status(404).send("No answergiven with this userId available");
+    }
+    // Get answerGiven by userId from the database
+    const answerGiven = await database.getAnswerGivenByUser(user.userId);
+
+
+    res.status(200).send(answerGiven);
+  } catch (e) {
+    console.error(e);
+    res.status(500).send("Error fetching answerGiven");
+  }
+});
+
+answerGivenRouter.get("/questioninfo/user/:userId", async (req, res) => {
+  try {
+    const { userId } = req.params;
+    // Check if userId is valid
+    const user = await database.getUserById(userId);
+    if (!user) {
+      return res.status(404).send("No answergiven with this userId available");
+    }
+    // Get answerGiven by userId from the database
+    const answerGiven = await database.getUserAnswersWithQuestionInfo(user.userId);
+
+
+    res.status(200).send(answerGiven);
+  } catch (e) {
+    console.error(e);
+    res.status(500).send("Error fetching answerGiven");
+  }
+});
 
 answerGivenRouter.get("/question/:questionId", async (req, res) => {
   try {
@@ -65,6 +102,7 @@ answerGivenRouter.get("/question/:questionId", async (req, res) => {
     res.status(500).send("Error fetching answerGiven");
   }
 });
+
 
 answerGivenRouter.get(
   "/user/:userId/question/:questionId",

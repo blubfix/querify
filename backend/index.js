@@ -12,11 +12,13 @@ const questionRouter = require("./src/routes/questionRouter.js");
 const answerGivenRouter = require("./src/routes/answerGivenRouter.js");
 const userRouter = require("./src/routes/userRouter.js");
 const answerOptionRouter = require("./src/routes/answerOptionRouter.js");
+//const mixRouter = require("./src/routes/mixRouter.js");
 
 server.use("/question", questionRouter);
 server.use("/answerGiven", answerGivenRouter);
 server.use("/user", userRouter);
 server.use("/answerOption", answerOptionRouter);
+//server.use("/custom", mixRouter);
 
 const PORT = 3001;
 

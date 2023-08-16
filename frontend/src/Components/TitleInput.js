@@ -20,8 +20,13 @@ const TitleInput = (props) => {
     return null;
   }
 
-  changeChars = (text) => {
+  const changeChars = (text) => {
     setChars(text.length);
+  }
+
+  const handleTextChange = (title) => {
+    changeChars(title);
+    props.onChangeText(title); // Call the parent's callback with the updated title
   }
 
   return (
@@ -29,7 +34,7 @@ const TitleInput = (props) => {
       <Text style={styles.headerText}>Titel</Text>
       <TextInput 
         style={{...styles.textInput, borderColor: props.borderColor}} 
-        onChangeText={(title) => {props.onChangeText(); changeChars(title);}}
+        onChangeText={handleTextChange}
         value={props.value}
         placeholder={placeholder}
         maxLength={30}

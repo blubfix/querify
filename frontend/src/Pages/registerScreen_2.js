@@ -21,13 +21,13 @@ import CheckBox from 'expo-checkbox';
 import { useFonts, Inter_700Bold, Inter_400Regular, Inter_500Medium  } from '@expo-google-fonts/inter';
 import { Manrope_400Regular } from '@expo-google-fonts/manrope'
 
-const RegisterScreen_2 =({ navigation }) => {
+const RegisterScreen_2 =({ navigation, route }) => {
     const [textInputColor, setTextInputColor] = useState('#E3E5E5')
     const [textInputText, setTextInputText] = useState('')
     const [name, setName] = useState('')
     const [birthday, setBirthday] = useState('')
     const [errorText, setErrorText] = useState('')
-    const [userData, setUserData] = useState(null)
+    const [userData, setUserData] = useState({})
 
     const [fontsLoaded] = useFonts({
         Inter_400Regular,
@@ -41,29 +41,23 @@ const RegisterScreen_2 =({ navigation }) => {
     }
 
     const goNextForm = () => {
-        saveUserData()
-        navigation.navigate("RegisterScreen_3")
+        const data = saveUserData()
+        navigation.navigate("RegisterScreen_3", data)
     }
 
-    const saveUserData = async () => {
+    const saveUserData = () => {
         try {
-            // Load existing user data from AsyncStorage
-            const existingDataString = await AsyncStorage.getItem('userData');
-            const existingData = existingDataString
-                ? JSON.parse(existingDataString)
-                : {};
-
+            // Load existing user data
+            const existingData = route.params;
             // Merge new data with existing data
             const newData = {
                 ...existingData,
                 name: name,
-                birthday: birthday
+                geburtstag: birthday
             };
-            console.log(newData);
+            console.log("rScreen2_newData: ", newData);
+            return newData;
 
-            // Save merged data back to AsyncStorage
-            await AsyncStorage.setItem('userData', JSON.stringify(newData));
-            setUserData(newData);
         } catch (error) {
             console.error('Error saving user data:', error);
         }

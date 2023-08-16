@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Image, Button, StyleSheet, View, Alert, useWindowDimensions} from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
@@ -23,13 +23,16 @@ import { Poppins_500Medium } from '@expo-google-fonts/poppins';
 
 import API from '../API/apiConnection'
 
-const RegisterScreen_3 =({ navigation }) => {
+const RegisterScreen_3 =({ navigation, route }) => {
     const [checked, setChecked] = React.useState(false);
     const [textInputColor, setTextInputColor] = useState('#E3E5E5')
     const [password, setPassword] = useState('')
     const [errorText, setErrorText] = useState('')
     const [userData, setUserData] = useState(null)
 
+    useEffect(() => {
+        console.log("userData: ", userData);
+    }, [userData]);
 
     const [fontsLoaded] = useFonts({
         Inter_400Regular,
@@ -44,20 +47,19 @@ const RegisterScreen_3 =({ navigation }) => {
         return null;
     }
 
-    const createAccount = async () => {
+
+    const createAccount = () => {
         if (register(password)) {
-            await saveUserData();
-            await loadUserData();
-            var data = {
-                email: userData.email,
-                password: userData.password,
-                name: userData.name,
-                geburtstag: userData.birthday
-            };
-            console.log(data)
+            const data = saveUserData();
+
+            console.log("alldata: ",data)
             API.postUserSignUp(data)
                 .then((resp) => {
                     console.log(resp.data);
+                    if(checked){
+                        saveTokenToStorage(resp.data.token);
+                    }
+                    saveUserDataStorage(resp.data.user);
                     navigation.navigate("RegisterScreen_4")
                 })
                 .catch((e) => {
@@ -72,41 +74,50 @@ const RegisterScreen_3 =({ navigation }) => {
         }
     }
 
-    const saveUserData = async () => {
+    const saveUserData = () => {
         try {
-            // Load existing user data from AsyncStorage
-            const existingDataString = await AsyncStorage.getItem('userData');
-            const existingData = existingDataString
-                ? JSON.parse(existingDataString)
-                : {};
-
+            // Load existing user data
+            const existingData = route.params;
             // Merge new data with existing data
             const newData = {
                 ...existingData,
                 password: password
             };
-            console.log(newData);
+            console.log("rScreen3_newData: ",newData);
+            return newData;
 
-            // Save merged data back to AsyncStorage
-            await AsyncStorage.setItem('userData', JSON.stringify(newData));
-            setUserData(newData);
         } catch (error) {
             console.error('Error saving user data:', error);
         }
     };
 
-    const loadUserData = async () => {
+    // Function to save the token to AsyncStorage
+    const saveTokenToStorage = async (token) => {
         try {
-            // Load user data from AsyncStorage
-            const userDataString = await AsyncStorage.getItem('userData');
-            if (userDataString) {
-                const userData = JSON.parse(userDataString);
-                setUserData(userData);
-            }
+            await AsyncStorage.setItem('authToken', token);
+            console.log('Token saved to AsyncStorage');
         } catch (error) {
-            console.error('Error loading user data:', error);
+            console.error('Error saving token:', error);
         }
     };
+
+    const saveUserDataStorage = async (data) => {
+        try {
+            const tempData = {
+                    id: data.id,
+                    email: data.email,
+                    name: data.name
+                };
+
+            // Save user data to AsyncStorage
+            await AsyncStorage.setItem('userData', JSON.stringify(tempData));
+            setUserData(tempData);
+        } catch (error) {
+            console.error('Error saving user data:', error);
+        }
+    };
+
+
 
     const register = (password) => {
         if (password.length<6) {

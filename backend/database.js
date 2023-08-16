@@ -135,7 +135,7 @@ async function getQuestionById(questionId) {
 async function getQuestionsByUser(userId) {
   try {
     const result = await connection.query(
-      `SELECT * FROM question WHERE userId = '${userId}'`
+      `SELECT q.*, u.name AS name FROM question q JOIN user u ON q.userId = u.userId WHERE q.userId = '${userId}'`
     );
     console.log("DB Result: getQuestionsByUser", result);
     return result;
@@ -155,6 +155,31 @@ async function getAllQuestions() {
     console.error(e);
   }
 }
+
+async function getQuestionFromThisWeek() {
+  try {
+    const result = await connection.query(
+      `SELECT q.*, u.name AS userName FROM question q JOIN user u ON q.userId = u.userId WHERE YEAR(q.createdAt) = YEAR(CURDATE()) AND WEEK(q.createdAt) = WEEK(CURDATE());`
+    );
+    console.log("DB Result: getQuestionFromThisWeek", result);
+    return result;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+async function getQuestionFromThisMonth() {
+  try {
+    const result = await connection.query(
+      `SELECT q.*, u.name AS userName FROM question q JOIN user u ON q.userId = u.userId WHERE YEAR(q.createdAt) = YEAR(CURDATE()) AND MONTH(q.createdAt) = MONTH(CURDATE());`
+    );
+    console.log("DB Result: getQuestionFromThisMonth", result);
+    return result;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 
 // ++++++++++++ answerOption ++++++++++++
 
@@ -239,6 +264,41 @@ async function getAnswerGivenByQuestion(questionId) {
   }
 }
 
+async function getAnswerGivenByUser(userId) {
+  try {
+    const result = await connection.query(
+      `SELECT * FROM answerGiven WHERE userId = '${userId}'`,
+    );
+    console.log("DB Result: getAnswerGivenByUser", result);
+    return result;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+async function getAnswerGivenByUser(userId) {
+  try {
+    const result = await connection.query(
+      `SELECT * FROM answerGiven WHERE userId = '${userId}'`,
+    );
+    console.log("DB Result: getAnswerGivenByUser", result);
+    return result;
+  } catch (e) {
+    console.error(e);
+  }
+}
+async function getUserAnswersWithQuestionInfo(userId) {
+  try {
+    const result = await connection.query(
+      `SELECT ag.*, q.title AS question_title, u_answer.name AS user_name, u_question.name AS question_creator, u_question.userId AS question_creator_id FROM answerGiven ag JOIN user u_answer ON ag.userId = u_answer.userId JOIN question q ON ag.questionId = q.questionId JOIN user u_question ON q.userId = u_question.userId WHERE ag.userId = '${userId}'`,
+    );
+    console.log("DB Result: getUserAnswersWithQuestionInfo", result);
+    return result;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 async function getAnswersByUserAndQuestion(userId, questionId) {
   try {
     const result = await connection.query(
@@ -258,15 +318,19 @@ module.exports = {
   getUserById,
   connectToDb,
   getAnswerGivenByQuestion,
+  getAnswerGivenByUser,
   getAnswerOptionById,
   getAnswerOptionByQuestionId,
   getAnswersByUserAndQuestion,
+  getUserAnswersWithQuestionInfo,
   addAnswerGiven,
   addAnswerOption,
   createQuestion,
   getQuestionById,
   getQuestionsByUser,
   getAllQuestions,
+  getQuestionFromThisWeek,
+  getQuestionFromThisMonth,
   signUp,
   login,
 };

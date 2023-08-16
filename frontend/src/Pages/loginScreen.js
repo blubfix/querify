@@ -2,6 +2,7 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import { Image, Button, StyleSheet, View, Alert, useWindowDimensions} from "react-native";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import bcrypt from 'bcryptjs';
 import {
     MD3DarkTheme as DefaultTheme,
     Provider as PaperProvider,
@@ -30,6 +31,11 @@ const LoginScreen =({ navigation }) => {
     const [password, setPassword] = useState('')
     const [errorText, setErrorText] = useState('')
     const [token, setToken] = useState('');
+    const [userData, setUserData] = useState(null);
+
+    useEffect(() => {
+        console.log("userData: ", userData);
+    }, [userData]);
 
     const [fontsLoaded] = useFonts({
         Inter_400Regular,
@@ -41,25 +47,10 @@ const LoginScreen =({ navigation }) => {
         Manrope_300Light
     });
 
+
     if (!fontsLoaded) {
         return null;
     }
-
-    //TODO: check token is already given in the Storage
-    // useEffect(() => {
-    //     getTokenFromStorage();
-    // }, []);
-
-    // const getTokenFromStorage = async () => {
-    //     try {
-    //         const storedToken = await AsyncStorage.getItem('authToken');
-    //         if (storedToken) {
-    //             setToken(storedToken);
-    //         }
-    //     } catch (error) {
-    //         console.error('Error getting token from AsyncStorage:', error);
-    //     }
-    // };
 
     const checkCredentials = async (mail, password) => {
         if (!mail.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
@@ -73,9 +64,35 @@ const LoginScreen =({ navigation }) => {
             setErrorText('');
         }
     }
+    // Function to save the token to AsyncStorage
+    const saveTokenToStorage = async (token) => {
+        try {
+            await AsyncStorage.setItem('authToken', token);
+            console.log('Token saved to AsyncStorage');
+        } catch (error) {
+            console.error('Error saving token:', error);
+        }
+    };
+    // Function to save the user data to AsyncStorage
+    const saveUserDataStorage = async (data) => {
+        try {
+            const tempData = {
+                id: data.id,
+                email: data.email,
+                name: data.name,
+            };
+            // Save user data to AsyncStorage
+            await AsyncStorage.setItem('userData', JSON.stringify(tempData));
+            setUserData(tempData);
+        } catch (error) {
+            console.error('Error saving user data:', error);
+        }
+    };
+
 
     const loginUser = async () => {
         checkCredentials(mail, password)
+
         var data = {
             email: mail,
             password: password
@@ -84,7 +101,11 @@ const LoginScreen =({ navigation }) => {
         API.postUserLogin(data)
             .then((resp) => {
                 console.log(resp.data);
-                //handleLogin(resp)
+                
+                if (checked) {
+                    saveTokenToStorage(resp.data.token);// Call the function to save token to AsyncStorage
+                }
+                saveUserDataStorage(resp.data.user)
                 navigation.navigate("CreateQuestionaire")
             })
             .catch((e) => {
@@ -94,20 +115,6 @@ const LoginScreen =({ navigation }) => {
 
             });
     };
-
-    // TODO: Save token to the storage that the user dont need to login after closing the app
-    // const handleLogin = async (resp) => {
-    //     const data = await resp.json();
-
-    //     if (resp.ok) {
-    //         setToken(data.token);
-    //         await AsyncStorage.setItem('authToken', data.token);
-    //         console.log('Login successful. Token:', data.token);
-    //     } else {
-    //         console.log('Login failed:', data.message);
-    //     }
-    // }
-
 
     return (
         <PaperProvider>

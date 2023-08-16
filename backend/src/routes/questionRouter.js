@@ -80,7 +80,7 @@ questionRouter.post("/", async (req, res) => {
       wiederverwendung,
       ergebniseinsicht
     );
-    res.status(201).send(questionId);
+    res.status(201).send({questionId, questionLink});
   } catch (e) {
     console.error(e);
     res.status(500).send(e);
@@ -103,9 +103,42 @@ questionRouter.get("/", async(req, res) => {
   }
 });
 
+questionRouter.get("/thisweek", async (req, res) => {
+  try {
+    const result = await database.getQuestionFromThisWeek();
+    console.log(result);
+    if (result.length === 0) {
+      res.status(404).send('there are no questions this week');
+    } else {
+      res.status(200).send(result);
+    }
+  } catch (e) {
+    console.log(e);
+    console.error(e);
+    res.sendStatus(500).send(e);
+  }
+});
+
+questionRouter.get("/thismonth", async (req, res) => {
+  try {
+    const result = await database.getQuestionFromThisMonth();
+    console.log(result);
+    if (result.length === 0) {
+      res.status(404).send('there are no questions this month');
+    } else {
+      res.status(200).send(result);
+    }
+  } catch (e) {
+    console.log(e);
+    console.error(e);
+    res.sendStatus(500).send(e);
+  }
+});
+
 questionRouter.get("/:questionId", async (req, res) => {
   try {
     const { questionId } = req.params;
+    console.log("questionId", questionId)
     const question = await database.getQuestionById(questionId);
     if (!question) {
       res.status(404).send("There are no questions with this ID");
@@ -117,6 +150,8 @@ questionRouter.get("/:questionId", async (req, res) => {
     res.status(500).send("Error fetching questions");
   }
 });
+
+
 
 questionRouter.param("questionId", (req, res, next, questionId) => {
   req.body.questionId = questionId;
@@ -163,6 +198,7 @@ questionRouter.route("/user/:userId")
 questionRouter.route("/user/:userId").get(async (req, res) => {
   try {
     const { userId } = req.params; // Use req.params instead of req.body
+    console.log("userId", userId);
     const result = await database.getQuestionsByUser(userId);
     if (result.length === 0) {
       res.status(404).send("There are no questions by this user");
