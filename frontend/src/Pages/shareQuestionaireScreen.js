@@ -20,11 +20,13 @@ import { Manrope_400Regular } from '@expo-google-fonts/manrope';
 import { Poppins_500Medium } from '@expo-google-fonts/poppins';
 import { LinearGradient } from 'expo-linear-gradient';
 import BottomNavigation from "../Components/BottomNavigation";
+import QRCode from 'react-native-qrcode-svg';
 import * as Clipboard from 'expo-clipboard';
 
 const ShareQuestionaire =({ navigation, route }) => {
     const [questionaireURL, setQuestionaireURL] = useState(route.params.questionLink);
     const [questionaireCode, setQuestionaireCode] = useState(route.params.questionId);
+    const [qrCodeDataUrl, setQrCodeDataUrl] = useState(route.params.qrCodeDataUrl);
 
     const [fontsLoaded] = useFonts({
         Inter_400Regular,
@@ -111,6 +113,10 @@ const ShareQuestionaire =({ navigation, route }) => {
                     <Row>
                         <Col>
                             <Text style={styles.shareOptionsHeaderText}>Umfrage QR-Code</Text>
+                            <QRCode
+                                value={qrCodeDataUrl}
+                                size={400} // Adjust the size of the QR code as needed
+                            />
                         </Col>
                     </Row>
                     <Row>

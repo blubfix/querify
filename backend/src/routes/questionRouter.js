@@ -1,4 +1,5 @@
 const express = require("express");
+const qr = require('qrcode');
 const database = require("../../database");
 const generateIds = require("../functions/generateIds")
 const questionRouter = express.Router();
@@ -67,20 +68,33 @@ questionRouter.post("/", async (req, res) => {
       return res.status(400).send({ error: `Invalid question type ${type}` });
     }
 
+    //const questionLink = `https://querify.com/question/${questionId}`;
+
+    
     const questionLink = `https://querify.com/question/${questionId}`;
+    
+    const qrCodeDataUrl = await new Promise((resolve, reject) => {
+        qr.toDataURL(questionLink, (err, dataUrl) => {
+        if (err) {
+            reject(err);
+        } else {
+            resolve(dataUrl);
+        }
+        });
+    });
 
     await database.createQuestion(
       questionId,
       title,
       type,
       userId,
-      qrCode,
+      qrCodeDataUrl,
       questionLink,
       identifikation,
       wiederverwendung,
       ergebniseinsicht
     );
-    res.status(201).send({questionId, questionLink});
+    res.status(201).send({ questionId, questionLink, qrCodeDataUrl });
   } catch (e) {
     console.error(e);
     res.status(500).send(e);
