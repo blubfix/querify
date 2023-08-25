@@ -30,6 +30,7 @@ import AnswerMehrfach from './src/Pages/answerMehrfachScreen';
 import AnswerFreitext from './src/Pages/answerFreitextScreen';
 import AnswerStimmungsbildStars from './src/Pages/answerStimmungsbildStarsScreen';
 import AnswerStimmungsbildLikert from './src/Pages/answerStimmungsbildLikertScreen';
+import StatisticSurvey from './src/Pages/statisticSurvey';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -71,6 +72,8 @@ export default function App() {
                 />
                 <Stack.Screen name="StatisticsScreen" component={StatisticsScreen} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
                 />
+                <Stack.Screen name="StatisticSurvey" component={StatisticSurvey} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
+                />
                 <Stack.Screen name="CreateJaNein" component={CreateJaNein} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={1}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
                 />
                 <Stack.Screen name="CreateMehrfach" component={CreateMehrfach} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={1}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
@@ -97,31 +100,12 @@ export default function App() {
                 />
                 <Stack.Screen name="AnswerStimmungsbildLikert" component={AnswerStimmungsbildLikert} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={1}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
                 />
+                
             </Stack.Navigator>
         </NavigationContainer>
     )
 }
 
-// function Home() {
-//     return (
-//         <Tab.Navigator screenOptions={{ headerShown: false, tabBarStyle: { backgroundColor: '#0C0F16' } }}>
-//             <Tab.Screen name="MasterPage" component={MasterPage} options={{
-//                 tabBarLabel: 'MasterPage', // Legt den Textbeschriftung des Tabs auf "Home" fest
-//                 tabBarIcon: ({ color, size }) => ( // Definiert das Symbol für den Tab
-//                     <Ionicons name="home" color={color} size={size} /> /* Das Symbol ist ein Home-Icon von Ionicons mit der Farbe und Größe, die der Navigator übergeben hat */
-//                 ),
-//             }} />
-//             <Tab.Screen name="Login" component={Login} options={{
-//                 tabBarLabel: 'Login',
-//                 //tabBarStyle: { display: "none" }, // Legt die Textbeschriftung des Tabs auf "Info" fest
-//                 tabBarIcon: ({ color, size }) => ( // Definiert das Symbol für den Tab
-//                     <Ionicons name="information-outline" color={color} size={size} /> /* Das Symbol ist ein Informations-Icon von Ionicons mit der Farbe und Größe, die der Navigator übergeben hat */
-//                 ),
-//             }} />
-//         </Tab.Navigator>
-//         // <Login/>
-//     )
-// }
 //TODO: check token if user is already loggedin
 function Home() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -150,20 +134,4 @@ function Home() {
         return <CreateQuestionaireScreen />;
     }
 
-    // return (
-    //     <Tab.Navigator screenOptions={{ headerShown: false, tabBarStyle: { backgroundColor: '#0C0F16' } }}>
-    //         <Tab.Screen name="CreateQuestionaire" component={MasterPage} options={{
-    //             tabBarLabel: 'MasterPage',
-    //             tabBarIcon: ({ color, size }) => (
-    //                 <Ionicons name="home" color={color} size={size} />
-    //             ),
-    //         }} />
-    //         <Tab.Screen name="CreateQuestionaire" component={CreateQuestionaireScreen} options={{
-    //             tabBarLabel: 'Create Questionaire',
-    //             tabBarIcon: ({ color, size }) => (
-    //                 <Ionicons name="create" color={color} size={size} />
-    //             ),
-    //         }} />
-    //     </Tab.Navigator>
-    // );
 }

@@ -160,6 +160,7 @@ const StatisticsScreen = ({ navigation }) => {
                                                 onDots={() =>
                                                     navigation.navigate("QuestionaireOptions")
                                                 }
+                                                onPress={() => navigation.navigate("StatisticSurvey", {item: item})}
                                             />
                                         )}
                                         renderSectionHeader={({ section }) => (
