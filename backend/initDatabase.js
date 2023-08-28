@@ -44,6 +44,7 @@ async function createTables() {
         createdAt TIMESTAMP,
         userId VARCHAR(100),
         type ENUM('poll', 'multi', 'free', 'feeling'),
+        minimumNumberOfAnswers TINYINT,
         qrCode TEXT,
         questionLink VARCHAR(255),
         identifikation ENUM('anonyme Abstimmung', 'nach Namen fragen, anderen aber nicht anzeigen', 'nach Namen fragen & für alle anzeigen'),
@@ -103,12 +104,12 @@ async function createData() {
 
     console.log("Creating question data...");
     await connection.query(
-      `INSERT INTO question (questionId, title, createdAt, userId, type, qrCode, questionLink, identifikation, ergebniseinsicht, wiederverwendung) VALUES
-      ('ABCDEF1234', 'Wie oft treibst du Sport pro Woche?', CURRENT_TIMESTAMP, 'AAAAAA1111', 'free', 'qrCodeBase64', 'https://querify.com/question/ABCDEF1234', 'anonyme Abstimmung', 'vor ihrer Abstimmung sehen', 'als Vorlage gespeichert'),
-      ('YYYYYY8888', 'Was ist deine Lieblingsfarbe?', CURRENT_TIMESTAMP, 'BBBBBB2222', 'multi', 'qrCodeBase64', 'https://querify.com/question/YYYYYY8888', 'nach Namen fragen, anderen aber nicht anzeigen', 'nach ihrer Abstimmung sehen', 'als Vorlage gespeichert'),
-      ('EFGHIJ5678', 'Welches Buch hast du zuletzt gelesen?', CURRENT_TIMESTAMP, 'AAAAAA1111', 'poll', 'qrCodeBase64', 'https://querify.com/question/EFGHIJ5678', 'nach Namen fragen & für alle anzeigen', 'nach dem Umfragestichtag', '60 Tagen nach dem Umfragestichtag gelöscht'),
-      ('KLMNOP9999', 'Wie viel Zeit verbringst du täglich mit dem Lesen von Nachrichten?', CURRENT_TIMESTAMP, 'CCCCCC3333', 'free', 'qrCodeBase64', 'https://querify.com/question/KLMNOP9999', 'anonyme Abstimmung', 'nach ihrer Abstimmung sehen', 'als Vorlage gespeichert'),
-      ('UVWXYZ7777', 'Welches Land möchtest du gerne bereisen?', CURRENT_TIMESTAMP, 'DDDDDD4444', 'feeling', 'qrCodeBase64', 'https://querify.com/question/UVWXYZ7777', 'anonyme Abstimmung', 'vor ihrer Abstimmung sehen', 'als Vorlage gespeichert')`
+      `INSERT INTO question (questionId, title, createdAt, userId, type, minimumNumberOfAnswers, qrCode, questionLink, identifikation, ergebniseinsicht, wiederverwendung) VALUES
+      ('ABCDEF1234', 'Wie oft treibst du Sport pro Woche?', CURRENT_TIMESTAMP, 'AAAAAA1111', 'free', '1', 'qrCodeBase64', 'https://querify.com/question/ABCDEF1234', 'anonyme Abstimmung', 'vor ihrer Abstimmung sehen', 'als Vorlage gespeichert'),
+      ('YYYYYY8888', 'Was ist deine Lieblingsfarbe?', CURRENT_TIMESTAMP, 'BBBBBB2222', 'multi', '1', 'qrCodeBase64', 'https://querify.com/question/YYYYYY8888', 'nach Namen fragen, anderen aber nicht anzeigen', 'nach ihrer Abstimmung sehen', 'als Vorlage gespeichert'),
+      ('EFGHIJ5678', 'Welches Buch hast du zuletzt gelesen?', CURRENT_TIMESTAMP, 'AAAAAA1111', 'poll', '1', 'qrCodeBase64', 'https://querify.com/question/EFGHIJ5678', 'nach Namen fragen & für alle anzeigen', 'nach dem Umfragestichtag', '60 Tagen nach dem Umfragestichtag gelöscht'),
+      ('KLMNOP9999', 'Wie viel Zeit verbringst du täglich mit dem Lesen von Nachrichten?', CURRENT_TIMESTAMP, 'CCCCCC3333', 'free', '1', 'qrCodeBase64', 'https://querify.com/question/KLMNOP9999', 'anonyme Abstimmung', 'nach ihrer Abstimmung sehen', 'als Vorlage gespeichert'),
+      ('UVWXYZ7777', 'Welches Land möchtest du gerne bereisen?', CURRENT_TIMESTAMP, 'DDDDDD4444', 'feeling', '1', 'qrCodeBase64', 'https://querify.com/question/UVWXYZ7777', 'anonyme Abstimmung', 'vor ihrer Abstimmung sehen', 'als Vorlage gespeichert')`
     );
     console.log("DONE!");
 

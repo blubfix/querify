@@ -131,4 +131,63 @@ answerGivenRouter.get(
   }
 );
 
+answerGivenRouter.get(
+  "/numberOfVotes/:questionId",
+  async (req, res) => {
+    try {
+      const {questionId} = req.params;
+      const question = await database.getQuestionById(questionId);
+      if (!question) {
+        return res.status(404).send("No question with this Id available");
+      }
+      let numberOfVotes = [];
+      const answerGiven = await database.getAnswerGivenByQuestion(questionId);
+      const answerOptions = await database.getAnswerOptionByQuestionId(questionId);
+      answerOptions.map((option, index) => {
+        const filtered = answerGiven.filter(answer => answer.answerOptionId === option.answerOptionId);
+        numberOfVotes[index] = {
+          answer: option.answerText,
+          count: filtered.length,
+        };
+      })
+      res.status(200).send(numberOfVotes)
+    } catch (e) {
+      console.error(e);
+      res.status(500).send("Error fetching number of votes");
+    }
+  }
+);
+
+answerGivenRouter.get(
+  "/namesOfVotes/:questionId",
+  async (req, res) => {
+    try {
+      const {questionId} = req.params;
+      const question = await database.getQuestionById(questionId);
+      if (!question) {
+        return res.status(404).send("No question with this Id available");
+      }
+      let namesOfVotes = [];
+      const answerGiven = await database.getAnswerGivenByQuestion(questionId);
+      const answerOptions = await database.getAnswerOptionByQuestionId(questionId);
+      const users = await database.getAllUsers();
+      answerOptions.map((option) => {
+        const filtered = answerGiven.filter(answer => answer.answerOptionId === option.answerOptionId);
+        filtered.map((answer) => {
+          const user = users.filter(user => user.userId === answer.userId)[0];
+          let nameOfVote = {
+            answer: option.answerText,
+            name: user.name,
+          };
+          namesOfVotes.push(nameOfVote);
+        })
+      })
+      res.status(200).send(namesOfVotes)
+    } catch (e) {
+      console.error(e);
+      res.status(500).send("Error fetching number of votes");
+    }
+  }
+);
+
 module.exports = answerGivenRouter;

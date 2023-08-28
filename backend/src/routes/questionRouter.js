@@ -27,6 +27,7 @@ questionRouter.post("/", async (req, res) => {
     const {
       title,
       type,
+      minimumNumberOfAnswers,
       userId,
       qrCode,
       identifikation,
@@ -39,6 +40,9 @@ questionRouter.post("/", async (req, res) => {
     }
     if (!type) {
       return res.status(400).send("Type field is required");
+    }
+    if (!minimumNumberOfAnswers) {
+      minimumNumberOfAnswers = 1;
     }
     if (!userId) {
       return res.status(400).send("userId field is required");
@@ -87,6 +91,7 @@ questionRouter.post("/", async (req, res) => {
       questionId,
       title,
       type,
+      minimumNumberOfAnswers,
       userId,
       qrCodeDataUrl,
       questionLink,
