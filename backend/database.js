@@ -105,7 +105,7 @@ async function getUserIdByEmailAndPassword(email, password) {
 
 // ++++++++++++ question ++++++++++++
 
-async function createQuestion(questionId, title, type, userId, qrCode, questionLink, identifikation, wiederverwendung, ergebniseinsicht) {
+async function createQuestion(questionId, title, type, minimumNumberOfAnswers, userId, qrCode, questionLink, identifikation, wiederverwendung, ergebniseinsicht) {
   try {
     await connection.query(
       `INSERT INTO question (questionId, createdAt, title, type, minimumNumberOfAnswers, userId, qrCode, questionLink, identifikation, wiederverwendung, ergebniseinsicht) VALUES ('${questionId}', LOCALTIME, '${title}', '${type}', '${minimumNumberOfAnswers}', '${userId}', '${qrCode}', '${questionLink}', '${identifikation}', '${wiederverwendung}', '${ergebniseinsicht}')`
