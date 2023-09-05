@@ -199,7 +199,7 @@
 							"urlencoded": [
 								{
 									"key": "title",
-									"value": "Wann habt ihr Zeit für ein Grillfest?",
+									"value": "war ein tolles Buch?",
 									"type": "text"
 								},
 								{
@@ -209,7 +209,7 @@
 								},
 								{
 									"key": "type",
-									"value": "multi",
+									"value": "poll",
 									"description": "[\"poll\", \"multi\", \"free\", \"feeling\"];",
 									"type": "text"
 								},
@@ -234,6 +234,11 @@
 									"key": "ergebniseinsicht",
 									"value": "vor ihrer Abstimmung sehen",
 									"description": "\"vor ihrer Abstimmung sehen\",\n\"nach ihrer Abstimmung sehen\",\n\"nach dem Umfragestichtag\",",
+									"type": "text"
+								},
+								{
+									"key": "minimumNumberOfAnswers",
+									"value": "1",
 									"type": "text"
 								}
 							]
@@ -350,12 +355,12 @@
 							"urlencoded": [
 								{
 									"key": "questionId",
-									"value": "EFGHIJ5678",
+									"value": "lixphD0473",
 									"type": "text"
 								},
 								{
 									"key": "answerText",
-									"value": "Ein Tolles",
+									"value": "Nein",
 									"type": "text"
 								}
 							]
@@ -392,7 +397,7 @@
 							"urlencoded": []
 						},
 						"url": {
-							"raw": "http://localhost:3001/answerGiven/question/EFGHIJ5678",
+							"raw": "http://localhost:3001/answerGiven/question/lixphD0473",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -401,7 +406,7 @@
 							"path": [
 								"answerGiven",
 								"question",
-								"EFGHIJ5678"
+								"lixphD0473"
 							]
 						}
 					},
@@ -417,17 +422,17 @@
 							"urlencoded": [
 								{
 									"key": "questionId",
-									"value": "EFGHIJ5678",
+									"value": "lixphD0473",
 									"type": "text"
 								},
 								{
 									"key": "userId",
-									"value": "CCCCCC3333",
+									"value": "BBBBBB2222",
 									"type": "text"
 								},
 								{
 									"key": "answerOptionId",
-									"value": "UiAVsZ6143",
+									"value": "gpFEmY7497",
 									"type": "text"
 								}
 							]
@@ -471,6 +476,48 @@
 								"CCCCCC3333",
 								"question",
 								"EFGHIJ5678"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getNumberOfVotes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/answerGiven/numberOfVotes/lixphD0473",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"answerGiven",
+								"numberOfVotes",
+								"lixphD0473"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getNamesOfVotes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3001/answerGiven/namesOfVotes/lixphD0473",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"answerGiven",
+								"namesOfVotes",
+								"lixphD0473"
 							]
 						}
 					},
