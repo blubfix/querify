@@ -120,6 +120,7 @@ async function createData() {
       ('BCBCBC3131', 'Blau', 'YYYYYY8888'),
       ('DEDEDE4545', 'Paraquay', 'UVWXYZ7777'),
       ('FGFGFG6767', 'Rot', 'YYYYYY8888'),
+      ('HUHUHU4545', '4', 'UVWXYZ7777'),
       ('HIHIHI8989', 'sehr gut', 'KLMNOP9999')`
     );
     console.log("DONE!");
