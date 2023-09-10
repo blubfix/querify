@@ -73,7 +73,7 @@ const CreateJaNein =({ navigation }) => {
         //TODO: check if description is empty and show error message
         //TODO: check if color is selected and show error message
         //TODO: check if type is correct
-        navigation.navigate('QuestionaireOptions', {title: title, description: description, date: date, color: selectedColorIndex, type: 'poll'});
+        navigation.navigate('QuestionaireOptions', {title: title, description: description, date: date, type: 'poll'});
     }
   
     return (
@@ -90,11 +90,11 @@ const CreateJaNein =({ navigation }) => {
                             <TitleInput value={title} onChangeText={handleTitleChange} borderColor={'#D0D5DD'}/>
                         </Col>
                     </Row>
-                    <Row>
+                    {/* <Row>
                         <Col>
                             <ColorPalette onColorSelected={handleColorSelected} />
                         </Col>
-                    </Row>
+                    </Row> */}
                     <Row>
                         <Col>
                             <DescriptionInput value={description} onChangeText={handleDescriptionChange} borderColor={'#D0D5DD'}/>

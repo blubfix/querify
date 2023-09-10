@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
-import { Image, Button, StyleSheet, View, Alert, useWindowDimensions} from "react-native";
+import { Image, Button, StyleSheet, View, Alert, useWindowDimensions } from "react-native";
 import {
     MD3DarkTheme as DefaultTheme,
     Provider as PaperProvider,
@@ -17,14 +17,14 @@ import { Col, Row, Grid } from "react-native-paper-grid";
 import SubmitButton from "../Components/SubmitButton";
 import SingleLineInput from "../Components/SingleLineInput";
 import CheckBox from 'expo-checkbox';
-import { useFonts, Inter_700Bold, Inter_400Regular, Inter_500Medium  } from '@expo-google-fonts/inter';
+import { useFonts, Inter_700Bold, Inter_400Regular, Inter_500Medium } from '@expo-google-fonts/inter';
 import { Manrope_400Regular, Manrope_600SemiBold, Manrope_700Bold, Manrope_300Light } from '@expo-google-fonts/manrope'
 import BottomNavigation from "../Components/BottomNavigation";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import API from "../API/apiConnection";
 
-const QuestionaireOptions =({ navigation, route }) => {
+const QuestionaireOptions = ({ navigation, route }) => {
     const [checkedAnonymous, setCheckedAnonymous] = useState(false);
     const [checkedAskNameDontShow, setCheckedAskNameDontShow] = useState(false);
     const [checkedAskNameShow, setCheckedAskNameShow] = useState(false);
@@ -61,14 +61,15 @@ const QuestionaireOptions =({ navigation, route }) => {
             console.error("Error loading Storage:", error);
         }
     };
-    
+
     const createSurvey = async () => {
         const data = saveUserData();
-        const userData =  await loadUserData();
+        const userData = await loadUserData();
         if (userData) {
-            
+
             console.log("userData:", userData)
             data['userId'] = userData.id;
+            data['minimumNumberOfAnswers'] = 1;
             console.log("finalData: ", data);
             API.postQuestion(data)
                 .then((resp) => {
@@ -82,13 +83,13 @@ const QuestionaireOptions =({ navigation, route }) => {
             console.log('no user data found');
         }
     }
-    
+
     const saveUserData = () => {
         try {
             // Load existing user data
             const existingData = route.params;
             // Merge new data with existing data
-            
+
             const options = surveyOptions();
             const finalData = {
                 ...existingData,
@@ -97,8 +98,6 @@ const QuestionaireOptions =({ navigation, route }) => {
                 wiederverwendung: options.wiederverwendung,
                 qrCode: 'qrCodeBase64'
             }
-            delete finalData.color; //TODO: remove this line when color is implemented
-
             return finalData;
 
         } catch (error) {
@@ -110,160 +109,156 @@ const QuestionaireOptions =({ navigation, route }) => {
         const options = {};
 
         if (checkedSaveTemplate) {
-            options['wiederverwendung'] = 'als Vorlage gespeichert';
-        } else {
-            options['wiederverwendung'] = '60 Tagen nach dem Umfragestichtag gelöscht';
+            options['wiederverwendung'] = "als Vorlage gespeichert";
+        }
+        else {
+            options['wiederverwendung'] = "undefined";
         }
 
         if (checkedViewResultsBefore) {
-            options['ergebniseinsicht'] = 'vor ihrer Abstimmung sehen';
+            options['ergebniseinsicht'] = "vor ihrer Abstimmung sehen";
         } else if (checkedViewResultsAfter) {
-            options['ergebniseinsicht'] = 'nach ihrer Abstimmung sehen';
+            options['ergebniseinsicht'] = "nach ihrer Abstimmung sehen";
         } else if (checkedViewResultsDeadline) {
-            options['ergebniseinsicht'] = 'nach dem Umfragestichtag';
+            options['ergebniseinsicht'] = "nach dem Umfragestichtag";
         }
-    
+        else {
+            options['ergebniseinsicht'] = "undefined";
+        }
+
         if (checkedAnonymous) {
-            options['identifikation'] = 'anonyme Abstimmung';
+            options['identifikation'] = "anonyme Abstimmung";
         } else {
             if (checkedAskNameDontShow && checkedAskNameShow) {
-                options['identifikation'] = 'nach Namen fragen & für alle anzeigen';
+                options['identifikation'] = "nach Namen fragen, anderen aber nicht anzeigen";
             } else if (checkedAskNameDontShow) {
-                options['identifikation'] = 'nach Namen fragen, anderen aber nicht anzeigen';
+                options['identifikation'] = "nach Namen fragen, anderen aber nicht anzeigen";
             } else if (checkedAskNameShow) {
-                options['identifikation'] = 'nach Namen fragen & für alle anzeigen';
+                options['identifikation'] = "nach Namen fragen & für alle anzeigen";
+            }
+            else {
+                options['identifikation'] = "undefined";
             }
         }
 
         console.log('options: ', options);
         return options;
     };
-    
-    
-    
+
+
+
 
 
     return (
         <PaperProvider>
-                <Grid style={styles.container} container>
-                    <Row>
-                        <Col>
-                            <Text style={styles.headerText}>Konfiguriere deine Umfrage</Text>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Text style={styles.checkBoxHeaderText}>Identifikation</Text>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col inline>
-                            <CheckBox
-                                value={checkedAnonymous}
-                                onValueChange={setCheckedAnonymous}
-                                style={styles.checkbox} 
-                                color={'#3A3E98'}
-                            />
-                            <Text style={styles.checkboxText}>anonyme Abstimmung</Text>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col inline>
-                            <CheckBox
-                                value={checkedAskNameDontShow}
-                                onValueChange={setCheckedAskNameDontShow}
-                                style={styles.checkbox} 
-                                color={'#3A3E98'}
-                            />
-                            <Text style={styles.checkboxText}>nach Namen fragen, anderen aber nicht anzeigen</Text>
-                        </Col>
-                    </Row>
-                    <Row size={0.12}>
-                        <Col inline>
-                            <CheckBox
-                                value={checkedAskNameShow}
-                                onValueChange={setCheckedAskNameShow}
-                                style={styles.checkbox} 
-                                color={'#3A3E98'}
-                            />
-                            <Text style={styles.checkboxText}>nach Namen fragen & für alle anzeigen</Text>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Text style={styles.checkBoxHeaderText}>Ergeniseinsicht</Text>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Text style={styles.checkBoxSubHeaderText}>Die Teilnehmer deiner Umfrage können die Ergebnisse...</Text>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col inline>
-                            <CheckBox
-                                value={checkedViewResultsBefore}
-                                onValueChange={setCheckedViewResultsBefore}
-                                style={styles.checkbox} 
-                                color={'#3A3E98'}
-                            />
-                            <Text style={styles.checkboxText}>vor ihrer Abstimmung sehen</Text>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col inline>
-                            <CheckBox
-                                value={checkedViewResultsAfter}
-                                onValueChange={setCheckedViewResultsAfter}
-                                style={styles.checkbox} 
-                                color={'#3A3E98'}
-                            />
-                            <Text style={styles.checkboxText}>nach ihrer Abstimmung sehen</Text>
-                        </Col>
-                    </Row>
-                    <Row size={0.12}>
-                        <Col inline>
-                            <CheckBox
-                                value={checkedViewResultsDeadline}
-                                onValueChange={setCheckedViewResultsDeadline}
-                                style={styles.checkbox} 
-                                color={'#3A3E98'}
-                            />
-                            <Text style={styles.checkboxText}>nach dem Umfragestichtag</Text>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Text style={styles.checkBoxHeaderText}>Wiederverwendung</Text>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Text style={styles.checkBoxSubHeaderText}>Deine Umfrage wird...</Text>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col inline>
-                            <CheckBox
-                                value={checkedSaveTemplate}
-                                onValueChange={setCheckedSaveTemplate}
-                                style={styles.checkbox} 
-                                color={'#3A3E98'}
-                            />
-                            <Text style={styles.checkboxText}>als Vorlage gespeichert</Text>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col inline>
-                            <CheckBox
-                                value={checkedDeleteAfter60}
-                                onValueChange={setCheckedDeleteAfter60}
-                                style={styles.checkbox} 
-                                color={'#3A3E98'}
-                            />
-                            <Text style={styles.checkboxText}>60 Tagen nach dem Umfragestichtag gelöscht</Text>
-                        </Col>
-                    </Row>
+            <Grid style={styles.container} container>
+                <Row>
+                    <Col>
+                        <Text style={styles.headerText}>Konfiguriere deine Umfrage</Text>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Text style={styles.checkBoxHeaderText}>Identifikation</Text>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col inline>
+                        <CheckBox
+                            value={checkedAnonymous}
+                            onValueChange={setCheckedAnonymous}
+                            style={styles.checkbox}
+                            color={'#3A3E98'}
+                        />
+                        <Text style={styles.checkboxText}>anonyme Abstimmung</Text>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col inline>
+                        <CheckBox
+                            value={checkedAskNameDontShow}
+                            onValueChange={setCheckedAskNameDontShow}
+                            style={styles.checkbox}
+                            color={'#3A3E98'}
+                        />
+                        <Text style={styles.checkboxText}>nach Namen fragen, anderen aber nicht anzeigen</Text>
+                    </Col>
+                </Row>
+                <Row size={0.12}>
+                    <Col inline>
+                        <CheckBox
+                            value={checkedAskNameShow}
+                            onValueChange={setCheckedAskNameShow}
+                            style={styles.checkbox}
+                            color={'#3A3E98'}
+                        />
+                        <Text style={styles.checkboxText}>nach Namen fragen & für alle anzeigen</Text>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Text style={styles.checkBoxHeaderText}>Ergeniseinsicht</Text>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Text style={styles.checkBoxSubHeaderText}>Die Teilnehmer deiner Umfrage können die Ergebnisse...</Text>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col inline>
+                        <CheckBox
+                            value={checkedViewResultsBefore}
+                            onValueChange={setCheckedViewResultsBefore}
+                            style={styles.checkbox}
+                            color={'#3A3E98'}
+                        />
+                        <Text style={styles.checkboxText}>vor ihrer Abstimmung sehen</Text>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col inline>
+                        <CheckBox
+                            value={checkedViewResultsAfter}
+                            onValueChange={setCheckedViewResultsAfter}
+                            style={styles.checkbox}
+                            color={'#3A3E98'}
+                        />
+                        <Text style={styles.checkboxText}>nach ihrer Abstimmung sehen</Text>
+                    </Col>
+                </Row>
+                <Row size={0.12}>
+                    <Col inline>
+                        <CheckBox
+                            value={checkedViewResultsDeadline}
+                            onValueChange={setCheckedViewResultsDeadline}
+                            style={styles.checkbox}
+                            color={'#3A3E98'}
+                        />
+                        <Text style={styles.checkboxText}>nach dem Umfragestichtag</Text>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Text style={styles.checkBoxHeaderText}>Wiederverwendung</Text>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Text style={styles.checkBoxSubHeaderText}>Deine Umfrage wird...</Text>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col inline>
+                        <CheckBox
+                            value={checkedSaveTemplate}
+                            onValueChange={setCheckedSaveTemplate}
+                            style={styles.checkbox}
+                            color={'#3A3E98'}
+                        />
+                        <Text style={styles.checkboxText}>als Vorlage gespeichert</Text>
+                    </Col>
+                </Row>
 
 
 
@@ -271,9 +266,10 @@ const QuestionaireOptions =({ navigation, route }) => {
 
 
 
-                    <BottomNavigation buttonColors={['#6F6F70', '#778DE3', '#6F6F70', '#6F6F70']}/>
-                </Grid>
-                <SubmitButton buttonText={'Speichern'} position={'absolute'} bottom={120} onPress={() => createSurvey()}/>
+
+                <BottomNavigation buttonColors={['#6F6F70', '#778DE3', '#6F6F70', '#6F6F70']} />
+            </Grid>
+            <SubmitButton buttonText={'Speichern'} position={'absolute'} bottom={120} onPress={() => createSurvey()} />
         </PaperProvider>
     );
 }
@@ -315,7 +311,7 @@ const styles = StyleSheet.create({
         color: '#64748B'
     },
 
-    
+
     checkbox: {
         alignSelf: 'center',
         color: '#734498',

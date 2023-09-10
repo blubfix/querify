@@ -21,7 +21,7 @@ import {
     Appbar,
     SegmentedButtons,
     TextInput,
-    Snackbar,
+    <Snackbar>,
     ActivityIndicator,
 } from "react-native-paper";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";

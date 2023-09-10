@@ -29,7 +29,7 @@ async function createTables() {
       `CREATE TABLE IF NOT EXISTS user (
         userId VARCHAR(100),
         email VARCHAR(100),
-        password VARCHAR(50),
+        password VARCHAR(100),
         geburtstag VARCHAR(100),
         name VARCHAR(50),
         PRIMARY KEY (userId)
@@ -47,9 +47,9 @@ async function createTables() {
         minimumNumberOfAnswers TINYINT,
         qrCode TEXT,
         questionLink VARCHAR(255),
-        identifikation ENUM('anonyme Abstimmung', 'nach Namen fragen, anderen aber nicht anzeigen', 'nach Namen fragen & für alle anzeigen'),
-        ergebniseinsicht ENUM('vor ihrer Abstimmung sehen', 'nach ihrer Abstimmung sehen', 'nach dem Umfragestichtag'),
-        wiederverwendung ENUM('als Vorlage gespeichert', '60 Tagen nach dem Umfragestichtag gelöscht'),
+        identifikation ENUM('undefined','anonyme Abstimmung', 'nach Namen fragen, anderen aber nicht anzeigen', 'nach Namen fragen & für alle anzeigen'),
+        ergebniseinsicht ENUM('undefined','vor ihrer Abstimmung sehen', 'nach ihrer Abstimmung sehen', 'nach dem Umfragestichtag'),
+        wiederverwendung ENUM('undefined','als Vorlage gespeichert', '60 Tagen nach dem Umfragestichtag gelöscht'),
         PRIMARY KEY (questionId),
         FOREIGN KEY (userId) REFERENCES user(userId)
       );`

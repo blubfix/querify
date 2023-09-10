@@ -12,7 +12,7 @@
 # Installing mit Windows
 
 - Für GUI DBeaver installieren: https://dbeaver.io/files/dbeaver-ce-latest-x86_64-setup.exe
-- Download MariaDB: https://mariadb.org/download/?t=mariadb&p=mariadb&r=10.11.2&os=windows&cpu=x86_64&pkg=msi&m=hs-esslingen
+- Download MariaDB: https://mariadb.org/download/?t=mariadb&p=mariadb&r=10.11.2&os=windows&cpu=x86_64&pkg=msi&m=hs-esslingenª®®
 - Beim Installierungsprozess: Root passwort "alfred1" festlegen
 - "Use UTF-8 as character Set" festlegen, TCP Port 3306 lassen
 - MySQL Client (MariaDB) öffnen, "alfred1" als Passwort eingeben und mit "### Initializing (im Terminal) fortfahren"
