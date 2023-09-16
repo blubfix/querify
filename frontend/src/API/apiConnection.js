@@ -31,6 +31,11 @@ const getUserAnswersWithQuestionInfo = (userID) => {
     return axios.get('/answerGiven/questioninfo/user/'+userID);
 }
 
+// get all questions
+const getAllQuestions = () => {
+    return axios.get('/question');
+}
+
 // create question
 const postQuestion = (data) => {
     return axios.post('/question', data);
@@ -41,6 +46,7 @@ export default {
     getQuestionFromThisMonth,
     getUserAnswersWithQuestionInfo,
     getQuestionByUser,
+    getAllQuestions,
     getUser,
     postUserLogin,
     postUserSignUp,

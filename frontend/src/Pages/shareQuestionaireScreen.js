@@ -28,6 +28,7 @@ const ShareQuestionaire =({ navigation, route }) => {
     const [questionaireCode, setQuestionaireCode] = useState(route.params.questionId);
     const [qrCodeDataUrl, setQrCodeDataUrl] = useState(route.params.qrCodeDataUrl);
 
+
     const [fontsLoaded] = useFonts({
         Inter_400Regular,
         Inter_500Medium,
@@ -114,8 +115,10 @@ const ShareQuestionaire =({ navigation, route }) => {
                         <Col>
                             <Text style={styles.shareOptionsHeaderText}>Umfrage QR-Code</Text>
                             <QRCode
-                                value={qrCodeDataUrl}
-                                size={400} // Adjust the size of the QR code as needed
+                                value={questionaireURL}
+                                logo={require('../Images/Logo.png')}
+                                logoBackgroundColor="black"
+                                size={200} // Adjust the size of the QR code as needed
                             />
                         </Col>
                     </Row>

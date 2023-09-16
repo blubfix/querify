@@ -21,10 +21,12 @@ import { Poppins_500Medium } from '@expo-google-fonts/poppins';
 import { LinearGradient } from 'expo-linear-gradient';
 import BottomNavigation from "../Components/BottomNavigation";
 import * as Clipboard from 'expo-clipboard';
+import QRCode from 'react-native-qrcode-svg';
 
-const ShareReminder =({ navigation }) => {
-    const [questionaireURL, setQuestionaireURL] = useState('testURL.de');
-    const [questionaireCode, setQuestionaireCode] = useState('1234');
+const ShareReminder =({ navigation, route }) => {
+    const [questionaireURL, setQuestionaireURL] = useState(route.params.questionLink);
+    const [questionaireCode, setQuestionaireCode] = useState(route.params.questionId);
+    const [qrCodeDataUrl, setQrCodeDataUrl] = useState(route.params.qrCodeDataUrl);
 
     const [fontsLoaded] = useFonts({
         Inter_400Regular,
@@ -111,6 +113,12 @@ const ShareReminder =({ navigation }) => {
                     <Row>
                         <Col>
                             <Text style={styles.shareOptionsHeaderText}>Erinnerung QR-Code</Text>
+                            <QRCode
+                                value={questionaireURL}
+                                logo={require('../Images/Logo.png')}
+                                logoBackgroundColor="black"
+                                size={200} // Adjust the size of the QR code as needed
+                            />
                         </Col>
                     </Row>
                     <Row>

@@ -24,9 +24,11 @@ import DescriptionInput from "../Components/DescriptionInput";
 import DateInput from "../Components/DateInput";
 import ColorPalette from "../Components/ColorPalette";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import API from "../API/apiConnection";
 
-const CreateErinnerung =({ navigation }) => {
+const CreateErinnerung =({ navigation, route }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [date, setDate] = useState('');
@@ -45,6 +47,76 @@ const CreateErinnerung =({ navigation }) => {
         return null;
     }
 
+    const loadUserData = async () => {
+        try {
+            const tempData = await AsyncStorage.getItem("userData");
+            if (tempData) {
+                const parsedUserData = JSON.parse(tempData);
+                return parsedUserData;
+            } else {
+                return null;
+            }
+        } catch (error) {
+            console.error("Error loading Storage:", error);
+        }
+    };
+
+    const createReminder = async () => {
+        const data = saveUserData();
+        const userData = await loadUserData();
+        if (userData) {
+
+            console.log("userData:", userData)
+            data['userId'] = userData.id;
+            data['minimumNumberOfAnswers'] = 1;
+            console.log("finalData: ", data);
+            API.postQuestion(data)
+                .then((resp) => {
+                    console.log(resp.data);
+                    navigation.navigate('ShareReminder', resp.data)
+                })
+                .catch((e) => {
+                    console.log(e);
+                });
+        } else {
+            console.log('no user data found');
+        }
+    }
+
+    const saveUserData = () => {
+        try {
+            // Load existing user data
+            const existingData = route.params;
+            console.log("existingData: ", existingData)
+            // Merge new data with existing data
+            const finalData = {
+                ...existingData,
+                title: title,
+                description: description,
+                date: date,
+                type: "reminder",
+                qrCode: 'qrCodeBase64'
+            }
+            return finalData;
+
+        } catch (error) {
+            console.error('Error saving user data:', error);
+        }
+    };
+
+    const handleTitleChange = (newTitle) => {
+        console.log("newTitle: ", newTitle)
+        setTitle(newTitle);
+    }
+    const handleDescriptionChange = (newDescription) => {
+        console.log("newDescription: ", newDescription)
+        setDescription(newDescription);
+    }
+    const handleDateChange = (newDate) => {
+        console.log("newDate: ", newDate)
+        setDate(newDate);
+    }
+
 
     return (
         <PaperProvider>
@@ -57,26 +129,21 @@ const CreateErinnerung =({ navigation }) => {
                     </Row>
                     <Row>
                         <Col>
-                            <TitleInput value={title} onChangeText={setTitle} borderColor={'#D0D5DD'} placeholder={'Name deiner Erinnerung'}/>
+                            <TitleInput value={title} onChangeText={handleTitleChange} borderColor={'#D0D5DD'} placeholder={'Name deiner Erinnerung'}/>
                         </Col>
                     </Row>
                     <Row>
                         <Col>
-                            <ColorPalette/>
+                            <DescriptionInput value={description} onChangeText={handleDescriptionChange} borderColor={'#D0D5DD'} placeholder={'Details über diese Erinnerung'}/>
                         </Col>
                     </Row>
                     <Row>
                         <Col>
-                            <DescriptionInput value={description} onChangeText={setDescription} borderColor={'#D0D5DD'} placeholder={'Details über diese Erinnerung'}/>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <DateInput value={date} onChangeText={setDate} borderColor={'#D0D5DD'}/>
+                            <DateInput value={date} onChangeText={handleDateChange} borderColor={'#D0D5DD'}/>
                         </Col>
                     </Row>
                 </KeyboardAwareScrollView>
-                <SubmitButton buttonText={'Speichern'} position={'absolute'} bottom={120} onPress={() => navigation.navigate('ShareReminder')}/>
+                <SubmitButton buttonText={'Speichern'} position={'absolute'} bottom={120} onPress={() => createReminder()}/>
                 <BottomNavigation buttonColors={['#6F6F70', '#6F6F70', '#6F6F70', '#6F6F70']}/>
             </Grid>
         </PaperProvider>

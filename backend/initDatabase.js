@@ -43,13 +43,15 @@ async function createTables() {
         title VARCHAR(255),
         createdAt TIMESTAMP,
         userId VARCHAR(100),
-        type ENUM('poll', 'multi', 'free', 'feeling'),
+        type ENUM('poll', 'multi', 'free', 'feeling', 'reminder'),
         minimumNumberOfAnswers TINYINT,
         qrCode TEXT,
         questionLink VARCHAR(255),
         identifikation ENUM('undefined','anonyme Abstimmung', 'nach Namen fragen, anderen aber nicht anzeigen', 'nach Namen fragen & für alle anzeigen'),
         ergebniseinsicht ENUM('undefined','vor ihrer Abstimmung sehen', 'nach ihrer Abstimmung sehen', 'nach dem Umfragestichtag'),
         wiederverwendung ENUM('undefined','als Vorlage gespeichert', '60 Tagen nach dem Umfragestichtag gelöscht'),
+        bewertung VARCHAR(255),
+        date VARCHAR(255),
         PRIMARY KEY (questionId),
         FOREIGN KEY (userId) REFERENCES user(userId)
       );`

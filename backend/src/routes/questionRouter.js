@@ -36,9 +36,11 @@ questionRouter.post("/", async (req, res) => {
             identifikation,
             wiederverwendung,
             ergebniseinsicht,
+            bewertung,
+            date,
         } = req.body;
         console.log(req.body)
-
+        console.log("bewertung: ", bewertung)
         if (!title) {
             return res.status(400).send("Title field is required");
         }
@@ -61,27 +63,30 @@ questionRouter.post("/", async (req, res) => {
         if (!userId) {
             return res.status(400).send("userId field is required");
         }
-        if (!validIdentifikationValues.includes(identifikation)) {
-            return res.status(400).send({
-                error: `Invalid identifikation value: ${identifikation}`,
-            });
-        }
-        if (!validWiederverwendungValues.includes(wiederverwendung)) {
-            return res.status(400).send({
-                error: `Invalid wiederverwendung value: ${wiederverwendung}`,
-            });
-        }
-        if (!validErgebniseinsichtValues.includes(ergebniseinsicht)) {
-            return res.status(400).send({
-                error: `Invalid ergebniseinsicht value: ${ergebniseinsicht}`,
-            });
-        }
+        if (type !== "reminder")
+            {
+                if (!validIdentifikationValues.includes(identifikation)) {
+                    return res.status(400).send({
+                        error: `Invalid identifikation value: ${identifikation}`,
+                    });
+                }
+                if (!validWiederverwendungValues.includes(wiederverwendung)) {
+                    return res.status(400).send({
+                        error: `Invalid wiederverwendung value: ${wiederverwendung}`,
+                    });
+                }
+                if (!validErgebniseinsichtValues.includes(ergebniseinsicht)) {
+                    return res.status(400).send({
+                        error: `Invalid ergebniseinsicht value: ${ergebniseinsicht}`,
+                    });
+                }
+            }
 
         const user = await database.getUserById(userId);
         if (!user) {
             return res.status(400).send({ error: `Invalid userId ${userId}` });
         }
-        const validTypes = ["poll", "multi", "free", "feeling"];
+        const validTypes = ["poll", "multi", "free", "feeling", "reminder"];
         if (!validTypes.includes(type)) {
             return res.status(400).send({ error: `Invalid question type ${type}` });
         }
@@ -111,7 +116,9 @@ questionRouter.post("/", async (req, res) => {
             questionLink,
             identifikation,
             wiederverwendung,
-            ergebniseinsicht
+            ergebniseinsicht,
+            bewertung,
+            date,
         );
         res.status(201).send({ questionId, questionLink, qrCodeDataUrl });
     } catch (e) {
@@ -124,6 +131,7 @@ questionRouter.get("/", async (req, res) => {
     try {
         const result = await database.getAllQuestions();
         console.log(result);
+        
         if (result.length === 0) {
             res.status(404).send('there are no questions');
         } else {

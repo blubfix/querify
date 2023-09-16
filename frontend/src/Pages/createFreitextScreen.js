@@ -44,10 +44,29 @@ const CreateFreitext =({ navigation }) => {
         return null;
     }
 
-    checkDate = (date) => {
-
+    const handleTitleChange = (newTitle) => {
+        console.log("newTitle: ", newTitle)
+        setTitle(newTitle);
     }
-  
+    const handleDescriptionChange = (newDescription) => {
+        console.log("newDescription: ", newDescription)
+        setDescription(newDescription);
+    }
+    const handleDateChange = (newDate) => {
+        console.log("newDate: ", newDate)
+        setDate(newDate);
+    }
+
+    const goNextForm = () => {
+        console.log("title: ", title)
+        //TODO: check if title is empty and show error message
+        //TODO: check if date is empty and show error message
+        //TODO: check if date is in the past and show error message
+        //TODO: check if description is empty and show error message
+        //TODO: check if color is selected and show error message
+        //TODO: check if type is correct
+        navigation.navigate('QuestionaireOptions', {title: title, description: description, date: date, type: 'free'});
+    }
 
 
     return (
@@ -62,26 +81,21 @@ const CreateFreitext =({ navigation }) => {
                     </Row>
                     <Row>
                         <Col>
-                            <TitleInput value={title} onChangeText={setTitle} borderColor={'#D0D5DD'}/>
+                            <TitleInput value={title} onChangeText={handleTitleChange} borderColor={'#D0D5DD'}/>
                         </Col>
                     </Row>
                     <Row>
                         <Col>
-                            <ColorPalette/>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <DescriptionInput value={description} onChangeText={setDescription} borderColor={'#D0D5DD'}/>
+                            <DescriptionInput value={description} onChangeText={handleDescriptionChange} borderColor={'#D0D5DD'}/>
                         </Col>
                     </Row>
                     <Row size={0.4}>
                         <Col>
-                            <DateInput value={date} onChangeText={setDate} borderColor={'#D0D5DD'}/>
+                            <DateInput value={date} onChangeText={handleDateChange} borderColor={'#D0D5DD'}/>
                         </Col>
                     </Row>
                 </KeyboardAwareScrollView>
-                <SubmitButton buttonText={'Weiter'} position={'absolute'} bottom={120} onPress={() => navigation.navigate('QuestionaireOptions')}/>
+                <SubmitButton buttonText={'Weiter'} position={'absolute'} bottom={120} onPress={() => goNextForm()}/>
                 <BottomNavigation buttonColors={['#6F6F70', '#6F6F70', '#6F6F70', '#6F6F70']}/>
             </Grid>
         </PaperProvider>

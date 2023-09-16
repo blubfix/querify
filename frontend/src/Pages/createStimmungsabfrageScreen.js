@@ -24,6 +24,7 @@ import DescriptionInput from "../Components/DescriptionInput";
 import DateInput from "../Components/DateInput";
 import ColorPalette from "../Components/ColorPalette";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { RadioButton } from 'react-native-paper';
 
 
 const CreateStimmungsabfrage =({ navigation }) => {
@@ -32,6 +33,7 @@ const CreateStimmungsabfrage =({ navigation }) => {
     const [date, setDate] = useState('');
     const [checkedStars, setCheckedStars] = useState(false);
     const [checkedLikert, setCheckedLikert] = useState(false);
+    const [bewertung, setBewertung] = useState('star');
 
 
     const [fontsLoaded] = useFonts({
@@ -48,6 +50,30 @@ const CreateStimmungsabfrage =({ navigation }) => {
         return null;
     }
 
+    const handleTitleChange = (newTitle) => {
+        console.log("newTitle: ", newTitle)
+        setTitle(newTitle);
+    }
+    const handleDescriptionChange = (newDescription) => {
+        console.log("newDescription: ", newDescription)
+        setDescription(newDescription);
+    }
+    const handleDateChange = (newDate) => {
+        console.log("newDate: ", newDate)
+        setDate(newDate);
+    }
+
+    const goNextForm = () => {
+        console.log("title: ", title)
+        //TODO: check if title is empty and show error message
+        //TODO: check if date is empty and show error message
+        //TODO: check if date is in the past and show error message
+        //TODO: check if description is empty and show error message
+        //TODO: check if color is selected and show error message
+        //TODO: check if type is correct
+        navigation.navigate('QuestionaireOptions', {title: title, description: description, date: date, bewertung: bewertung, type: 'feeling'});
+    }
+
 
     return (
         <PaperProvider>
@@ -60,49 +86,36 @@ const CreateStimmungsabfrage =({ navigation }) => {
                     </Row>
                     <Row>
                         <Col>
-                            <TitleInput value={title} onChangeText={setTitle} borderColor={'#D0D5DD'}/>
+                            <TitleInput value={title} onChangeText={handleTitleChange} borderColor={'#D0D5DD'}/>
                         </Col>
                     </Row>
                     <Row>
                         <Col>
-                            <ColorPalette/>
+                            <DescriptionInput value={description} onChangeText={handleDescriptionChange} borderColor={'#D0D5DD'}/>
                         </Col>
                     </Row>
                     <Row>
                         <Col>
-                            <DescriptionInput value={description} onChangeText={setDescription} borderColor={'#D0D5DD'}/>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <DateInput value={date} onChangeText={setDate} borderColor={'#D0D5DD'}/>
+                            <DateInput value={date} onChangeText={handleDateChange} borderColor={'#D0D5DD'}/>
                         </Col>
                     </Row>
                     <Row>
                         <Col inline>
-                            <CheckBox
-                                value={checkedStars}
-                                onValueChange={setCheckedStars}
-                                style={styles.checkbox} 
-                                color={'#3A3E98'}
-                            />
-                            <Text style={styles.checkboxText}>Sternebewertung</Text>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col inline>
-                            <CheckBox
-                                value={checkedLikert}
-                                onValueChange={setCheckedLikert}
-                                style={styles.checkbox} 
-                                color={'#3A3E98'}
-                            />
-                            <Text style={styles.checkboxText}>Likert-Skala</Text>
+                            <RadioButton.Group onValueChange={newValue => setBewertung(newValue)} value={bewertung}>
+                            <TouchableOpacity onPress={() => setBewertung('star')} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <RadioButton value="star" />
+                                    <Text>Sternenbewertung</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={() => setBewertung('likert')} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <RadioButton value="likert" />
+                                    <Text>Likert-Skala</Text>
+                                </TouchableOpacity>
+                            </RadioButton.Group>
                         </Col>
                     </Row>
 
                 </KeyboardAwareScrollView>
-                <SubmitButton buttonText={'Weiter'} position={'absolute'} bottom={120} onPress={() => navigation.navigate('QuestionaireOptions')}/>
+                <SubmitButton buttonText={'Weiter'} position={'absolute'} bottom={120} onPress={() => goNextForm()}/>
                 <BottomNavigation buttonColors={['#6F6F70', '#6F6F70', '#6F6F70', '#6F6F70']}/>
             </Grid>
         </PaperProvider>
