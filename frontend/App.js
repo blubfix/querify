@@ -107,6 +107,7 @@ export default function App() {
 }
 
 //TODO: check token if user is already loggedin
+//TODO: Navigate to stack rather then to page itself as naviagtion is not working
 function Home() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
