@@ -51,7 +51,7 @@ async function getUserById(userId) {
     const result = await connection.query(
       `SELECT * FROM user WHERE userId = '${userId}'`
     );
-    console.log("DB Result: getanswerOptionByID", result);
+    console.log("DB Result: getUserById", result);
     if (result.length === 0) {
       console.log("No User with this Id avilable");
       return null;

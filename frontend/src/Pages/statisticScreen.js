@@ -174,48 +174,43 @@ const StatisticsScreen = ({ navigation }) => {
                                                 keyExtractor={(item) => item.questionId} // Use a unique identifier here
                                             />
                                         )}
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                        <Snackbar
-                                            visible={snackbarVisible}
-                                            onDismiss={() => setSnackbarVisible(false)}
-                                            duration={3000} // Duration for which the snackbar will be visible (in milliseconds)
-                                        >
-                                            Error loading data. Please reload again.
-                                        </Snackbar>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                        <Text style={styles.sectionHeader}>Umfragen, an denen ich teilgenommen habe</Text>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                        {loadingSurv ? (
-                                            // Show loading indicator while data is loading
-                                            <ActivityIndicator
-                                                style={styles.loadingIndicator}
-                                                size="large"
-                                                color="#734498"
-                                            />
-                                        ) : (
-                                            <SectionList
-                                                sections={[{ title: "Umfragen, an denen ich teilgenommen habe", data: surveys }]}
-                                                style={styles.sectionBox}
-                                                renderItem={({ item }) => (
-                                                    <StatButton
-                                                        buttonHeading={item.question_title}
-                                                        buttonText={item.question_creator} // Display whatever you want here
-                                                        position={"relative"}
-                                                        onDots={() =>
-                                                            navigation.navigate("QuestionaireOptions")
-                                                        }
-                                                    />
-                                                )}
-                                                keyExtractor={(item) => item.questionId} // Use a unique identifier here
+                                        renderSectionHeader={({ section }) => (
+                                            <Text style={styles.textStyle}>{section.title}</Text>
+                                        )}
+                                        keyExtractor={(item) => item.questionId} // Use a unique identifier here
+                                    />
+                                )}
+                                
+                                <Snackbar
+                                    visible={snackbarVisible}
+                                    onDismiss={() => setSnackbarVisible(false)}
+                                    duration={3000} // Duration for which the snackbar will be visible (in milliseconds)
+                                >
+                                    Error loading data. Please try again.
+                                </Snackbar>
+                            </Col>
+                        </Row>
+                        <Row>
+                        <Col>
+                                {loadingSurv ? (
+                                    // Show loading indicator while data is loading
+                                    <ActivityIndicator
+                                        style={styles.loadingIndicator}
+                                        size="large"
+                                        color="#734498"
+                                    />
+                                ) : (
+                                    <SectionList
+                                        sections={[{ title: "Umfragen, an denen ich teilgenommen habe", data: surveys }]}
+                                        renderItem={({ item }) => (
+                                            <StatButton
+                                                buttonHeading={item.question_title}
+                                                buttonText={item.question_creator} // Display whatever you want here
+                                                position={"relative"}
+                                                onDots={() =>
+                                                    navigation.navigate("QuestionaireOptions")
+                                                }
+                                                onPress={() => navigation.navigate("StatisticSurvey", {item: item})}
                                             />
                                         )}
                                     </Col>

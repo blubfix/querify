@@ -4,6 +4,10 @@ import axios from './axios';
 const getUser = () => {
     return axios.get('/user');
 };
+const getUserById = (userId) => { 
+    console.log("axios:", userId);
+    return axios.get('/user/userbyid/' + userId);
+}
 // login user
 const postUserLogin = (data) => {
     return axios.post('/user/login', data);
@@ -36,6 +40,13 @@ const getAllQuestions = () => {
     return axios.get('/question');
 }
 
+const postAnswerGiven = (data) => {
+    return axios.post('/answerGiven', data);
+}
+const postAnswerOption = (data) => {
+    return axios.post('/answerOption', data);
+}
+
 // create question
 const postQuestion = (data) => {
     return axios.post('/question', data);
@@ -48,6 +59,9 @@ export default {
     getQuestionByUser,
     getAllQuestions,
     getUser,
+    postAnswerGiven,
+    postAnswerOption,
+    getUserById,
     postUserLogin,
     postUserSignUp,
     postQuestion,

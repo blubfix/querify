@@ -137,5 +137,20 @@ userRouter.get("/userId", async (req, res) => {
     res.sendStatus(500).send(e);
   }
 });
+userRouter.get("/userbyid/:userId", async (req, res) => {
+  try {
+      const userId = req.params.userId; // Use req.params.userId to get the userId from the URL
+      console.log("userId", userId);
 
+      const result = await database.getUserById(userId);
+      if (result.length === 0) {
+          res.status(404).send('There are no questions by this user.');
+      } else {
+          res.status(200).send(result);
+      }
+  } catch (e) {
+      console.error(e);
+      res.status(500).send(e);
+  }
+});
 module.exports = userRouter;

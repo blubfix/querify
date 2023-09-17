@@ -18,7 +18,7 @@ answerOptionRouter.post("/", async (req, res) => {
       return res.status(404).send("No question with this ID available");
     }
     await database.addAnswerOption(answerOptionId, answerText, questionId);
-    res.status(201).send("answerOption erstellt"); // Antwortnachricht an Postman
+    res.status(201).send(answerOptionId); // Antwortnachricht an Postman
   } catch (e) {
     console.error(e);
     res.status(500).send("Internal server error");
