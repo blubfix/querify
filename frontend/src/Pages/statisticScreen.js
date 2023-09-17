@@ -163,7 +163,50 @@ const StatisticsScreen = ({ navigation }) => {
                                                 renderItem={({ item }) => (
                                                     <StatButtonOwn
                                                         buttonHeading={item.title}
-                                                        buttonText={item.name} // Display whatever you want here
+                                                        buttonText={item.name}
+                                                        position={"relative"}
+                                                        onDots={() => navigation.navigate("QuestionaireOptions")}
+                                                        onPress={() => navigation.navigate("StatisticSurvey", { item: item })}
+                                                    />
+                                                )}
+                                                keyExtractor={(item) => item.questionId}
+                                                renderSectionHeader={({ section }) => (
+                                                    <Text style={styles.textStyle}>{section.title}</Text>
+                                                )}
+                                            />
+
+                                        )}
+                                        renderSectionHeader={({ section }) => (
+                                            <Text style={styles.textStyle}>{section.title}</Text>
+                                        )}
+                                        keyExtractor={(item) => item.questionId}  
+                                        // Use a unique identifier here
+
+                                        <Snackbar
+                                            visible={snackbarVisible}
+                                            onDismiss={() => setSnackbarVisible(false)}
+                                            duration={3000} // Duration for which the snackbar will be visible (in milliseconds)
+                                        >
+                                            Error loading data. Please try again.
+                                        </Snackbar>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        {loadingSurv ? (
+                                            // Show loading indicator while data is loading
+                                            <ActivityIndicator
+                                                style={styles.loadingIndicator}
+                                                size="large"
+                                                color="#734498"
+                                            />
+                                        ) : (
+                                            <SectionList
+                                                sections={[{ title: "Umfragen, an denen ich teilgenommen habe", data: surveys }]}
+                                                renderItem={({ item }) => (
+                                                    <StatButton
+                                                        buttonHeading={item.question_title}
+                                                        buttonText={item.question_creator} // Display whatever you want here
                                                         position={"relative"}
                                                         onDots={() =>
                                                             navigation.navigate("QuestionaireOptions")
@@ -171,46 +214,6 @@ const StatisticsScreen = ({ navigation }) => {
                                                         onPress={() => navigation.navigate("StatisticSurvey", { item: item })}
                                                     />
                                                 )}
-                                                keyExtractor={(item) => item.questionId} // Use a unique identifier here
-                                            />
-                                        )}
-                                        renderSectionHeader={({ section }) => (
-                                            <Text style={styles.textStyle}>{section.title}</Text>
-                                        )}
-                                        keyExtractor={(item) => item.questionId} // Use a unique identifier here
-                                    />
-                                )}
-                                
-                                <Snackbar
-                                    visible={snackbarVisible}
-                                    onDismiss={() => setSnackbarVisible(false)}
-                                    duration={3000} // Duration for which the snackbar will be visible (in milliseconds)
-                                >
-                                    Error loading data. Please try again.
-                                </Snackbar>
-                            </Col>
-                        </Row>
-                        <Row>
-                        <Col>
-                                {loadingSurv ? (
-                                    // Show loading indicator while data is loading
-                                    <ActivityIndicator
-                                        style={styles.loadingIndicator}
-                                        size="large"
-                                        color="#734498"
-                                    />
-                                ) : (
-                                    <SectionList
-                                        sections={[{ title: "Umfragen, an denen ich teilgenommen habe", data: surveys }]}
-                                        renderItem={({ item }) => (
-                                            <StatButton
-                                                buttonHeading={item.question_title}
-                                                buttonText={item.question_creator} // Display whatever you want here
-                                                position={"relative"}
-                                                onDots={() =>
-                                                    navigation.navigate("QuestionaireOptions")
-                                                }
-                                                onPress={() => navigation.navigate("StatisticSurvey", {item: item})}
                                             />
                                         )}
                                     </Col>
@@ -340,7 +343,7 @@ const styles = StyleSheet.create({
     sectionBox: {
 
         width: "100%",
-        height:"65%",
+        height: "65%",
     },
 });
 

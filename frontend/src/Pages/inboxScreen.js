@@ -9,9 +9,8 @@ import {
     Alert,
     useWindowDimensions,
     TouchableOpacity,
-    ScrollView,
     RefreshControl,
-
+    FlatList,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
@@ -46,20 +45,16 @@ import {
     Manrope_300Light,
 } from "@expo-google-fonts/manrope";
 import BottomNavigation from "../Components/BottomNavigation";
-
 import API from "../API/apiConnection";
 
 const StatisticsScreen = ({ navigation }) => {
-    const [question, setQuestion] = useState();
-    const [surveys, setSurveys] = useState();
+    const [question, setQuestion] = useState([]);
+    const [surveys, setSurveys] = useState([]);
     const [userData, setUserData] = useState(null);
-    const [loading, setLoading] = useState(true); // Add loading state
-    const [loadingSurv, setLoadingSurv] = useState(true); // Add loading state
-
-    //TODO: Show snackbar if no data is available, style snackbar to match design and position it correctly
-    const [snackbarVisible, setSnackbarVisible] = useState(false); // Add snackbar visibility state
-    const [snackbarVisibleSurv, setSnackbarVisibleSurv] = useState(false); // Add snackbar visibility state
-
+    const [loading, setLoading] = useState(true);
+    const [loadingSurv, setLoadingSurv] = useState(true);
+    const [snackbarVisible, setSnackbarVisible] = useState(false);
+    const [snackbarVisibleSurv, setSnackbarVisibleSurv] = useState(false);
     const [fontsLoaded] = useFonts({
         Inter_400Regular,
         Inter_500Medium,
@@ -81,8 +76,8 @@ const StatisticsScreen = ({ navigation }) => {
                 const parsedUserData = JSON.parse(tempData);
                 setUserData(parsedUserData);
                 console.log("userData:", parsedUserData);
-                getThisMonth(); // Call getQuestion with user ID
-                getThisWeek(); // Call getQuestion with user ID
+                getThisMonth();
+                getThisWeek();
             }
         } catch (error) {
             console.error("Error loading Storage:", error);
@@ -94,170 +89,145 @@ const StatisticsScreen = ({ navigation }) => {
             .then((resp) => {
                 console.log(resp.data);
                 setSurveys(resp.data);
-                if (resp.data.length == 0) {
-                    setSnackbarVisibleSurv(true); // Show snackbar on error
+                if (resp.data.length === 0) {
+                    setSnackbarVisibleSurv(true);
                 }
             })
             .catch((e) => {
                 console.log(e);
-                setSnackbarVisibleSurv(true); // Show snackbar on error
+                setSnackbarVisibleSurv(true);
             })
             .finally(() => {
-                setLoadingSurv(false); // Set loading to false once data fetching is complete
+                setLoadingSurv(false);
             });
     };
 
-
     const getThisMonth = () => {
-        //const id = userData.id;
-        //console.log("id: ", id)
         API.getQuestionFromThisMonth()
             .then((resp) => {
                 console.log(resp.data);
                 setQuestion(resp.data);
-                if (resp.data.length == 0) {
-                    setSnackbarVisible(true); // Show snackbar on error
+                if (resp.data.length === 0) {
+                    setSnackbarVisible(true);
                 }
             })
             .catch((e) => {
                 console.log(e);
-                setSnackbarVisible(true); // Show snackbar on error
+                setSnackbarVisible(true);
             })
             .finally(() => {
-                setLoading(false); // Set loading to false once data fetching is complete
+                setLoading(false);
             });
     };
 
     const whatQuestion = (type, bewertung, item) => {
-        if (type == "free") {
+        if (type === "free") {
             navigation.navigate("AnswerFreitext", item);
-        } else if (type == "poll") {
+        } else if (type === "poll") {
             navigation.navigate("AnswerJaNein", item);
-        } else if (type == "feeling") {
-            if (bewertung == "stars") {
+        } else if (type === "feeling") {
+            if (bewertung === "stars") {
                 navigation.navigate("AnswerStimmungsbildStars", item);
-            } else if (bewertung == "likert") {
+            } else if (bewertung === "likert") {
                 navigation.navigate("AnswerStimmungsbildLikert", item);
             }
-        } else if (type == "multi") {
+        } else if (type === "multi") {
             navigation.navigate("AnswerMehrfach", item);
-        } else if (type == "reminder") {
-            console.log("reminder")
+        } else if (type === "reminder") {
+            console.log("reminder");
         }
-    }
-
-    if (!fontsLoaded) {
-        return null;
-    }
-
+    };
 
     const onRefresh = () => {
-        console.log("hello")
-        loadUserData()
+        console.log("hello");
+        loadUserData();
     };
+    const data = [{}]; // Placeholder item
+
     return (
-            <ScrollView
-                contentContainerStyle={styles.scrollView}
-                refreshControl={
-                    <RefreshControl tintColor={"#74479A"} refreshing={console.log("helloRefresh")} onRefresh={onRefresh} />
-                }>
         <PaperProvider>
-            <Grid style={styles.container} container>
-                <Row size={0.75}>
-                    <Col>
-                        <Row>
-                            <Col>
-                                <Text style={styles.headerText}>Inbox</Text>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                {loading ? (
-                                    // Show loading indicator while data is loading
-                                    <ActivityIndicator
-                                        style={styles.loadingIndicator}
-                                        size="large"
-                                        color="#734498"
-                                    />
-                                ) : (
-                                    <SectionList
-                                        sections={[{ title: "Diese Woche", data: question }]}
-                                        renderItem={({ item }) => (
-                                            <StatButtonOwn
-                                                buttonHeading={item.title}
-                                                buttonText={item.name} // Display whatever you want here
-                                                position={"relative"}
-                                                onDots={() =>
-                                                    navigation.navigate("QuestionaireOptions")
-                                                }
-                                                onPress={() => whatQuestion(item.type, item.bewertung, item)}
-                                            />
-                                        )}
-                                        renderSectionHeader={({ section }) => (
-                                            <Text style={styles.textStyle}>{section.title}</Text>
-                                        )}
-                                        keyExtractor={(item) => item.questionId} // Use a unique identifier here
+            <FlatList
+                style={styles.container}
+                data={data}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item }) => (
+                    <View style={styles.item}>
+                        <Text style={styles.headerText}>Inbox</Text>
+                        <Text style={styles.sectionHeader}>Diese Woche</Text>
+                        {loading ? (
+                            <ActivityIndicator
+                                style={styles.loadingIndicator}
+                                size="large"
+                                color="#734498"
+                            />
+                        ) : (
+                            <SectionList
+                                sections={[{data: surveys }]}
+                                style={styles.subContainer}
+                                renderItem={({ item }) => (
+                                    <StatButtonOwn
+                                        buttonHeading={item.title}
+                                        buttonText={item.name}
+                                        position={"relative"}
+                                        onDots={() => navigation.navigate("QuestionaireOptions")}
+                                        onPress={() => navigation.navigate("StatisticSurvey", { item: item })}
+                                        />
+                                )}
+                                keyExtractor={(item) => item.questionId}
+                                renderSectionHeader={({ section }) => (
+                                    <Text style={styles.textStyle}>{section.title}</Text>
+                                )}
+                            />
+                        )}
+                        <Snackbar
+                            visible={snackbarVisible}
+                            onDismiss={() => setSnackbarVisible(false)}
+                            duration={3000}
+                        >
+                            Error loading data. Please try again.
+                        </Snackbar>
+                        <Text style={styles.sectionHeader}>Diesen Monat</Text>
+                        {loadingSurv ? (
+                            <ActivityIndicator
+                                style={styles.loadingIndicator}
+                                size="large"
+                                color="#734498"
+                            />
+                        ) : (
+                            <SectionList
+                                sections={[{ data: question }]}
+                                style={styles.subContainer}
+                                renderItem={({ item }) => (
+                                    <StatButton
+                                        buttonHeading={item.title}
+                                        buttonText={item.name}
+                                        position={"relative"}
+                                        onDots={() => navigation.navigate("QuestionaireOptions")}
+                                        onPress={() => whatQuestion(item.type, item.bewertung, item)}
                                     />
                                 )}
-
-                                <Snackbar
-                                    visible={snackbarVisible}
-                                    onDismiss={() => setSnackbarVisible(false)}
-                                    duration={3000} // Duration for which the snackbar will be visible (in milliseconds)
-                                >
-                                    Error loading data. Please try again.
-                                </Snackbar>
-                            </Col>
-                        </Row>
-                        <Row>
-                            <Col>
-                                {loadingSurv ? (
-                                    // Show loading indicator while data is loading
-                                    <ActivityIndicator
-                                        style={styles.loadingIndicator}
-                                        size="large"
-                                        color="#734498"
-                                    />
-                                ) : (
-                                    <SectionList
-                                        sections={[{ title: "Diesen Monat", data: surveys }]}
-                                        renderItem={({ item }) => (
-                                            <StatButton
-                                                buttonHeading={item.question_title}
-                                                buttonText={item.question_creator} // Display whatever you want here
-                                                position={"relative"}
-                                                onDots={() =>
-                                                    navigation.navigate("QuestionaireOptions")
-                                                }
-                                                onPress={() => whatQuestion(item.type, item.bewertung, item)}
-                                            />
-                                        )}
-                                        renderSectionHeader={({ section }) => (
-                                            <Text style={styles.textStyle}>{section.title}</Text>
-                                        )}
-                                        keyExtractor={(item) => item.questionId} // Use a unique identifier here
-                                    />
+                                renderSectionHeader={({ section }) => (
+                                    <Text style={styles.textStyle}>{section.title}</Text>
                                 )}
-                                <Snackbar
-                                    visible={snackbarVisibleSurv}
-                                    onDismiss={() => setSnackbarVisibleSurv(false)}
-                                    duration={3000} // Duration for which the snackbar will be visible (in milliseconds)
-                                >
-                                    Error loading data. Please try again.
-                                </Snackbar>
-                            </Col>
-                        </Row>
-                    </Col>
-                </Row>
-
-
-            <BottomNavigation
-                buttonColors={["#6F6F70", "#778DE3", "#6F6F70", "#6F6F70"]}
-                />
+                                keyExtractor={(item) => item.questionId}
+                            />
+                        )}
+                        <Snackbar
+                            visible={snackbarVisibleSurv}
+                            onDismiss={() => setSnackbarVisibleSurv(false)}
+                            duration={3000}
+                        >
+                            Error loading data. Please try again.
+                        </Snackbar>
+                    </View>
+                )}
+                refreshControl={<RefreshControl tintColor={"#74479A"} refreshing={console.log("helloRefresh")} onRefresh={onRefresh} />}
+            />
+            <BottomNavigation buttonColors={["#6F6F70", "#778DE3", "#6F6F70", "#6F6F70"]} />
         </PaperProvider>
-                </ScrollView>
     );
 };
+
 const styles = StyleSheet.create({
     loadingIndicator: {
         flex: 1,
@@ -275,8 +245,9 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
     },
     subContainer: {
-        height: "85%",
+
         width: "100%",
+        paddingBottom: 20,
         backgroundColor: "white",
     },
 
@@ -307,6 +278,7 @@ const styles = StyleSheet.create({
         color: "#64748B",
         alignSelf: "flex-start",
         fontFamily: "Manrope_400Regular",
+        paddingLeft: 20
     },
 
     textInputHeaderText: {
