@@ -52,6 +52,7 @@ async function createTables() {
         wiederverwendung ENUM('undefined','als Vorlage gespeichert', '60 Tagen nach dem Umfragestichtag gelöscht'),
         bewertung VARCHAR(255),
         date VARCHAR(255),
+        description VARCHAR(255),
         PRIMARY KEY (questionId),
         FOREIGN KEY (userId) REFERENCES user(userId)
       );`

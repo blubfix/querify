@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Image, Button, StyleSheet, View, Alert, useWindowDimensions, TouchableOpacity} from "react-native";
 import {
     MD3DarkTheme as DefaultTheme,
@@ -15,9 +15,15 @@ import { useFonts, Inter_700Bold, Inter_400Regular, Inter_500Medium  } from '@ex
 import { Manrope_400Regular, Manrope_600SemiBold, Manrope_700Bold, Manrope_300Light } from '@expo-google-fonts/manrope';
 import { Roboto_300Light } from '@expo-google-fonts/roboto'
 import BottomNavigation from "../Components/BottomNavigation";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const AnswerStimmungsbildLikert =({ navigation }) => {
+import API from "../API/apiConnection";
+
+const AnswerStimmungsbildLikert =({ navigation, route }) => {
     const [answerOptions, setAnswerOptions] = useState([{answerText: 'Stimme voll und ganz zu', checked: false, color: '#00DAF8'}, {answerText: 'Stimme zu', checked: false, color: '#4072EE'}, {answerText: 'Stimme weder zu noch lehne ab', checked: false, color: '#B558F6'}, {answerText: 'Stimme nicht zu', checked: false, color: '#7628B4'}, {answerText: 'Stimme überhaupt nicht zu', checked: false, color: '#48A7FF'}])
+    const [question, setQuestion] = useState(route.params);
+    const [userData, setUserData] = useState({});
+    const [userFromQuestion, setUserFromQuestion] = useState({});
 
     const [fontsLoaded] = useFonts({
         Inter_400Regular,
@@ -29,6 +35,86 @@ const AnswerStimmungsbildLikert =({ navigation }) => {
         Manrope_300Light,
         Roboto_300Light
     });
+
+    useEffect(() => {
+        loadUserData();
+        getUserFromQuestion();
+    }, []);
+
+    const loadUserData = async () => {
+        try {
+            const tempData = await AsyncStorage.getItem("userData");
+            if (tempData) {
+                const parsedUserData = JSON.parse(tempData);
+                setUserData(parsedUserData);
+                console.log("userData:", parsedUserData);
+            }
+        } catch (error) {
+            console.error("Error loading Storage:", error);
+        }
+    };
+
+    const getUserFromQuestion = () => {
+        const user = question.userId;
+        console.log("user: ", user);
+        API.getUserById(user)
+            .then((resp) => {
+                console.log("userFromQuestion: ",resp.data);
+                setUserFromQuestion(resp.data);
+            })
+            .catch((e) => {
+                console.log(e);
+            }
+        )
+    }
+
+    const answerQuestion = () => {
+        if (answerOptions !== null) {
+            const userId = userData.id;
+            console.log("userId: ", userId);
+            const checkedItems = answerOptions.filter((item) => item.checked === true);
+            console.log(checkedItems);
+
+            const data = {
+                answerText: checkedItems[0].answerText,
+                questionId: question.questionId,
+            }
+            console.log("data: ", data);
+            API.postAnswerOption(data)
+                .then((resp) => {
+                    console.log(resp.data);
+                    const id = resp.data;
+                    const data2 = {
+                        userId: userId,
+                        answerOptionId: id,
+                        questionId: question.questionId
+                    }
+                    console.log("data2: ", data2);
+                    API.postAnswerGiven(data2)
+                        .then((resp) => {
+                            console.log(resp.data);
+                        })
+                        .catch((e) => {
+                            console.log(e);
+                            setTextInputColor('#DC2626');
+                            setErrorText('Bitte überprüfe deine Eingabe!');
+        
+                        });
+                })
+                .catch((e) => {
+                    console.log(e);
+                    setTextInputColor('#DC2626');
+                    setErrorText('Bitte überprüfe deine Eingabe!');
+    
+                });
+                
+            
+                
+        }
+        else {
+            console.log("Something went wrong!");
+        }
+    }
 
     if (!fontsLoaded) {
         return null;
@@ -46,6 +132,7 @@ const AnswerStimmungsbildLikert =({ navigation }) => {
         }
 
         setAnswerOptions(answerOptionsCopy);
+        console.log("answerOptions: ", answerOptions);
     }
 
     return (
@@ -59,12 +146,12 @@ const AnswerStimmungsbildLikert =({ navigation }) => {
                     <Row>
                         <Col inline>
                             <MaterialCommunityIcons style={styles.thumbIcon} name='account' color={'#222222'} size={20} />
-                            <Text style={styles.nameText}>Name</Text>
+                            <Text style={styles.nameText}>{userFromQuestion.name}</Text>
                         </Col>
                     </Row>
                     <Row >
                         <Col>
-                            <Text style={styles.questionaireTitleText}>Umfragetitel</Text>
+                            <Text style={styles.questionaireTitleText}>{question.title}</Text>
                             <Text style={styles.questionaireTypeText}>Stimmungsbildumfrage - Likert-Skala</Text>
                         </Col>
                     </Row>
@@ -74,7 +161,7 @@ const AnswerStimmungsbildLikert =({ navigation }) => {
                                 <MaterialCommunityIcons style={styles.thumbIcon} name='timeline-clock' color={'#222222'} size={25} />
                                 <Text style={styles.deadlineText}>Stichtag</Text>
                                 <View style={styles.deadlineSubContainer}>
-                                    <Text style={styles.deadlineDateText}>Datum</Text>
+                                    <Text style={styles.deadlineDateText}>{question.date}</Text>
                                 </View>
                             </View>
                         </Col>
@@ -83,7 +170,7 @@ const AnswerStimmungsbildLikert =({ navigation }) => {
                         <Col>
                             <Text style={styles.questionaireTitleText}>Beschreibung</Text>
                             <View style={styles.descriptionContainer}>
-                                <Text style={styles.descriptionText}>Das ist die Beschreibung der Umfrage</Text>
+                                <Text style={styles.descriptionText}>{question.description}</Text>
                             </View>
                         </Col>
                     </Row>
@@ -111,7 +198,7 @@ const AnswerStimmungsbildLikert =({ navigation }) => {
 
                     <BottomNavigation buttonColors={['#6F6F70', '#6F6F70', '#6F6F70', '#6F6F70']}/>
                 </Grid>
-                <SubmitButton buttonText={'Abstimmen'} position={'absolute'} bottom={120} onPress={() => navigation.navigate('InboxScreen')}/>
+                <SubmitButton buttonText={'Abstimmen'} position={'absolute'} bottom={120} onPress={() => answerQuestion()}/>
         </PaperProvider>
     );
 }
@@ -207,7 +294,6 @@ const styles = StyleSheet.create({
     },
 
     optionText: {
-        fontFamily: 'Roboto_400Regular',
         fontSize: 14,
         color: '#575454',
         marginLeft: 10

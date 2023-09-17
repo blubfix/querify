@@ -22,6 +22,7 @@ import { parseGermanDate } from '../Components/DateFormatter'
 
 const CalendarScreen = ({ navigation }) => {
     const [questions, setQuestions] = useState([]);
+    const [filteredData, setFilteredData] = useState([]);
     const [fontsLoaded] = useFonts({
         Inter_400Regular,
         Inter_500Medium,
@@ -35,7 +36,7 @@ const CalendarScreen = ({ navigation }) => {
 
     useEffect(() => {
         getQuestions();
-        dateRendering();
+        //dateRendering();
         console.log("questions: ", questions);
     }, []);
 
@@ -44,10 +45,7 @@ const CalendarScreen = ({ navigation }) => {
             .then((resp) => {
                 console.log(resp.data);
                 setQuestions(resp.data);
-                if (resp.data.length == 0) {
-                    null
-                    // Show snackbar on error
-                }
+                filterData();
             })
             .catch((e) => {
                 console.log(e);
@@ -57,6 +55,14 @@ const CalendarScreen = ({ navigation }) => {
                 null// Set loading to false once data fetching is complete
             });
     };
+
+    const filterData = () => {
+        // Use the filter method to create a new array without items where "date" is null or undefined
+        filtered = questions.filter(item => item.date !== null && item.date !== undefined);
+        setFilteredData(filtered);
+        console.log("filteredData: ", filteredData);
+    }
+
 
     // const convertDateStringsToDateObjects = (data) => {
     //     // Use the map function to iterate through each object in the array
@@ -85,7 +91,7 @@ const CalendarScreen = ({ navigation }) => {
         questions.forEach(item => {
             // Check if the "date" key exists in the item
             if (!item || !item.date) {
-                console.error('Object does not have a valid "date" property:', item);
+                console.info('Object does not have a valid "date" property:', item);
                 return;
             }
 
@@ -97,8 +103,9 @@ const CalendarScreen = ({ navigation }) => {
 
             // Use the "date" string as a key in the markedDatesObject and provide the marking properties
             markedDatesObject[newDateFormat] = {
+                ...markedDatesObject[newDateFormat],
                 marked: true,
-                dotColor: '#50cebb', // Example dotColor
+                dotColor: '#5172E5', // Example dotColor
                 // Add other marking properties as needed
             };
             console.log("markedDatesObject: ", markedDatesObject)
@@ -151,10 +158,16 @@ const CalendarScreen = ({ navigation }) => {
 
                     </Col>
                 </Row>
-                <Row>
-                    <Col>
-                    </Col>
-                </Row>
+                        {filteredData.map((item, index) => {
+                            return (
+                                <Row key={index}>
+                                    <Col>
+                                        <Text>{item.date}</Text>
+                                        <Text>{item.title}</Text>
+                                    </Col>
+                                </Row>
+                            )
+                        })}
 
                 <BottomNavigation buttonColors={['#6F6F70', '#6F6F70', '#778DE3', '#6F6F70']} />
             </Grid>

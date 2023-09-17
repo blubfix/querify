@@ -38,6 +38,7 @@ questionRouter.post("/", async (req, res) => {
             ergebniseinsicht,
             bewertung,
             date,
+            description,
         } = req.body;
         console.log(req.body)
         console.log("bewertung: ", bewertung)
@@ -119,6 +120,7 @@ questionRouter.post("/", async (req, res) => {
             ergebniseinsicht,
             bewertung,
             date,
+            description,
         );
         res.status(201).send({ questionId, questionLink, qrCodeDataUrl });
     } catch (e) {
@@ -148,11 +150,9 @@ questionRouter.get("/thisweek", async (req, res) => {
     try {
         const result = await database.getQuestionFromThisWeek();
         console.log(result);
-        if (result.length === 0) {
-            res.status(404).send('there are no questions this week');
-        } else {
-            res.status(200).send(result);
-        }
+
+        res.status(200).send(result);
+        
     } catch (e) {
         console.log(e);
         console.error(e);
@@ -164,11 +164,9 @@ questionRouter.get("/thismonth", async (req, res) => {
     try {
         const result = await database.getQuestionFromThisMonth();
         console.log(result);
-        if (result.length === 0) {
-            res.status(404).send('there are no questions this month');
-        } else {
-            res.status(200).send(result);
-        }
+
+        res.status(200).send(result);
+        
     } catch (e) {
         console.log(e);
         console.error(e);
@@ -235,21 +233,5 @@ questionRouter.route("/user/:userId")
             res.sendStatus(500).send(e);
         }
     });
-
-questionRouter.route("/user/:userId").get(async (req, res) => {
-    try {
-        const { userId } = req.params; // Use req.params instead of req.body
-        console.log("userId", userId);
-        const result = await database.getQuestionsByUser(userId);
-        if (result.length === 0) {
-            res.status(404).send("There are no questions by this user");
-        } else {
-            res.status(200).send(result);
-        }
-    } catch (e) {
-        console.error(e);
-        res.status(500).send(e);
-    }
-});
 
 module.exports = questionRouter;

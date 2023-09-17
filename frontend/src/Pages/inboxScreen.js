@@ -79,16 +79,16 @@ const StatisticsScreen = ({ navigation }) => {
                 const parsedUserData = JSON.parse(tempData);
                 setUserData(parsedUserData);
                 console.log("userData:", parsedUserData);
-                getQuestion(parsedUserData.id); // Call getQuestion with user ID
-                getSuverysAttended(parsedUserData.id); // Call getQuestion with user ID
+                getThisMonth(); // Call getQuestion with user ID
+                getThisWeek(); // Call getQuestion with user ID
             }
         } catch (error) {
             console.error("Error loading Storage:", error);
         }
     };
 
-    const getSuverysAttended = (id) => {
-        API.getUserAnswersWithQuestionInfo(id)
+    const getThisWeek = () => {
+        API.getQuestionFromThisWeek()
             .then((resp) => {
                 console.log(resp.data);
                 setSurveys(resp.data);
@@ -106,10 +106,10 @@ const StatisticsScreen = ({ navigation }) => {
     };
 
 
-    const getQuestion = (id) => {
+    const getThisMonth = () => {
         //const id = userData.id;
         //console.log("id: ", id)
-        API.getQuestionByUser(id)
+        API.getQuestionFromThisMonth()
             .then((resp) => {
                 console.log(resp.data);
                 setQuestion(resp.data);
@@ -125,6 +125,24 @@ const StatisticsScreen = ({ navigation }) => {
                 setLoading(false); // Set loading to false once data fetching is complete
             });
     };
+
+    const whatQuestion = (type, bewertung, item) => {
+        if (type == "free") {
+            navigation.navigate("AnswerFreitext", item);
+        } else if (type == "poll") {
+            navigation.navigate("AnswerJaNein", item);
+        } else if (type == "feeling") {
+            if (bewertung == "stars") {
+                navigation.navigate("AnswerStimmungsbildStars", item);
+            } else if (bewertung == "likert") {
+                navigation.navigate("AnswerStimmungsbildLikert", item);
+            }
+        } else if (type == "multi") {
+            navigation.navigate("AnswerMehrfach", item);
+        } else if (type == "reminder") {
+            console.log("reminder")
+        }
+    }
 
     if (!fontsLoaded) {
         return null;
@@ -160,7 +178,7 @@ const StatisticsScreen = ({ navigation }) => {
                                                 onDots={() =>
                                                     navigation.navigate("QuestionaireOptions")
                                                 }
-                                                onPress={() => navigation.navigate("StatisticSurvey", { item: item })}
+                                                onPress={() => whatQuestion(item.type, item.bewertung, item)}
                                             />
                                         )}
                                         renderSectionHeader={({ section }) => (
@@ -199,6 +217,7 @@ const StatisticsScreen = ({ navigation }) => {
                                                 onDots={() =>
                                                     navigation.navigate("QuestionaireOptions")
                                                 }
+                                                onPress={() => whatQuestion(item.type, item.bewertung, item)}
                                             />
                                         )}
                                         renderSectionHeader={({ section }) => (
