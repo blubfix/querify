@@ -2,6 +2,8 @@ import React from 'react';
 import { View, TouchableOpacity, StyleSheet, Text, Dimensions } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+//import Share from 'react-native-share';
+
 import {
     Appbar,
     Menu,
@@ -31,7 +33,7 @@ function StatButton(props) {
         <View >
             <Grid style={{ ...styles.button, bottom: bottom, position: position }} container>
                 <View   >
-                    <LinearGradient colors={['#B9789D', '#74479A']} start={[0, 0]} end={[1, 0]} style={styles.linearGradient}>
+                    <LinearGradient colors={['#AD323D', '#74479A']} start={[0, 0]} end={[1, 0]} style={styles.linearGradient}>
                         <Row>
                             <Col>
                                 <Row>
@@ -40,7 +42,6 @@ function StatButton(props) {
                                     <Menu
                                         visible={visible}
                                         onDismiss={closeMenu}
-
                                         anchor={
                                             <Appbar.Action
                                                 icon='dots-horizontal'
@@ -54,7 +55,49 @@ function StatButton(props) {
                                                 console.log('Option1')
                                             }}
                                             leadingIcon='redo'
-                                            title='Option 1'
+                                            title='Abstimmen'
+                                        />
+                                        <Menu.Item
+                                            onPress={() => {
+                                                console.log('Option1')
+                                            }}
+                                            leadingIcon='redo'
+                                            title='Ändern'
+                                        />
+                                        <Menu.Item
+                                            onPress={() => {
+                                                console.log('Option1')
+                                            }}
+                                            leadingIcon='redo'
+                                            title='Alle Stimmen löschen'
+                                        />
+                                        <Menu.Item
+                                            onPress={() => {
+                                                console.log('Option1')
+                                            }}
+                                            leadingIcon='redo'
+                                            title='Löschen'
+                                        />
+                                        <Menu.Item
+                                            onPress={() => {
+                                                console.log('Option1')
+                                            }}
+                                            leadingIcon='redo'
+                                            title='QR-Code anzeigen'
+                                        />
+                                        <Menu.Item
+                                            onPress={() => {
+                                                console.log('Option1')
+                                            }}
+                                            leadingIcon='redo'
+                                            title='Umfrage URL kopieren'
+                                        />
+                                        <Menu.Item
+                                            onPress={() => {
+                                                console.log('Option1')
+                                            }}
+                                            leadingIcon='export'
+                                            title='Exportieren'
                                         />
                                     </Menu>
                                 </Row>
@@ -62,9 +105,8 @@ function StatButton(props) {
                                     <Text style={styles.heading}>{props.buttonHeading}</Text>
                                 </Row>
                                 <Row>
-                                    <MaterialCommunityIcons style={styles.personIcon} name='human-handsup' color={'white'} size={20} />
+                                    <MaterialCommunityIcons style={styles.personIcon} name='human-greeting' color={'white'} size={20} />
                                     <Text style={styles.personText}>{props.buttonText}</Text>
-
                                 </Row>
                             </Col>
                             <Col>
@@ -78,13 +120,13 @@ function StatButton(props) {
         </View>
     )
 }
-
 const styles = StyleSheet.create({
 
     button: {
         height: height * 0.13,
         width: width * 0.9,
         alignSelf: 'center',
+
         borderRadius: '0%',
         alignItems: 'center',
         justifyContent: 'center',
