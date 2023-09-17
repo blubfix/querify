@@ -158,7 +158,7 @@ const StatisticsScreen = ({ navigation }) => {
                                             />
                                         ) : (
                                             <SectionList
-                                                sections={[{ title: "Meine Umfragen", data: question }]}
+                                                sections={[{ data: question }]}
                                                 style={styles.sectionBox}
                                                 renderItem={({ item }) => (
                                                     <StatButtonOwn
@@ -174,14 +174,7 @@ const StatisticsScreen = ({ navigation }) => {
                                                     <Text style={styles.textStyle}>{section.title}</Text>
                                                 )}
                                             />
-
                                         )}
-                                        renderSectionHeader={({ section }) => (
-                                            <Text style={styles.textStyle}>{section.title}</Text>
-                                        )}
-                                        keyExtractor={(item) => item.questionId}  
-                                        // Use a unique identifier here
-
                                         <Snackbar
                                             visible={snackbarVisible}
                                             onDismiss={() => setSnackbarVisible(false)}
@@ -189,6 +182,11 @@ const StatisticsScreen = ({ navigation }) => {
                                         >
                                             Error loading data. Please try again.
                                         </Snackbar>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <Text style={styles.sectionHeader}>Umfragen an denen ich teilgenommen habe</Text>
                                     </Col>
                                 </Row>
                                 <Row>
@@ -201,8 +199,10 @@ const StatisticsScreen = ({ navigation }) => {
                                                 color="#734498"
                                             />
                                         ) : (
+
                                             <SectionList
-                                                sections={[{ title: "Umfragen, an denen ich teilgenommen habe", data: surveys }]}
+                                                sections={[{ data: surveys }]}
+                                                style={styles.sectionBox}
                                                 renderItem={({ item }) => (
                                                     <StatButton
                                                         buttonHeading={item.question_title}
@@ -213,6 +213,10 @@ const StatisticsScreen = ({ navigation }) => {
                                                         }
                                                         onPress={() => navigation.navigate("StatisticSurvey", { item: item })}
                                                     />
+                                                )}
+                                                keyExtractor={(item) => item.questionId}
+                                                renderSectionHeader={({ section }) => (
+                                                    <Text style={styles.textStyle}>{section.title}</Text>
                                                 )}
                                             />
                                         )}

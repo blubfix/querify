@@ -55,6 +55,7 @@ const StatisticsScreen = ({ navigation }) => {
     const [loadingSurv, setLoadingSurv] = useState(true);
     const [snackbarVisible, setSnackbarVisible] = useState(false);
     const [snackbarVisibleSurv, setSnackbarVisibleSurv] = useState(false);
+    
     const [fontsLoaded] = useFonts({
         Inter_400Regular,
         Inter_500Medium,
