@@ -14,7 +14,7 @@ import { Col, Row, Grid } from "react-native-paper-grid";
 
 const { width, height } = Dimensions.get("window");
 
-function StatButton (props)  {
+function StatButton(props) {
     const [visible, setVisible] = React.useState(false);
     const openMenu = () => setVisible(true);
     const closeMenu = () => setVisible(false);
@@ -39,72 +39,74 @@ function StatButton (props)  {
                                 <Row>
                                     <MaterialCommunityIcons style={styles.redirectIcon} name='arrow-right-top' color={'white'} size={20} onPress={props.onRedirect} />
                                     {/* <MaterialCommunityIcons style={styles.dotsIcon} name='dots-horizontal' color={'white'} size={20} onPress={props.onDots}/> */}
-                                    <Menu 
-                                        visible= {visible}
+                                    <Menu
+                                        visible={visible}
                                         onDismiss={closeMenu}
-                                        anchor = {
+                                        anchor={
                                             <Appbar.Action
                                                 icon='dots-horizontal'
+                                                iconColor='white'
+                                                style={styles.dotsIcon}
                                                 onPress={openMenu}
-                                                />
+                                            />
                                         }>
-                                            <Menu.Item
-                                                onPress={() => {
-                                                    console.log('Option1')
-                                                }}
-                                                leadingIcon='redo'
-                                                title='Abstimmen'
-                                                />
-                                            <Menu.Item
-                                                onPress={() => {
-                                                    console.log('Option1')
-                                                }}
-                                                leadingIcon='redo'
-                                                title='Ändern'
-                                                />
-                                            <Menu.Item
-                                                onPress={() => {
-                                                    console.log('Option1')
-                                                }}
-                                                leadingIcon='redo'
-                                                title='Alle Stimmen löschen'
-                                                />
-                                            <Menu.Item
-                                                onPress={() => {
-                                                    console.log('Option1')
-                                                }}
-                                                leadingIcon='redo'
-                                                title='Löschen'
-                                                />
-                                            <Menu.Item
-                                                onPress={() => {
-                                                    console.log('Option1')
-                                                }}
-                                                leadingIcon='redo'
-                                                title='QR-Code anzeigen'
-                                                />
-                                            <Menu.Item
-                                                onPress={() => {
-                                                    console.log('Option1')
-                                                }}
-                                                leadingIcon='redo'
-                                                title='Umfrage URL kopieren'
-                                                />
-                                            <Menu.Item
-                                                onPress={() => {
-                                                    console.log('Option1')
-                                                }}
-                                                leadingIcon='export'
-                                                title='Exportieren'
-                                                />
-                                        </Menu>
+                                        <Menu.Item
+                                            onPress={() => {
+                                                console.log('Option1')
+                                            }}
+                                            leadingIcon='redo'
+                                            title='Abstimmen'
+                                        />
+                                        <Menu.Item
+                                            onPress={() => {
+                                                console.log('Option1')
+                                            }}
+                                            leadingIcon='redo'
+                                            title='Ändern'
+                                        />
+                                        <Menu.Item
+                                            onPress={() => {
+                                                console.log('Option1')
+                                            }}
+                                            leadingIcon='redo'
+                                            title='Alle Stimmen löschen'
+                                        />
+                                        <Menu.Item
+                                            onPress={() => {
+                                                console.log('Option1')
+                                            }}
+                                            leadingIcon='redo'
+                                            title='Löschen'
+                                        />
+                                        <Menu.Item
+                                            onPress={() => {
+                                                console.log('Option1')
+                                            }}
+                                            leadingIcon='redo'
+                                            title='QR-Code anzeigen'
+                                        />
+                                        <Menu.Item
+                                            onPress={() => {
+                                                console.log('Option1')
+                                            }}
+                                            leadingIcon='redo'
+                                            title='Umfrage URL kopieren'
+                                        />
+                                        <Menu.Item
+                                            onPress={() => {
+                                                console.log('Option1')
+                                            }}
+                                            leadingIcon='export'
+                                            title='Exportieren'
+                                        />
+                                    </Menu>
                                 </Row>
                                 <Row>
                                     <Text style={styles.heading}>{props.buttonHeading}</Text>
                                 </Row>
                                 <Row>
                                     <MaterialCommunityIcons style={styles.personIcon} name='human-greeting' color={'white'} size={20} />
-                                    <Text style={styles.text}>{props.buttonText}</Text>
+                                    <Text style={styles.personText}>{props.buttonText}</Text>
                                 </Row>
                             </Col>
                             <Col>
@@ -118,7 +120,6 @@ function StatButton (props)  {
         </View>
     )
 }
-
 const styles = StyleSheet.create({
 
     button: {
@@ -144,10 +145,13 @@ const styles = StyleSheet.create({
     heading: {
         fontSize: 18,
         fontWeight: '500',
+
+        width: "130%",
         color: 'white',
         fontFamily: 'Inter_500Medium',
-        left: 20,
-        bottom: 5,
+        position: "relative",
+        left: 15,
+        bottom: 20,
         alignSelf: 'flex-start'
     },
     text: {
@@ -155,29 +159,37 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         color: 'white',
         fontFamily: 'Inter_500Medium',
-        left: 50,
-        bottom: 0,
+        bottom: 20,
+        alignSelf: 'flex-start'
+    },
+    personText: {
+        fontSize: 15,
+        fontWeight: '500',
+        color: 'white',
+        fontFamily: 'Inter_500Medium',
+        left: "200%",
+        bottom: "10%",
         alignSelf: 'flex-start'
     },
 
     chevronIcon: {
         position: 'absolute',
-        right: 30,
-        top: 15,
+        right: "15%",
+        top: "41%",
     },
     personIcon: {
         position: 'absolute',
-        left: 25,
+        left: "10%",
+        bottom: "110%",
     },
     redirectIcon: {
         position: 'absolute',
-        left: 5,
-        bottom: 5,
+        left: "5%",
+        top: "40%",
     },
     dotsIcon: {
-        position: 'absolute',
-        left: 32,
-        bottom: 5,
+        position: 'relative',
+        left: "35%",
     }
 });
 

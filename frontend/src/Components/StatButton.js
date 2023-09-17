@@ -12,7 +12,7 @@ import { Col, Row, Grid } from "react-native-paper-grid";
 
 const { width, height } = Dimensions.get("window");
 
-function StatButton (props)  {
+function StatButton(props) {
     const [visible, setVisible] = React.useState(false);
     const openMenu = () => setVisible(true);
     const closeMenu = () => setVisible(false);
@@ -31,36 +31,40 @@ function StatButton (props)  {
         <View >
             <Grid style={{ ...styles.button, bottom: bottom, position: position }} container>
                 <View   >
-                    <LinearGradient colors={['#AD323D', '#74479A']} start={[0, 0]} end={[1, 0]} style={styles.linearGradient}>
+                    <LinearGradient colors={['#B9789D', '#74479A']} start={[0, 0]} end={[1, 0]} style={styles.linearGradient}>
                         <Row>
                             <Col>
                                 <Row>
                                     <MaterialCommunityIcons style={styles.redirectIcon} name='arrow-right-top' color={'white'} size={20} onPress={props.onRedirect} />
                                     {/* <MaterialCommunityIcons style={styles.dotsIcon} name='dots-horizontal' color={'white'} size={20} onPress={props.onDots}/> */}
-                                    <Menu 
-                                        visible= {visible}
+                                    <Menu
+                                        visible={visible}
                                         onDismiss={closeMenu}
-                                        anchor = {
+
+                                        anchor={
                                             <Appbar.Action
                                                 icon='dots-horizontal'
+                                                iconColor='white'
+                                                style={styles.dotsIcon}
                                                 onPress={openMenu}
-                                                />
+                                            />
                                         }>
-                                            <Menu.Item
-                                                onPress={() => {
-                                                    console.log('Option1')
-                                                }}
-                                                leadingIcon='redo'
-                                                title='Option 1'
-                                                />
-                                        </Menu>
+                                        <Menu.Item
+                                            onPress={() => {
+                                                console.log('Option1')
+                                            }}
+                                            leadingIcon='redo'
+                                            title='Option 1'
+                                        />
+                                    </Menu>
                                 </Row>
                                 <Row>
                                     <Text style={styles.heading}>{props.buttonHeading}</Text>
                                 </Row>
                                 <Row>
-                                    <MaterialCommunityIcons style={styles.personIcon} name='human-greeting' color={'white'} size={20} />
-                                    <Text style={styles.text}>{props.buttonText}</Text>
+                                    <MaterialCommunityIcons style={styles.personIcon} name='human-handsup' color={'white'} size={20} />
+                                    <Text style={styles.personText}>{props.buttonText}</Text>
+
                                 </Row>
                             </Col>
                             <Col>
@@ -100,10 +104,13 @@ const styles = StyleSheet.create({
     heading: {
         fontSize: 18,
         fontWeight: '500',
+
+        width: "130%",
         color: 'white',
         fontFamily: 'Inter_500Medium',
-        left: 20,
-        bottom: 5,
+        position: "relative",
+        left: 15,
+        bottom: 20,
         alignSelf: 'flex-start'
     },
     text: {
@@ -111,29 +118,37 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         color: 'white',
         fontFamily: 'Inter_500Medium',
-        left: 50,
-        bottom: 0,
+        bottom: 20,
+        alignSelf: 'flex-start'
+    },
+    personText: {
+        fontSize: 15,
+        fontWeight: '500',
+        color: 'white',
+        fontFamily: 'Inter_500Medium',
+        left: "200%",
+        bottom: "10%",
         alignSelf: 'flex-start'
     },
 
     chevronIcon: {
         position: 'absolute',
-        right: 30,
-        top: 15,
+        right: "15%",
+        top: "41%",
     },
     personIcon: {
         position: 'absolute',
-        left: 25,
+        left: "10%",
+        bottom: "110%",
     },
     redirectIcon: {
         position: 'absolute',
-        left: 5,
-        bottom: 5,
+        left: "5%",
+        top: "40%",
     },
     dotsIcon: {
-        position: 'absolute',
-        left: 32,
-        bottom: 5,
+        position: 'relative',
+        left: "35%",
     }
 });
 
