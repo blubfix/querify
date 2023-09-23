@@ -72,9 +72,9 @@ answerGivenRouter.get("/questioninfo/user/:userId", async (req, res) => {
     const { userId } = req.params;
     // Check if userId is valid
     const user = await database.getUserById(userId);
-    if (!user) {
-      return res.status(404).send("No answergiven with this userId available");
-    }
+    // if (!user) {
+    //   return res.status(404).send("No answergiven with this userId available");
+    // }
     // Get answerGiven by userId from the database
     const answerGiven = await database.getUserAnswersWithQuestionInfo(user.userId);
 

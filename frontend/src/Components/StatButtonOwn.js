@@ -20,6 +20,9 @@ function StatButton(props) {
     const closeMenu = () => setVisible(false);
     const { bottom = 0 } = props;
     const { position = 'relative' } = props;
+    const [question, setQuestion] = React.useState(props.question);
+    const state = props.state;
+    var colorButton = ['#B9789D', '#74479A'];
 
     const [fontsLoaded] = useFonts({
         Inter_500Medium,
@@ -29,11 +32,20 @@ function StatButton(props) {
         return null;
     }
 
+    if (state === 'active') {
+        colorButton = ['#AD323D', '#74479A'];
+    } else if (state === 'expired') {
+        colorButton = ['#AD323D', '#74479A'];
+    } else if (state === 'attended') {
+        colorButton = ['#B9789D', '#74479A'];
+    }
+
+
     return (
         <View >
             <Grid style={{ ...styles.button, bottom: bottom, position: position }} container>
                 <View   >
-                    <LinearGradient colors={['#AD323D', '#74479A']} start={[0, 0]} end={[1, 0]} style={styles.linearGradient}>
+                    <LinearGradient colors={colorButton} start={[0, 0]} end={[1, 0]} style={styles.linearGradient}>
                         <Row>
                             <Col>
                                 <Row>
@@ -50,55 +62,16 @@ function StatButton(props) {
                                                 onPress={openMenu}
                                             />
                                         }>
-                                        <Menu.Item
-                                            onPress={() => {
-                                                console.log('Option1')
-                                            }}
-                                            leadingIcon='redo'
-                                            title='Abstimmen'
-                                        />
-                                        <Menu.Item
-                                            onPress={() => {
-                                                console.log('Option1')
-                                            }}
-                                            leadingIcon='redo'
-                                            title='Ändern'
-                                        />
-                                        <Menu.Item
-                                            onPress={() => {
-                                                console.log('Option1')
-                                            }}
-                                            leadingIcon='redo'
-                                            title='Alle Stimmen löschen'
-                                        />
-                                        <Menu.Item
+                                        {state !== 'attended' ? (
+                                            <Menu.Item
                                             onPress={() => {
                                                 console.log('Option1')
                                             }}
                                             leadingIcon='redo'
                                             title='Löschen'
                                         />
-                                        <Menu.Item
-                                            onPress={() => {
-                                                console.log('Option1')
-                                            }}
-                                            leadingIcon='redo'
-                                            title='QR-Code anzeigen'
-                                        />
-                                        <Menu.Item
-                                            onPress={() => {
-                                                console.log('Option1')
-                                            }}
-                                            leadingIcon='redo'
-                                            title='Umfrage URL kopieren'
-                                        />
-                                        <Menu.Item
-                                            onPress={() => {
-                                                console.log('Option1')
-                                            }}
-                                            leadingIcon='export'
-                                            title='Exportieren'
-                                        />
+                                        ):(null)}
+                                        
                                     </Menu>
                                 </Row>
                                 <Row>

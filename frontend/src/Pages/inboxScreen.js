@@ -171,7 +171,7 @@ const StatisticsScreen = ({ navigation }) => {
                                         buttonText={item.name}
                                         position={"relative"}
                                         onDots={() => navigation.navigate("QuestionaireOptions")}
-                                        onPress={() => navigation.navigate("StatisticSurvey", { item: item })}
+                                        onPress={() => whatQuestion(item.type, item.bewertung, item)}
                                         />
                                 )}
                                 keyExtractor={(item) => item.questionId}

@@ -52,16 +52,32 @@ const postQuestion = (data) => {
     return axios.post('/question', data);
 };
 
+const getActiveQuestions = (userID) => {
+    console.log("axios AQ:",userID);
+    return axios.get('/question/activequestion/'+userID);
+};
+const getExpiredQuestions = (userID) => {
+    console.log("axios EQ:",userID);
+    return axios.get('/question/expiredquestion/'+userID);
+}
+
+const deleteQuestionById = (questionId) => {
+    return axios.get('/question/delete/' + questionId);
+}
+
 export default {
     getQuestionFromThisWeek,
     getQuestionFromThisMonth,
     getUserAnswersWithQuestionInfo,
+    getExpiredQuestions,
     getQuestionByUser,
     getAllQuestions,
+    getActiveQuestions,
     getUser,
     postAnswerGiven,
     postAnswerOption,
     getUserById,
+    deleteQuestionById,
     postUserLogin,
     postUserSignUp,
     postQuestion,

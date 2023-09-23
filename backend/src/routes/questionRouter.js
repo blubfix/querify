@@ -174,6 +174,55 @@ questionRouter.get("/thismonth", async (req, res) => {
     }
 });
 
+questionRouter.route("/activequestion/:userID")
+    .get(async (req, res) => {
+    try {
+        console.log("req.body", req.params);
+        const { userID } = req.params;
+        console.log("userID", userID)
+        const result = await database.getQuestionActiveByUserId(userID);
+        console.log(result);
+
+        res.status(200).send(result);
+    } catch (e) {
+        console.log(e);
+        console.error(e);
+        res.sendStatus(500).send(e);
+    }
+});
+
+questionRouter.route("/expiredquestion/:userID")
+    .get(async (req, res) => {
+    try {
+        const { userID } = req.params;
+        const result = await database.getQuestionExpiredByUserId(userID);
+        console.log(result);
+
+        res.status(200).send(result);
+    } catch (e) {
+        console.log(e);
+        console.error(e);
+        res.sendStatus(500).send(e);
+    }
+});
+
+questionRouter.route("/delete/:questionId")
+    .get(async (req, res) => {
+    try {
+        console.log("req.body", req.params);
+        const { questionId } = req.params;
+        console.log("questionId backend : ", questionId)
+        const result = await database.deleteQuestionById(questionId);
+        console.log(result);
+
+        res.status(200).send(result);
+    } catch (e) {
+        console.log(e);
+        console.error(e);
+        res.sendStatus(500).send(e);
+    }
+});
+
 questionRouter.get("/:questionId", async (req, res) => {
     try {
         const { questionId } = req.params;
@@ -221,13 +270,14 @@ questionRouter.param("userId", (req, res, next, userId) => {
 questionRouter.route("/user/:userId")
     .get(async (req, res) => {
         try {
-            const { userId } = req.body;
+            const { userId } = req.params;
             const result = await database.getQuestionsByUser(userId);
-            if (result.length === 0) {
-                res.status(404).send('there are no questions by this user');
-            } else {
-                res.status(200).send(result);
-            }
+            // if (result.length === 0) {
+            //     res.status(404).send('there are no questions by this user');
+            // } else {
+            //     res.status(200).send(result);
+            // }
+            res.status(200).send(result);
         } catch (e) {
             console.error(e);
             res.sendStatus(500).send(e);

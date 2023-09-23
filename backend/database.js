@@ -132,6 +132,33 @@ async function getQuestionById(questionId) {
   }
 }
 
+async function getQuestionActiveByUserId(userID) {
+  try {
+    const result = await connection.query(
+      `SELECT q.*, u.name AS name, u.email AS email FROM question q JOIN user u ON q.userId = u.userId WHERE STR_TO_DATE(q.date, '%d.%m.%Y') > CURDATE() AND q.userId = '${userID}'`
+    );
+    console.log("DB Result: getQuestionActiveByUserId", result);
+    return result;
+    
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+async function getQuestionExpiredByUserId(userID) {
+  try {
+    const result = await connection.query(
+      `SELECT q.*, u.name AS name, u.email AS email FROM question q JOIN user u ON q.userId = u.userId WHERE STR_TO_DATE(q.date, '%d.%m.%Y') < CURDATE() AND q.userId = '${userID}'`
+    );
+    console.log("DB Result: getQuestionExpiredByUserId", result);
+    return result;
+
+    } catch (e) {
+    console.error(e);
+  }
+}
+
+
 async function getQuestionsByUser(userId) {
   try {
     const result = await connection.query(
@@ -287,6 +314,25 @@ async function getAnswerGivenByUser(userId) {
     console.error(e);
   }
 }
+
+async function deleteQuestionById(questionId) {
+  try {
+    const result = await connection.query(
+      `DELETE FROM question WHERE questionId = '${questionId}'`
+    );
+    // const result2 = await connection.query(
+    //   `DELETE FROM answerOption WHERE questionId = '${questionId}'`
+    // );
+    // const result3 = await connection.query(
+    //   `DELETE FROM answerGiven WHERE questionId = '${questionId}'`
+    // );
+
+    console.log("DB Result: deleteQuestionById", result);
+    return result;
+  } catch (e) {
+    console.error(e);
+  }
+}
 async function getUserAnswersWithQuestionInfo(userId) {
   try {
     const result = await connection.query(
@@ -331,6 +377,9 @@ module.exports = {
   getAllQuestions,
   getQuestionFromThisWeek,
   getQuestionFromThisMonth,
+  getQuestionActiveByUserId,
+  getQuestionExpiredByUserId,
+  deleteQuestionById,
   signUp,
   login,
 };

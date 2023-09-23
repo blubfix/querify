@@ -36,11 +36,14 @@ import BottomNavigation from "../Components/BottomNavigation";
 import API from "../API/apiConnection";
 
 const StatisticsScreen = ({ navigation }) => {
-    const [question, setQuestion] = useState();
-    const [surveys, setSurveys] = useState();
+    const [question, setQuestion] = useState([]);
+    const [surveys, setSurveys] = useState([]);
     const [userData, setUserData] = useState(null);
     const [loading, setLoading] = useState(true); // Add loading state
     const [loadingSurv, setLoadingSurv] = useState(true); // Add loading state
+    const [activeQuestion, setActiveQuestion] = useState([]); // Add active question state
+    const [expiredQuestion, setExpiredQuestion] = useState([]); // Add expired question state
+    const [tookQuestion, setTookQuestion] = useState([]); // Add took question state
 
     //TODO: Show snackbar if no data is available, style snackbar to match design and position it correctly
     const [snackbarVisible, setSnackbarVisible] = useState(false); // Add snackbar visibility state
@@ -67,7 +70,9 @@ const StatisticsScreen = ({ navigation }) => {
                 const parsedUserData = JSON.parse(tempData);
                 setUserData(parsedUserData);
                 console.log("userData:", parsedUserData);
-                getQuestion(parsedUserData.id); // Call getQuestion with user ID
+                //getQuestion(parsedUserData.id); // Call getQuestion with user ID
+                getActiveQuestions(parsedUserData.id); // Call getQuestion with user ID
+                getExpiredQuestions(parsedUserData.id); // Call getQuestion with user ID
                 getSuverysAttended(parsedUserData.id); // Call getQuestion with user ID
             }
         } catch (error) {
@@ -75,10 +80,15 @@ const StatisticsScreen = ({ navigation }) => {
         }
     };
 
+    const splitDataQuestion = (questions) => {
+        console.log("questions: ", questions);
+    };
+
+
     const getSuverysAttended = (id) => {
         API.getUserAnswersWithQuestionInfo(id)
             .then((resp) => {
-                console.log(resp.data);
+                console.log("teilgenommene Umfragen: ",resp.data);
                 setSurveys(resp.data);
                 if (resp.data.length == 0) {
                     setSnackbarVisibleSurv(true); // Show snackbar on error
@@ -93,6 +103,39 @@ const StatisticsScreen = ({ navigation }) => {
             });
     };
 
+    const getActiveQuestions = (id) => {
+        API.getActiveQuestions(id)
+            .then((resp) => {
+                console.log("ActiveQuestions: ",resp.data);
+                setActiveQuestion(resp.data);
+                // if (resp.data.length == 0) {
+                //     setSnackbarVisible(true); // Show snackbar on error
+                // }
+            })
+            .catch((e) => {
+                console.log(e);
+                setSnackbarVisible(true); // Show snackbar on error
+            })
+            .finally(() => {
+                setLoading(false); // Set loading to false once data fetching is complete
+            });
+    };
+    
+    const getExpiredQuestions = (id) => {
+        API.getExpiredQuestions(id)
+            .then((resp) => {
+                console.log("ExpiredQuestions: ",resp.data);
+                setExpiredQuestion(resp.data);
+            
+            })
+            .catch((e) => {
+                console.log(e);
+                setSnackbarVisible(true); // Show snackbar on error
+            })
+            .finally(() => {
+                setLoading(false); // Set loading to false once data fetching is complete
+            });
+    };
 
     const getQuestion = (id) => {
         //const id = userData.id;
@@ -101,6 +144,7 @@ const StatisticsScreen = ({ navigation }) => {
             .then((resp) => {
                 console.log(resp.data);
                 setQuestion(resp.data);
+                splitDataQuestion(resp.data);
                 if (resp.data.length == 0) {
                     setSnackbarVisible(true); // Show snackbar on error
                 }
@@ -144,13 +188,15 @@ const StatisticsScreen = ({ navigation }) => {
                             />
                         ) : (
                             <SectionList
-                                sections={[{ data: question }]}
+                                sections={[{ data: activeQuestion }]}
                                 style={styles.sectionBox}
                                 renderItem={({ item }) => (
-                                    <StatButtonOwn
+                                    <StatButton
                                         buttonHeading={item.title}
                                         buttonText={item.name}
                                         position={"relative"}
+                                        question={item}
+                                        state={"active"}
                                         onDots={() => navigation.navigate("QuestionaireOptions")}
                                         onPress={() => navigation.navigate("StatisticSurvey", { item: item })}
                                     />
@@ -178,13 +224,15 @@ const StatisticsScreen = ({ navigation }) => {
                             />
                         ) : (
                             <SectionList
-                                sections={[{ data: question }]}
+                                sections={[{ data: expiredQuestion }]}
                                 style={styles.sectionBox}
                                 renderItem={({ item }) => (
-                                    <StatButtonOwnOld
+                                    <StatButton
                                         buttonHeading={item.title}
                                         buttonText={item.name}
                                         position={"relative"}
+                                        question={item}
+                                        state={"expired"}
                                         onDots={() => navigation.navigate("QuestionaireOptions")}
                                         onPress={() => navigation.navigate("StatisticSurvey", { item: item })}
                                     />
@@ -219,6 +267,8 @@ const StatisticsScreen = ({ navigation }) => {
                                         buttonHeading={item.question_title}
                                         buttonText={item.question_creator} // Display whatever you want here
                                         position={"relative"}
+                                        question={item}
+                                        state={"attended"}
                                         onDots={() =>
                                             navigation.navigate("QuestionaireOptions")
                                         }
