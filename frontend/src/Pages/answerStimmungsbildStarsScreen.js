@@ -23,6 +23,7 @@ import API from "../API/apiConnection";
 const AnswerStimmungsbildStars =({ navigation, route }) => {
     const [starColors, setStarColors] = useState(['#626262', '#626262', '#626262', '#626262', '#626262'])
     const [selectedStar, setSelectedStar] = useState(0);
+    const [starNumber, setStarNumber] = useState(null);
     const [question, setQuestion] = useState(route.params);
     const [userData, setUserData] = useState({});
     const [userFromQuestion, setUserFromQuestion] = useState({});
@@ -73,11 +74,12 @@ const AnswerStimmungsbildStars =({ navigation, route }) => {
     }
 
     const answerQuestion = () => {
-        if (selectedOption !== null) {
+        if (starNumber !== null) {
             const userId = userData.id;
             console.log("userId: ", userId);
+            console.log(starNumber);
             const data = {
-                answerText: selectedOption,
+                answerText: ""+starNumber,
                 questionId: question.questionId,
             }
             console.log("data: ", data);
@@ -94,18 +96,16 @@ const AnswerStimmungsbildStars =({ navigation, route }) => {
                     API.postAnswerGiven(data2)
                         .then((resp) => {
                             console.log(resp.data);
+                            navigation.navigate("CreateQuestionaire")
                         })
                         .catch((e) => {
                             console.log(e);
-                            setTextInputColor('#DC2626');
-                            setErrorText('Bitte überprüfe deine Eingabe!');
         
                         });
                 })
                 .catch((e) => {
                     console.log(e);
-                    setTextInputColor('#DC2626');
-                    setErrorText('Bitte überprüfe deine Eingabe!');
+
     
                 });
                 
@@ -136,6 +136,8 @@ const AnswerStimmungsbildStars =({ navigation, route }) => {
         setStarColors(starColorsCopy);
         setSelectedStar(starIndex);
         console.log("selectedStar: ", selectedStar);
+        console.log(starIndex)
+        setStarNumber(starIndex);
     }
 
     return (
@@ -206,7 +208,7 @@ const AnswerStimmungsbildStars =({ navigation, route }) => {
 
                     <BottomNavigation buttonColors={['#6F6F70', '#6F6F70', '#6F6F70', '#6F6F70']}/>
                 </Grid>
-                <SubmitButton buttonText={'Abstimmen'} position={'absolute'} bottom={120} onPress={() => navigation.navigate('InboxScreen')}/>
+                <SubmitButton buttonText={'Abstimmen'} position={'absolute'} bottom={120} onPress={() => answerQuestion()}/>
         </PaperProvider>
     );
 }

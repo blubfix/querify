@@ -1,25 +1,15 @@
-import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
-import { Image, Button, StyleSheet, View, Alert, useWindowDimensions } from "react-native";
+import { StyleSheet, RefreshControl, FlatList } from "react-native";
 import {
-    MD3DarkTheme as DefaultTheme,
     Provider as PaperProvider,
-    Switch,
     Text,
-    Surface,
-    Appbar,
-    SegmentedButtons,
-    TextInput,
 } from "react-native-paper";
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Col, Row, Grid } from "react-native-paper-grid";
 import { useFonts, Inter_700Bold, Inter_400Regular, Inter_500Medium } from '@expo-google-fonts/inter';
 import { Manrope_400Regular, Manrope_600SemiBold, Manrope_700Bold, Manrope_300Light } from '@expo-google-fonts/manrope'
 import BottomNavigation from "../Components/BottomNavigation";
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import API from "../API/apiConnection";
-import { parseGermanDate } from '../Components/DateFormatter'
-
 const CalendarScreen = ({ navigation }) => {
     const [questions, setQuestions] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
@@ -32,86 +22,86 @@ const CalendarScreen = ({ navigation }) => {
         Manrope_700Bold,
         Manrope_300Light
     });
-    const markedDatesObject = {};
+    const [dates, setDates] = useState(null);
+    const [orgDates, setOrgDates] = useState(null);
 
     useEffect(() => {
         getQuestions();
-        //dateRendering();
-        console.log("questions: ", questions);
+        // console.log("questions: ", questions);
     }, []);
 
-    const getQuestions = () => {
-        API.getAllQuestions()
-            .then((resp) => {
-                console.log(resp.data);
-                setQuestions(resp.data);
-                filterData();
-            })
-            .catch((e) => {
-                console.log(e);
-                // Show snackbar on error
-            })
-            .finally(() => {
-                null// Set loading to false once data fetching is complete
-            });
+    const getQuestions = async () => {
+        try {
+            const resp = await API.getAllQuestions();
+            // console.log(resp.data);
+            await setQuestions(resp.data);
+            await filterData(resp.data);
+        } catch (e) {
+            console.log(e);
+        }
+        return questions
     };
 
-    const filterData = () => {
-        // Use the filter method to create a new array without items where "date" is null or undefined
-        filtered = questions.filter(item => item.date !== null && item.date !== undefined);
-        setFilteredData(filtered);
-        console.log("filteredData: ", filteredData);
-    }
+    const filterData = async (data) => {
+        filtered = data.filter(item => item.date !== null && item.date !== undefined);
+        const sortByDate = () => {
+            const sortedData = [...filtered].sort((a, b) => {
+                const dateA = new Date(a.date.split('.').reverse().join('-')); 
+                const dateB = new Date(b.date.split('.').reverse().join('-'));
+                return dateA - dateB; 
+            });
+            setFilteredData(sortedData);
+        };
+        sortByDate();
 
 
-    // const convertDateStringsToDateObjects = (data) => {
-    //     // Use the map function to iterate through each object in the array
-    //     const updatedData = data.map(item => {
-    //         // Check if the "date" key exists in the item
-    //         if (!item.hasOwnProperty('date')) {
-    //             console.error('Object does not have a "date" property:', item);
-    //             return item; // Return the item unchanged
-    //         }
+        const dateStrings = filtered.map(item => item.date)
 
-    //         // Use the parseGermanDate function to convert the "date" string to a Date object
-    //         const dateObject = parseGermanDate(item.date);
 
-    //         // Add the "dateObject" to the item and return the updated object
-    //         return {
-    //             ...item,
-    //             dateObject,
-    //         };
-    //     });
-    //     console.log('updatedData:', updatedData);
-    //     return updatedData;
-    // }
+        const formattedDates = [];
 
-    const dateRendering = () => {
-        console.log("dateRendering")
-        questions.forEach(item => {
-            // Check if the "date" key exists in the item
-            if (!item || !item.date) {
-                console.info('Object does not have a valid "date" property:', item);
-                return;
-            }
+        for (const inputDateString of dateStrings) {
+            const [day, month, year] = inputDateString.split('.');
+            const originalDate = new Date(year, month - 1, day);
+            const formattedYear = originalDate.getFullYear();
+            const formattedMonth = (originalDate.getMonth() + 1).toString().padStart(2, '0');
+            const formattedDay = originalDate.getDate().toString().padStart(2, '0');
+            const formattedDateString = `${formattedYear}-${formattedMonth}-${formattedDay}`;
+            formattedDates.push(formattedDateString);
+        }
 
-            // Split the "date" string into day, month, and year
-            const [day, month, year] = item.date.split('.');
-
-            // Create the new date string in "yyyy-mm-dd" format
-            const newDateFormat = `${year}-${month}-${day}`;
-
-            // Use the "date" string as a key in the markedDatesObject and provide the marking properties
-            markedDatesObject[newDateFormat] = {
-                ...markedDatesObject[newDateFormat],
-                marked: true,
-                dotColor: '#5172E5', // Example dotColor
-                // Add other marking properties as needed
+        const modifiedEntries = formattedDates.map(dateString => {
+            const modifiedObject = {
+                [dateString]: {
+                    selected: true,
+                    marked: false,
+                    selectedColor: '#874665E0'
+                }
             };
-            console.log("markedDatesObject: ", markedDatesObject)
+            return modifiedObject;
         });
+
+        const combinedModifiedEntries = Object.assign({}, ...modifiedEntries);
+
+        const dataArray = Object.entries(combinedModifiedEntries);
+
+        dataArray.sort((a, b) => a[0].localeCompare(b[0]));
+
+        const sortedData = Object.fromEntries(dataArray);
+
+        setDates(sortedData);
+        setOrgDates(sortedData);
     }
 
+    const pressDay = async (day) => {
+        const newKey = day;
+        const newValue = { "selected": "true", "selectedColor": "#74479AD5" };
+        const updatedObject = {
+            ...orgDates,
+            [newKey]: newValue
+        };
+        setDates(updatedObject)
+    }
     if (!fontsLoaded) {
         return null;
     }
@@ -124,56 +114,71 @@ const CalendarScreen = ({ navigation }) => {
     }
     LocaleConfig.defaultLocale = 'de';
 
+    const onRefresh = () => {
+        console.log("Refreshing page")
+        getQuestions();
+    };
+
+    const data = [{}]; // Placeholder item
 
     return (
         <PaperProvider>
-            <Grid style={styles.container} container>
-                <Row>
-                    <Col>
-                        <Text style={styles.headerText}>Kalender</Text>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <Calendar
-                            style={styles.calendar}
-                            theme={{
-                                backgroundColor: '#ffffff',
-                                dayTextColor: 'black',
-                                textDayFontFamily: 'Manrope_300Light',
-                                textDayFontSize: 15,
-                                textDayStyle: styles.textDayStyle,
-                                textMonthFontFamily: 'Manrope_600SemiBold',
-                                textMonthFontSize: 16,
-                                textDayHeaderFontFamily: 'Manrope_300Light',
-                                textDayHeaderFontSize: 15,
-                                arrowColor: '#64748B',
-                                todayTextColor: '#5172E5',
-
-                            }}
-                            markedDates={markedDatesObject}
-                            enableSwipeMonths={true}
-                            onDayPress={day => { console.log(day) }}
-                        />
-
-                    </Col>
-                </Row>
+            <FlatList
+                style={styles.container}
+                data={data}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={({ item }) => (
+                    <Grid style={styles.container} container>
+                        <Row>
+                            <Col>
+                                <Text style={styles.headerText}>Kalender</Text>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Calendar
+                                    style={styles.calendar}
+                                    theme={{
+                                        backgroundColor: '#ffffff',
+                                        dayTextColor: 'black',
+                                        textDayFontFamily: 'Manrope_300Light',
+                                        textDayFontSize: 15,
+                                        textDayStyle: styles.calendarText,
+                                        textMonthFontFamily: 'Manrope_600SemiBold',
+                                        textMonthFontSize: 16,
+                                        textDayHeaderFontFamily: 'Manrope_300Light',
+                                        textDayHeaderFontSize: 15,
+                                        arrowColor: '#64748B',
+                                        todayTextColor: '#5172E5',
+                                        todayBackgroundColor: "#5172E522",
+                                    }}
+                                    markedDates={dates}
+                                    enableSwipeMonths={true}
+                                    onDayPress={day => { pressDay(day.dateString) }}
+                                />
+                            </Col>
+                        </Row>
                         {filteredData.map((item, index) => {
                             return (
                                 <Row key={index}>
                                     <Col>
-                                        <Text>{item.date}</Text>
-                                        <Text>{item.title}</Text>
+                                        <Text style={styles.firstRowText}>Umfrage endet am: {item.date}</Text>
+                                        <Text style={styles.secondRowText}>{item.title}</Text>
                                     </Col>
                                 </Row>
                             )
                         })}
+                    </Grid>
+                )}
+                refreshControl={<RefreshControl tintColor={"#74479A"} onRefresh={onRefresh} />}
+            />
+            <BottomNavigation buttonColors={['#6F6F70', '#6F6F70', '#778DE3', '#6F6F70']} />
 
-                <BottomNavigation buttonColors={['#6F6F70', '#6F6F70', '#778DE3', '#6F6F70']} />
-            </Grid>
+
         </PaperProvider>
     );
 }
+
 
 const styles = StyleSheet.create({
     progressBar: {
@@ -182,9 +187,10 @@ const styles = StyleSheet.create({
     },
 
     container: {
-        height: '100%',
+        height: '87%',
         width: '100%',
-        backgroundColor: 'white'
+        backgroundColor: 'white',
+        flexGrow: 0,
     },
 
     headerText: {
@@ -206,10 +212,34 @@ const styles = StyleSheet.create({
     },
 
     calendar: {
-        //borderWidth: 1,
         width: '95%',
         alignSelf: 'center',
 
+    },
+
+    calendarText: {
+        fontSize: 15,
+        fontWeight: '300',
+        fontFamily: 'Manrope_300Light',
+    },
+
+    firstRowText: {
+        fontSize: 16,
+        fontWeight: '500',
+        color: '#666666',
+        alignSelf: "flex-start",
+        marginBottom: "2%",
+        fontFamily: 'Inter_500Medium',
+        marginLeft: "5%",
+    },
+    secondRowText: {
+        fontSize: 16,
+        fontWeight: '500',
+        color: '#333333',
+        alignSelf: "flex-start",
+        marginBottom: "2%",
+        fontFamily: 'Inter_500Medium',
+        marginLeft: "5%",
     },
 
 

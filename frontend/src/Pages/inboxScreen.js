@@ -241,9 +241,10 @@ const styles = StyleSheet.create({
     },
 
     container: {
-        height: "100%",
+        height: "87%",
         width: "100%",
         backgroundColor: "white",
+        flexGrow:0,
     },
     subContainer: {
 
