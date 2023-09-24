@@ -82,13 +82,16 @@ const CreateMehrfach = ({ navigation }) => {
 
     const goNextForm = () => {
         console.log("title: ", title)
+        console.log("answers: ", answers)
+        console.log("answer: ", answer)
+        console.log("numberOfAnswers: ", numberOfAnswers)
         //TODO: check if title is empty and show error message
         //TODO: check if date is empty and show error message
         //TODO: check if date is in the past and show error message
         //TODO: check if description is empty and show error message
         //TODO: check if color is selected and show error message
         //TODO: check if type is correct
-        navigation.navigate('QuestionaireOptions', {title: title, description: description, date: date, type: 'multi'});
+        navigation.navigate('QuestionaireOptions', {title: title, description: description, date: date, type: 'multi', answers: answers, minimumNumberOfAnswers: numberOfAnswers});
     }
 
     return (

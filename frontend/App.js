@@ -30,7 +30,11 @@ import AnswerMehrfach from './src/Pages/answerMehrfachScreen';
 import AnswerFreitext from './src/Pages/answerFreitextScreen';
 import AnswerStimmungsbildStars from './src/Pages/answerStimmungsbildStarsScreen';
 import AnswerStimmungsbildLikert from './src/Pages/answerStimmungsbildLikertScreen';
-import StatisticSurvey from './src/Pages/statisticSurvey';
+import StatisticJaNeinScreen from './src/Pages/statisticJaNeinScreen';
+import StatisticFreitextScreen from './src/Pages/statisticFreitextScreen';
+import StatisticMehrfachScreen from './src/Pages/statisticMehrfachScreen';
+import StatisticLikertScreen from './src/Pages/statisticLikertScreen';
+import StatisticStarsScreen from './src/Pages/statisticStarsScreen';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -72,7 +76,15 @@ export default function App() {
                 />
                 <Stack.Screen name="StatisticsScreen" component={StatisticsScreen} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
                 />
-                <Stack.Screen name="StatisticSurvey" component={StatisticSurvey} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
+                <Stack.Screen name="StatisticJaNeinScreen" component={StatisticJaNeinScreen} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
+                />
+                <Stack.Screen name="StatisticFreitextScreen" component={StatisticFreitextScreen} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false }}
+                />
+                <Stack.Screen name="StatisticMehrfachScreen" component={StatisticMehrfachScreen} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false }}
+                />
+                <Stack.Screen name="StatisticLikertScreen" component={StatisticLikertScreen} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false }}
+                />
+                <Stack.Screen name="StatisticStarsScreen" component={StatisticStarsScreen} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={0}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false }}
                 />
                 <Stack.Screen name="CreateJaNein" component={CreateJaNein} options={{headerTitle: "", headerLeft: () => <LogoTitle progress={1}/>, headerShadowVisible: false, animation: 'none', gestureEnabled: false  }}
                 />

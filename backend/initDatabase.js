@@ -53,6 +53,7 @@ async function createTables() {
         bewertung VARCHAR(255),
         date VARCHAR(255),
         description VARCHAR(255),
+        multi VARCHAR(255),
         PRIMARY KEY (questionId),
         FOREIGN KEY (userId) REFERENCES user(userId)
       );`
