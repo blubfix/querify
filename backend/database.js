@@ -105,10 +105,10 @@ async function getUserIdByEmailAndPassword(email, password) {
 
 // ++++++++++++ question ++++++++++++
 
-async function createQuestion(questionId, title, type, minimumNumberOfAnswers, userId, qrCode, questionLink, identifikation, wiederverwendung, ergebniseinsicht, bewertung, date) {
+async function createQuestion(questionId, title, type, minimumNumberOfAnswers, userId, qrCode, questionLink, identifikation, wiederverwendung, ergebniseinsicht, bewertung, date, description, answers) {
   try {
     await connection.query(
-      `INSERT INTO question (questionId, createdAt, title, type, minimumNumberOfAnswers, userId, qrCode, questionLink, identifikation, wiederverwendung, ergebniseinsicht, bewertung, date) VALUES ('${questionId}', LOCALTIME, '${title}', '${type}', '${minimumNumberOfAnswers}', '${userId}', '${qrCode}', '${questionLink}', '${identifikation}', '${wiederverwendung}', '${ergebniseinsicht}', '${bewertung}', '${date}')`
+      `INSERT INTO question (questionId, createdAt, title, type, minimumNumberOfAnswers, userId, qrCode, questionLink, identifikation, wiederverwendung, ergebniseinsicht, bewertung, date, description, multi) VALUES ('${questionId}', LOCALTIME, '${title}', '${type}', '${minimumNumberOfAnswers}', '${userId}', '${qrCode}', '${questionLink}', '${identifikation}', '${wiederverwendung}', '${ergebniseinsicht}', '${bewertung}', '${date}', '${description}', '${answers}')`
     );
     console.log("data (question) inserted");
   } catch (e) {
@@ -247,14 +247,57 @@ async function getAnswerOptionByQuestionId(questionId) {
   try {
     console.log("Question ID:", questionId); // Konsolenausgabe der Frage-ID
     const result = await connection.query(
-      `SELECT * FROM answerOption WHERE questionId = '${questionId}'`
+      `SELECT *, CAST((SELECT COUNT(*) FROM answerOption AS a2 WHERE a2.questionId = '${questionId}') AS SIGNED) AS optionCount FROM answerOption WHERE questionId = '${questionId}';`
     );
     console.log("DB Result: getAnswerOptionByQuestionID", result);
     if (result.length === 0) {
       console.log("No answerOption with this question Id available");
       return null;
     }
-    return result;
+    const newData = result.map(item => ({
+      ...item,
+      optionCount: Number(item.optionCount)
+
+    }));
+    return newData;
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+}
+
+async function getAnswerOptionYesByQuestionId(questionId) {
+  try {
+    const result = await connection.query(
+      `SELECT ao.answerOptionId, ao.answerText, CAST((SELECT COUNT(*) FROM answerOption AS a2 WHERE a2.questionId = '${questionId}') AS SIGNED) AS optionCount, u.name AS userName FROM answerOption AS ao JOIN answerGiven AS ag ON ao.answerOptionId = ag.answerOptionId JOIN user AS u ON ag.userId = u.userId WHERE ao.questionId = '${questionId}' AND ao.answerText = 'Ja';`
+    );
+    console.log("DB Result: getAnswerOptionYesByQuestionId", result);
+    const newData = result.map(item => ({
+      ...item,
+      optionCount: Number(item.optionCount)
+
+    }));
+    return newData;
+
+  } catch (e) {
+    console.error(e);
+    throw e;
+  }
+}
+
+async function getAnswerOptionNoByQuestionId(questionId) {
+  try {
+    const result = await connection.query(
+      `SELECT ao.answerOptionId, ao.answerText, CAST((SELECT COUNT(*) FROM answerOption AS a2 WHERE a2.questionId = '${questionId}') AS SIGNED) AS optionCount, u.name AS userName FROM answerOption AS ao JOIN answerGiven AS ag ON ao.answerOptionId = ag.answerOptionId JOIN user AS u ON ag.userId = u.userId WHERE ao.questionId = '${questionId}' AND ao.answerText = 'Nein';`
+    );
+    console.log("DB Result: getAnswerOptionNoByQuestionId", result);
+    const newData = result.map(item => ({
+      ...item,
+      optionCount: Number(item.optionCount)
+
+    }));
+    return newData;
+
   } catch (e) {
     console.error(e);
     throw e;
@@ -380,6 +423,8 @@ module.exports = {
   getQuestionActiveByUserId,
   getQuestionExpiredByUserId,
   deleteQuestionById,
+  getAnswerOptionYesByQuestionId,
+  getAnswerOptionNoByQuestionId,
   signUp,
   login,
 };

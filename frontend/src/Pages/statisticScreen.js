@@ -158,6 +158,23 @@ const StatisticsScreen = ({ navigation }) => {
             });
     };
 
+    const getStatisticInfoScreen = (item) => {
+        console.log("type: ", item.type);
+        if (item.type === 'poll') {
+            navigation.navigate("StatisticJaNeinScreen", { item: item });
+        } else if (item.type === 'multi') {
+            navigation.navigate("StatisticMehrfachScreen", { item: item });
+        } else if (item.type === 'free') {
+            navigation.navigate("StatisticFreitextScreen", { item: item });
+        } else if (item.type === 'feeling') {
+            if (item.bewertung === 'stars') {
+                navigation.navigate("StatisticStarsScreen", { item: item });
+            } else if (item.bewertung === 'likert') {
+                navigation.navigate("StatisticLikertScreen", { item: item });
+            }
+        }
+    };
+
     const onRefresh = () => {
         console.log("hello");
         loadUserData();
@@ -190,18 +207,19 @@ const StatisticsScreen = ({ navigation }) => {
                             <SectionList
                                 sections={[{ data: activeQuestion }]}
                                 style={styles.sectionBox}
-                                renderItem={({ item }) => (
+                                renderItem={({ item, index }) => (
                                     <StatButton
+                                        keyExtractor={index}
                                         buttonHeading={item.title}
                                         buttonText={item.name}
                                         position={"relative"}
                                         question={item}
                                         state={"active"}
                                         onDots={() => navigation.navigate("QuestionaireOptions")}
-                                        onPress={() => navigation.navigate("StatisticSurvey", { item: item })}
+                                        onPress={() => getStatisticInfoScreen(item)}
                                     />
                                 )}
-                                keyExtractor={(item) => item.questionId}
+                                keyExtractor={(item, index) => item.questionId + index.toString()}
                                 renderSectionHeader={({ section }) => (
                                     <Text style={styles.textStyle}>{section.title}</Text>
                                 )}
@@ -226,18 +244,19 @@ const StatisticsScreen = ({ navigation }) => {
                             <SectionList
                                 sections={[{ data: expiredQuestion }]}
                                 style={styles.sectionBox}
-                                renderItem={({ item }) => (
+                                renderItem={({ item, index }) => (
                                     <StatButton
+                                        keyExtractor={index}
                                         buttonHeading={item.title}
                                         buttonText={item.name}
                                         position={"relative"}
                                         question={item}
                                         state={"expired"}
                                         onDots={() => navigation.navigate("QuestionaireOptions")}
-                                        onPress={() => navigation.navigate("StatisticSurvey", { item: item })}
+                                        onPress={() => getStatisticInfoScreen(item)}
                                     />
                                 )}
-                                keyExtractor={(item) => item.questionId}
+                                keyExtractor={(item, index) => item.questionId + index.toString()}
                                 renderSectionHeader={({ section }) => (
                                     <Text style={styles.textStyle}>{section.title}</Text>
                                 )}
@@ -262,8 +281,9 @@ const StatisticsScreen = ({ navigation }) => {
                             <SectionList
                                 sections={[{ data: surveys }]}
                                 style={styles.sectionBox}
-                                renderItem={({ item }) => (
+                                renderItem={({ item, index }) => (
                                     <StatButton
+                                        keyExtractor={index}
                                         buttonHeading={item.question_title}
                                         buttonText={item.question_creator} // Display whatever you want here
                                         position={"relative"}
@@ -272,10 +292,10 @@ const StatisticsScreen = ({ navigation }) => {
                                         onDots={() =>
                                             navigation.navigate("QuestionaireOptions")
                                         }
-                                        onPress={() => navigation.navigate("StatisticSurvey", { item: item })}
+                                        onPress={() => getStatisticInfoScreen(item)}
                                     />
                                 )}
-                                keyExtractor={(item) => item.questionId}
+                                keyExtractor={(item, index) => item.questionId + index.toString()}
                                 renderSectionHeader={({ section }) => (
                                     <Text style={styles.textStyle}>{section.title}</Text>
                                 )}

@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Image, Button, StyleSheet, View, Alert, Dimensions, TouchableOpacity, KeyboardAvoidingView } from "react-native";
 import {
     MD3DarkTheme as DefaultTheme,
@@ -27,19 +27,26 @@ import DateInput from "../Components/DateInput";
 import ColorPalette from "../Components/ColorPalette";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
+import API from "../API/apiConnection";
 const { width, height } = Dimensions.get("window");
 
-const StatisticSurvey = ({ navigation, route }) => {
+const StatisticJaNeinScreen = ({ navigation, route }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [date, setDate] = useState('');
     const [selectedColorIndex, setSelectedColorIndex] = useState(null);
     const [question, setQuestion] = useState(route.params.item);
     const [expanded, setExpanded] = React.useState(true);
+    const [answerYesOptions, setAnswerYesOptions] = useState([]);
+    const [answerNoOptions, setAnswerNoOptions] = useState([]);
+    const [answerCount, setAnswerCount] = useState();
+
 
     const handlePress = () => setExpanded(!expanded);
 
     console.log("wo bin ich: ", question)
+
+
 
     const [fontsLoaded] = useFonts({
         Inter_400Regular,
@@ -51,9 +58,50 @@ const StatisticSurvey = ({ navigation, route }) => {
         Manrope_300Light
     });
 
-    if (!fontsLoaded) {
-        return null;
+    useEffect(() => {
+        getAnswerYesNoUser(question.questionId);
+        checkDate();
+    }, []);
+
+
+    const checkDate = () => {
+         // Parse the date from the 'question' in the format 'dd.mm.yyyy'
+        const questionDateParts = question.date.split('.');
+        const questionDay = parseInt(questionDateParts[0], 10);
+        const questionMonth = parseInt(questionDateParts[1], 10) - 1; // Month is zero-based
+        const questionYear = parseInt(questionDateParts[2], 10);
+
+        // Create a Date object for the 'question' date
+        const questionDateObject = new Date(questionYear, questionMonth, questionDay);
+
+        // Get the current date
+        const currentDate = new Date();
+
+        // Calculate the time difference in milliseconds
+        const timeDifference = questionDateObject - currentDate;
+
+        // Convert milliseconds to days
+        const daysRemaining = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+        console.log(daysRemaining);
+        return daysRemaining;
     }
+
+    const checkQuestionArt = () => {
+        if (question.type === 'poll') {
+            return 'Ja/Nein Umfrage';
+        } else if (question.type === 'multi') {
+            return 'Mehrfachauswahl Umfrage';
+        } else if (question.type === 'free') {
+            return 'Freitext Umfrage';
+        } else if (question.type === 'feeling') {
+            if (question.bewertung === 'stars') {
+                return 'Stimmungsbildumfrage - Sternebewertung';
+            } else if (question.bewertung === 'likert') {
+                return 'Stimmungsbildumfrage - Likertskala';
+            }
+        }
+    }
+
     const handleTitleChange = (newTitle) => {
         console.log("newTitle: ", newTitle)
         setTitle(newTitle);
@@ -71,8 +119,34 @@ const StatisticSurvey = ({ navigation, route }) => {
         setSelectedColorIndex(colorIndex);
     }
 
-    checkDate = (date) => {
+    const getAnswerYesNoUser = (id) => {
+        console.log("question.questionId: ", id);
+      
+        // Define two separate promises for the API calls
+        const yesOptionsPromise = API.getAnswerOptionYesByQuestionId(id);
+        const noOptionsPromise = API.getAnswerOptionNoByQuestionId(id);
+      
+        // Use Promise.all to wait for both promises to resolve
+        Promise.all([yesOptionsPromise, noOptionsPromise])
+          .then(([yesOptionsResponse, noOptionsResponse]) => {
+            console.log("Yes Options: ", yesOptionsResponse.data);
+            console.log("No Options: ", noOptionsResponse.data);
+      
+            // Set the state variables with the data from the responses
+            setAnswerYesOptions(yesOptionsResponse.data);
+            setAnswerNoOptions(noOptionsResponse.data);
+      
+            // You can now proceed with any additional logic that depends on this data
+          })
+          .catch((err) => {
+            console.log("err: ", err);
+          });
+          
+      };
+      
 
+    if (!fontsLoaded) {
+        return null;
     }
 
     const goNextForm = () => {
@@ -92,7 +166,7 @@ const StatisticSurvey = ({ navigation, route }) => {
                     <Row>
                         <Col>
                             <Text style={styles.subHeader}>{question.title}</Text>
-                            <Text>{question.type}</Text>
+                            <Text>{checkQuestionArt()}</Text>
                         </Col>
                     </Row>
                     <Row>
@@ -107,7 +181,7 @@ const StatisticSurvey = ({ navigation, route }) => {
                                             borderColor: "black",
                                             borderRadius: 0,
                                         }}>
-                                        <Text> ... </Text>
+                                        <Text> {answerYesOptions.length + answerNoOptions.length} </Text>
                                     </View>
                                 </View>
                             </Surface>
@@ -117,20 +191,20 @@ const StatisticSurvey = ({ navigation, route }) => {
                         <Col>
                             <Surface elevation={5} style={{ backgroundColor: "grey" }}>
                                 <View style={styles.statisticContainer}>
-                                    <Text style={styles.subHeader}>...% haben für JA abgestimmt</Text>
+                                    <Text style={styles.subHeader}>{Math.round((answerYesOptions.length/(answerNoOptions.length+answerYesOptions.length))*100)}% haben für JA abgestimmt</Text>
                                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                                         <MaterialCommunityIcons name='account-outline' color={'#090A0A'} size={30} />
                                         <View style={{ flex: 1 }}>
-                                            <ProgressBar progress={0.5} style={{ width: "" }} />
+                                            <ProgressBar progress={(answerYesOptions.length/(answerNoOptions.length+answerYesOptions.length))} style={{ width: "" }} />
                                         </View>
-                                        <Text> ...%</Text>
+                                        <Text>{Math.round((answerYesOptions.length/(answerNoOptions.length+answerYesOptions.length))*100)}%</Text>
                                     </View>
                                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                                         <MaterialCommunityIcons name='account-outline' color={'#090A0A'} size={30} />
                                         <View style={{ flex: 1 }}>
-                                            <ProgressBar progress={0.5} style={{ width: "" }} />
+                                            <ProgressBar progress={(answerNoOptions.length/(answerNoOptions.length+answerYesOptions.length))} style={{ width: "" }} />
                                         </View>
-                                        <Text> ...%</Text>
+                                        <Text>{Math.round((answerNoOptions.length/(answerNoOptions.length+answerYesOptions.length))*100)}%</Text>
                                     </View>
                                 </View>
                             </Surface>
@@ -144,12 +218,15 @@ const StatisticSurvey = ({ navigation, route }) => {
                                     left={props => <List.Icon {...props} icon="check" />}
                                     right={() => (
                                         <View style={{ borderRadius: 0, borderWidth: 1, borderColor: "black" }}>
-                                            <Text>2</Text>
+                                            <Text>{answerYesOptions.length}</Text>
                                         </View>
                                     )}
                                 >
-                                    <List.Item title="First item" />
-                                    <List.Item title="Second item" />
+                                    {answerYesOptions.map((item, index) => {
+                                        return (
+                                            <List.Item key={index} title={item.userName} />
+                                        )
+                                    })}
                                 </List.Accordion>
                             </Surface>
                         </Col>
@@ -162,12 +239,15 @@ const StatisticSurvey = ({ navigation, route }) => {
                                     left={props => <List.Icon {...props} icon="check" />}
                                     right={() => (
                                         <View style={{ borderRadius: 0, borderWidth: 1, borderColor: "black" }}>
-                                            <Text>2</Text>
+                                            <Text>{answerNoOptions.length}</Text>
                                         </View>
                                     )}
                                 >
-                                    <List.Item title="First item" />
-                                    <List.Item title="Second item" />
+                                    {answerNoOptions.map((item, index) => {
+                                        return (
+                                            <List.Item key={index} title={item.userName} />
+                                        )
+                                    })}
                                 </List.Accordion>
                             </Surface>
                         </Col>
@@ -184,7 +264,7 @@ const StatisticSurvey = ({ navigation, route }) => {
                                             borderColor: "black",
                                             borderRadius: 0,
                                         }}>
-                                        <Text> ... </Text>
+                                        <Text>{checkDate()}</Text>
                                     </View>
                                 </View>
                             </Surface>
@@ -238,4 +318,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default StatisticSurvey;
+export default StatisticJaNeinScreen;

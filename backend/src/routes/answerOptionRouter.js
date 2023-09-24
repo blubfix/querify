@@ -33,15 +33,48 @@ answerOptionRouter.get("/question/:questionId", async (req, res) => {
     const answerOptions = await database.getAnswerOptionByQuestionId(
       questionId
     );
-    if (!answerOptions) {
-      return res
-        .status(404)
-        .send("No answerOption with this question Id available");
-    }
-    res.json(answerOptions);
+    console.log(answerOptions);
+    // if (!answerOptions) {
+    //   return res
+    //     .status(404)
+    //     .send("No answerOption with this question Id available");
+    // }
+    // res.json(answerOptions);
+    res.status(200).send(answerOptions);
   } catch (e) {
     console.error(e);
     res.status(500).send("Error fetching answerOptions");
+  }
+});
+
+answerOptionRouter.get("/answerno/:questionId", async (req, res) => {
+  try {
+    const { questionId } = req.params;
+    // Check if the answerOption exists
+    const answerOptions = await database.getAnswerOptionNoByQuestionId(
+      questionId
+    );
+
+    res.status(200).send(answerOptions);
+  } catch (e) {
+    console.error(e);
+    res.status(500).send("Error fetching answerOptions");
+
+  }
+});
+answerOptionRouter.get("/answeryes/:questionId", async (req, res) => {
+  try {
+    const { questionId } = req.params;
+    // Check if the answerOption exists
+    const answerOptions = await database.getAnswerOptionYesByQuestionId(
+      questionId
+    );
+
+    res.status(200).send(answerOptions);
+  } catch (e) {
+    console.error(e);
+    res.status(500).send("Error fetching answerOptions");
+
   }
 });
 

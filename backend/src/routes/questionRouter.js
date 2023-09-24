@@ -32,13 +32,13 @@ questionRouter.post("/", async (req, res) => {
             type,
             minimumNumberOfAnswers,
             userId,
-            qrCode,
             identifikation,
             wiederverwendung,
             ergebniseinsicht,
             bewertung,
             date,
             description,
+            answers,
         } = req.body;
         console.log(req.body)
         console.log("bewertung: ", bewertung)
@@ -92,6 +92,7 @@ questionRouter.post("/", async (req, res) => {
             return res.status(400).send({ error: `Invalid question type ${type}` });
         }
 
+
         //const questionLink = `https://querify.com/question/${questionId}`;
 
 
@@ -121,6 +122,7 @@ questionRouter.post("/", async (req, res) => {
             bewertung,
             date,
             description,
+            answers
         );
         res.status(201).send({ questionId, questionLink, qrCodeDataUrl });
     } catch (e) {

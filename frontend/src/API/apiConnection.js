@@ -65,6 +65,17 @@ const deleteQuestionById = (questionId) => {
     return axios.get('/question/delete/' + questionId);
 }
 
+const getAnswerOptionByQuestionID = (questionId) => {
+    return axios.get('/answerOption/question/' + questionId);
+}
+
+const getAnswerOptionYesByQuestionId = (questionId) => {
+    return axios.get('/answerOption/answeryes/' + questionId);
+}
+const getAnswerOptionNoByQuestionId = (questionId) => {
+    return axios.get('/answerOption/answerno/' + questionId);
+}
+
 export default {
     getQuestionFromThisWeek,
     getQuestionFromThisMonth,
@@ -81,4 +92,7 @@ export default {
     postUserLogin,
     postUserSignUp,
     postQuestion,
+    getAnswerOptionByQuestionID,
+    getAnswerOptionYesByQuestionId,
+    getAnswerOptionNoByQuestionId,
 }

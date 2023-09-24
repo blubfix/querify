@@ -102,8 +102,8 @@ const CreateStimmungsabfrage =({ navigation }) => {
                     <Row>
                         <Col inline>
                             <RadioButton.Group onValueChange={newValue => setBewertung(newValue)} value={bewertung}>
-                            <TouchableOpacity onPress={() => setBewertung('star')} style={{ flexDirection: 'row', alignItems: 'center' }}>
-                                    <RadioButton value="star" />
+                            <TouchableOpacity onPress={() => setBewertung('stars')} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                    <RadioButton value="stars" />
                                     <Text>Sternenbewertung</Text>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => setBewertung('likert')} style={{ flexDirection: 'row', alignItems: 'center' }}>

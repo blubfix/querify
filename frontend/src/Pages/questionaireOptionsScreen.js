@@ -66,10 +66,17 @@ const QuestionaireOptions = ({ navigation, route }) => {
         const data = saveUserData();
         const userData = await loadUserData();
         if (userData) {
-
+            
             console.log("userData:", userData)
             data['userId'] = userData.id;
-            data['minimumNumberOfAnswers'] = 1;
+
+            if(data["minimumNumberOfAnswers"] === undefined) {
+                data['minimumNumberOfAnswers'] = 1;
+            }
+            if(data["answers"] === undefined) {
+                data['answers'] = null;
+            }
+            
             console.log("finalData: ", data);
             API.postQuestion(data)
                 .then((resp) => {

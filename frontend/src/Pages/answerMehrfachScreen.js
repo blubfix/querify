@@ -24,6 +24,7 @@ const AnswerMehrfach =({ navigation, route }) => {
     const [question, setQuestion] = useState(route.params);
     const [userData, setUserData] = useState({});
     const [userFromQuestion, setUserFromQuestion] = useState({});
+    const [answerOptionList, setAnswerOptionList] = useState();
 
     const [fontsLoaded] = useFonts({
         Inter_400Regular,
@@ -40,6 +41,15 @@ const AnswerMehrfach =({ navigation, route }) => {
     useEffect(() => {
         loadUserData();
         getUserFromQuestion();
+        if (question.multi && typeof question.multi === 'string') {
+            const newList = question.multi.split(','); // Assuming question.multi is a comma-separated string
+            const initialState = newList.map(item => ({ label: item, checked: false }));
+            setAnswerOptionList(initialState);
+          } else {
+            // Handle the case where question.multi is not a valid string
+            setAnswerOptionList(question.multi)
+            // Optionally, set a default state or perform error handling
+          }
     }, []);
 
     const loadUserData = async () => {
@@ -69,12 +79,21 @@ const AnswerMehrfach =({ navigation, route }) => {
         )
     }
 
+
     const answerQuestion = () => {
-        if (selectedOption !== null) {
+        // Check if a minimum of 2 items have checked set to true
+        console.log("minimumNumberOfAnswers: ", question.minimumNumberOfAnswers);
+        const minChecked = question.minimumNumberOfAnswers;
+        const checkedCount = answerOptionList.filter((item) => item.checked).length;
+        if (checkedCount >= minChecked) {
             const userId = userData.id;
             console.log("userId: ", userId);
+            const labelsCheckedTrue = answerOptionList
+            .filter((item) => item.checked)
+            .map((item) => item.label)
+            .join(', ');
             const data = {
-                answerText: selectedOption,
+                answerText: labelsCheckedTrue,
                 questionId: question.questionId,
             }
             console.log("data: ", data);
@@ -118,11 +137,12 @@ const AnswerMehrfach =({ navigation, route }) => {
         return null;
     }
 
-    const handleChecked = (e, index) => {  
-        let answerOptionsCopy = answerOptions.slice();
-        answerOptionsCopy[index].checked = e;
-        setAnswerOptions(answerOptionsCopy);
-    }
+    const handleChecked = (index) => {
+        const updatedOptions = [...answerOptionList];
+        updatedOptions[index].checked = !updatedOptions[index].checked;
+        setAnswerOptionList(updatedOptions);
+        console.log("answerOptionList: ", answerOptionList);
+    };
 
 
     return (
@@ -168,16 +188,16 @@ const AnswerMehrfach =({ navigation, route }) => {
                         <Col style={styles.optionsContainer}>
                             <ScrollView style={styles.optionsContainer} bounces={true}>
                                 {
-                                    answerOptions.map((answerOption, index) => {
+                                    answerOptionList.map((item, index) => {
                                         return(
                                             <View style={styles.optionContainer} key={index}>
                                                 <CheckBox
-                                                	value={answerOption.checked}
-                                                    onValueChange={e => handleChecked(e, index)}
+                                                	value={item.checked}
+                                                    onValueChange={e => handleChecked(index)}
                                                 	style={styles.checkbox} 
                                                 	color={'#734498'}
                                                 	/>
-                                                <Text style={styles.optionText}>{answerOption.answerText}</Text>
+                                                <Text style={styles.optionText}>{item.label}</Text>
                                             </View>
                                         )
                                     })
@@ -188,7 +208,7 @@ const AnswerMehrfach =({ navigation, route }) => {
 
                     <BottomNavigation buttonColors={['#6F6F70', '#6F6F70', '#6F6F70', '#6F6F70']}/>
                 </Grid>
-                <SubmitButton buttonText={'Abstimmen'} position={'absolute'} bottom={120} onPress={() => navigation.navigate('InboxScreen')}/>
+                <SubmitButton buttonText={'Abstimmen'} position={'absolute'} bottom={120} onPress={() => answerQuestion()}/>
         </PaperProvider>
     );
 }
