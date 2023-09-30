@@ -155,11 +155,32 @@ const StatisticMehrfachScreen = ({ navigation, route }) => {
     }
 
     return (
+        
         <PaperProvider>
             <Grid style={styles.container} container>
-                <Text>StatisticMehrfachScreen</Text>
+                <KeyboardAwareScrollView contentContainerStyle={styles.keyboardContainer} resetScrollToCoords={{ x: 0, y: 0 }} scrollEnabled={false} extraScrollHeight={40}>
+                    <Row>
+                        <Col>
+                            <Text style={styles.headerText}>Statistik deiner Umfrage</Text>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Text style={styles.TextInput}>Statistik deiner Umfrage</Text>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Text style={styles.TextInput}>Statistik deiner Umfrage</Text>
+                        </Col>
+                    </Row>
+                  
+                </KeyboardAwareScrollView>
+                <SubmitButton buttonText={'Weiter'} position={'absolute'} bottom={120} onPress={() => goNextForm()} />
+                <BottomNavigation buttonColors={['#6F6F70', '#6F6F70', '#6F6F70', '#6F6F70']} />
             </Grid>
         </PaperProvider>
+    
     );
 }
 

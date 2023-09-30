@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
-import { Image, Button, StyleSheet, View, Alert, useWindowDimensions } from "react-native";
+import { Image, Button, StyleSheet, View, Alert, ActivityIndicator } from "react-native";
 import {
     MD3DarkTheme as DefaultTheme,
     Provider as PaperProvider,
@@ -44,7 +44,7 @@ export default function StartScreen({ navigation }) {
                 setIsLoggedIn(true); // User is logged in
             } else {
                 setIsLoggedIn(false); // User is not logged in
-                
+
             }
             console.log(isLoggedIn);
         } catch (error) {
@@ -54,6 +54,18 @@ export default function StartScreen({ navigation }) {
 
 
     checkToken(); // Check token when the component mounts
+
+    if (!isLoggedIn) {
+        console.log("Login");
+        setTimeout(() => {
+            navigation.navigate("StartScreen"); // Navigate to the Login screen
+        }, 2500); // Delay for 1 second (1000 milliseconds)
+    } else {
+        console.log("CreateQuestionaire_openScreen");
+        setTimeout(() => {
+            navigation.navigate("CreateQuestionaire"); // Navigate to the Login screen
+        }, 2500); // Delay for 1 second (1000 milliseconds)
+    }
 
 
 
@@ -68,20 +80,13 @@ export default function StartScreen({ navigation }) {
                         <Image
                             style={styles.Logo}
                             source={require('../Images/Logo.png')} />
-                        <Text style={{ color: "#00B3FF", alignSelf: "center", fontSize: 96, fontFamily: 'Italiana_400Regular' }} >querify</Text>
+                        <Text style={{ color: "#00B3FF", alignSelf: "center", fontSize: 96, fontFamily: 'Italiana_400Regular' }} onPress={() => navigation.navigate('CreateQuestionaire')}>querify</Text>
                     </Col>
                 </Row>
                 <Row>
                     <Col>
-                        <View style={{ display: "flex", alignItems: "center", }}>
-                            <SubmitButton buttonText={"Anmelden"} onPress={() => navigation.navigate("LoginScreen")} />
-                        </View>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <View style={{ display: "flex", alignItems: "center", }}>
-                            <SubmitButton buttonText={"Konto erstellen"} onPress={() => navigation.navigate("RegisterScreen_1")} />
+                        <View style={{ flex: 1, marginTop:"20%",justifyContent: 'center', alignItems: 'center' }}>
+                            <ActivityIndicator size="large" color="#00B3FF" />
                         </View>
                     </Col>
                 </Row>

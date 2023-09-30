@@ -195,14 +195,14 @@ const StatisticJaNeinScreen = ({ navigation, route }) => {
                                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                                         <MaterialCommunityIcons name='account-outline' color={'#090A0A'} size={30} />
                                         <View style={{ flex: 1 }}>
-                                            <ProgressBar progress={(answerYesOptions.length/(answerNoOptions.length+answerYesOptions.length))} style={{ width: "" }} />
+                                            {/* <ProgressBar progress={(answerYesOptions.length/(answerNoOptions.length+answerYesOptions.length))} style={{ width: "" }} /> */}
                                         </View>
                                         <Text>{Math.round((answerYesOptions.length/(answerNoOptions.length+answerYesOptions.length))*100)}%</Text>
                                     </View>
                                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                                         <MaterialCommunityIcons name='account-outline' color={'#090A0A'} size={30} />
                                         <View style={{ flex: 1 }}>
-                                            <ProgressBar progress={(answerNoOptions.length/(answerNoOptions.length+answerYesOptions.length))} style={{ width: "" }} />
+                                            {/* <ProgressBar progress={(answerNoOptions.length/(answerNoOptions.length+answerYesOptions.length))} style={{ width: "" }} /> */}
                                         </View>
                                         <Text>{Math.round((answerNoOptions.length/(answerNoOptions.length+answerYesOptions.length))*100)}%</Text>
                                     </View>
