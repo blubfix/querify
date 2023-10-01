@@ -38,7 +38,7 @@ const data = [
     { id: '5', text: 'Achmed Göthe', percent: '20%' },
     // Add more items as nee, percent: '20%'ded
 ];
-const colorAnswerCirle = ['#00DAF8',  '#4072EE','#B558F6',  '#7628B4', '#48A7FF'
+const colorAnswerCirle = ['#00DAF8', '#4072EE', '#B558F6', '#7628B4', '#48A7FF'
 
 ]
 
@@ -189,24 +189,31 @@ const StatisticFreitextScreen = ({ navigation, route }) => {
                         </Row>
                         <Row>
                             <Col>
-                            <Text style={styles.subHeader}>Frage hier rein</Text>
+                                <Text style={styles.subHeader}>Frage hier rein</Text>
                             </Col>
                         </Row>
                         <Row>
                             <Col>
-                            <Text style={styles.subHeader}>Mehrfacha</Text>
+                                <Surface elevation={1}>
+                                    <View style={styles.textIconContainer}>
+                                        <MaterialCommunityIcons name='account-multiple-outline' color={'#090A0A'} size={30} paddingLeft={"2%"} />
+                                        <Text style={styles.accountButtonText}>Teilnehmende</Text>
+                                        <View
+                                            style={styles.numberUsersBox}>
+                                            <Text style={styles.numberUsers}> {answerYesOptions.length + answerNoOptions.length} </Text>
+                                        </View>
+                                    </View>
+                                </Surface>
                             </Col>
                         </Row>
                         <View style={styles.answerContainer}>
                             <Text style={styles.answerHeader}>
                                 Mehrfachauswahl Antworten
                             </Text>
-
                             {data.map((item, index) => {
                                 const calculatedValue = (index % 4) + 1;
                                 const colorItem = colorAnswerCirle
                                 return (
-
                                     <View style={styles.textAnswerBox}>
                                         <Row key={index}>
                                             <Col size={1}>
@@ -219,9 +226,7 @@ const StatisticFreitextScreen = ({ navigation, route }) => {
                                                 <Text style={styles.answerName}>{item.percent}</Text>
                                             </Col>
                                         </Row>
-
                                     </View>
-
                                 )
                             })}
                         </View>
@@ -229,15 +234,11 @@ const StatisticFreitextScreen = ({ navigation, route }) => {
                             <Col>
                                 <Surface elevation={1}>
                                     <View style={styles.textIconContainer}>
-                                        <MaterialCommunityIcons name='account-outline' color={'#090A0A'} size={24} />
+                                        <MaterialCommunityIcons name='av-timer' color={'#090A0A'} size={30} paddingLeft={"3%"} />
                                         <Text style={styles.accountButtonText}>Verbleibende Zeit in Tagen</Text>
                                         <View
-                                            style={{
-                                                borderWidth: 1,
-                                                borderColor: "black",
-                                                borderRadius: 0,
-                                            }}>
-                                            <Text>{checkDate()}</Text>
+                                            style={styles.numberUsersBox}>
+                                            <Text style={styles.numberUsers}>{checkDate()}</Text>
                                         </View>
                                     </View>
                                 </Surface>
@@ -281,14 +282,7 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         marginBottom: '5%'
     },
-    textIconContainer: {
-        flexDirection: "row",
-        alignItems: 'center'
-    },
-    statisticContainer: {
-        padding: 10,
 
-    },
 
     keyboardContainer: {
         minHeight: '100%',
@@ -297,8 +291,10 @@ const styles = StyleSheet.create({
     },
     answerContainer: {
         backgroundColor: "#39424A",
+        alignSelf: "center",
         paddingTop: "5%",
         borderRadius: 5,
+        width: "97%",
 
     },
 
@@ -310,6 +306,40 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginBottom: "5%",
 
+
+    },
+    accountButtonText: {
+        alignSelf: 'flex-start',
+        textAlign: 'left',
+        fontFamily: 'Manrope_400Regular',
+        fontSize: 14,
+        color: '#222',
+        // marginRight: "30%",
+        marginLeft: "2%",
+        marginTop: "1%"
+    },
+    numberUsers: {
+
+        textAlign: 'center',
+        fontFamily: 'Manrope_400Regular',
+        fontSize: 14,
+        color: '#222',
+
+    },
+
+    numberUsersBox: {
+        borderWidth: 1,
+        borderColor: "#FFF",
+        borderRadius: 4,
+        width: "20%",
+        alignContent: "center",
+        justifyContent: "center",
+
+
+        paddingLeft: "2%",
+        paddingRight: "2%",
+        paddingTop: "1%",
+        paddingBottom: "1%",
 
     },
     answerName: {
@@ -332,11 +362,45 @@ const styles = StyleSheet.create({
 
     },
 
-    container: {
-        height: '87%',
+    answerHeader: {
+        // alignSelf: 'flex-start',
+        textAlign: 'center',
+        fontFamily: 'Manrope_600SemiBold',
+        fontSize: 16,
+        color: '#FFFFFF',
+        marginBottom: '5%'
+    },
+    keyboardContainer: {
+        minHeight: '100%',
         width: '100%',
-        backgroundColor: '+',
-        flexGrow: 0,
+
+    },
+    answerHeader: {
+        // alignSelf: 'flex-start',
+        textAlign: 'center',
+        fontFamily: 'Manrope_600SemiBold',
+        fontSize: 16,
+        color: '#FFFFFF',
+        marginBottom: '5%'
+    },
+
+    container: {
+        height: '100%',
+        width: '100%',
+        backgroundColor: 'white'
+    },
+    textIconContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignSelf: "center",
+        width: "100%",
+        padding: "2%",
+        backgroundColor: "#DADADA",
+    },
+    statisticContainer: {
+        padding: "8%",
+        borderRadius: 5,
+        backgroundColor: "#39424A",
     },
 
 })

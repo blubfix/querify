@@ -170,98 +170,96 @@ const StatisticJaNeinScreen = ({ navigation, route }) => {
                         </Col>
                     </Row>
                     <Row>
-                        <Col>                            
-                                <View style={styles.textIconContainer}>
-                                    <MaterialCommunityIcons name='account-outline' color={'#090A0A'} size={30} />
-                                    <Text style={styles.accountButtonText}>Teilnehmende</Text>
-                                    <View
-                                        style={styles.numberUsersBox}>
-                                        <Text style={styles.numberUsers}> {answerYesOptions.length + answerNoOptions.length} </Text>
-                                </View>
-                            </View>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <Surface elevation={5} style={{ backgroundColor: "#39424A" }}>
-                            <View style={styles.statisticContainer}>
-                                <Text style={styles.answerHeader}>{Math.round((answerYesOptions.length / (answerNoOptions.length + answerYesOptions.length)) * 100)}% haben für JA abgestimmt</Text>
-                                <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                    <MaterialCommunityIcons name='check-circle' color={'#FFF'} size={30} />
-                                    <View style={{ flex: 1 }}>
-                                        {/* <ProgressBar progress={(answerYesOptions.length/(answerNoOptions.length+answerYesOptions.length))} style={{ width: "" }} /> */}
-                                    </View>
-                                    <Text style={styles.answerName}>{Math.round((answerYesOptions.length / (answerNoOptions.length + answerYesOptions.length)) * 100)}%</Text>
-                                </View>
-                                <View style={{ flexDirection: "row", alignItems: "center", paddingTop:"4%" }}>
-                                    <MaterialCommunityIcons name='account-outline' color={'#FFF'} size={30} />
-                                    <View style={{ flex: 1 }}>
-                                        {/* <ProgressBar progress={(answerNoOptions.length/(answerNoOptions.length+answerYesOptions.length))} style={{ width: "" }} /> */}
-                                    </View>
-                                    <Text style={styles.answerName}>{Math.round((answerNoOptions.length / (answerNoOptions.length + answerYesOptions.length)) * 100)}%</Text>
-                                </View>
-                            </View>
-                        </Surface>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
+                        <Col>
                         <Surface elevation={1}>
-                            <List.Accordion
-                                title="Liste der Ja-Abgestimmten"
-                                left={props => <List.Icon {...props} icon="check" />}
-                                right={() => (
-                                    <View style={{ borderRadius: 0, borderWidth: 1, borderColor: "black" }}>
-                                        <Text>{answerYesOptions.length}</Text>
-                                    </View>
-                                )}
-                            >
-                                {answerYesOptions.map((item, index) => {
-                                    return (
-                                        <List.Item key={index} title={item.userName} />
-                                    )
-                                })}
-                            </List.Accordion>
-                        </Surface>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <Surface elevation={1}>
-                            <List.Accordion
-                                title="Liste der Nein-Abgestimmten"
-                                left={props => <List.Icon {...props} icon="check" />}
-                                right={() => (
-                                    <View style={{ borderRadius: 0, borderWidth: 1, borderColor: "black" }}>
-                                        <Text>{answerNoOptions.length}</Text>
-                                    </View>
-                                )}
-                            >
-                                {answerNoOptions.map((item, index) => {
-                                    return (
-                                        <List.Item key={index} title={item.userName} />
-                                    )
-                                })}
-                            </List.Accordion>
-                        </Surface>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
+
                             <View style={styles.textIconContainer}>
-                                <MaterialCommunityIcons name='account-outline' color={'#090A0A'} size={30} />
+                                <MaterialCommunityIcons name='account-multiple-outline' color={'#090A0A'} size={30} paddingLeft={"2%"} />
+                                <Text style={styles.accountButtonText}>Teilnehmende</Text>
+                                <View
+                                    style={styles.numberUsersBox}>
+                                    <Text style={styles.numberUsers}> {answerYesOptions.length + answerNoOptions.length} </Text>
+                                </View>
+                            </View>
+                            </Surface>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Surface elevation={5} style={{ backgroundColor: "#39424A" }}>
+                                <View style={styles.statisticContainer}>
+                                    <Text style={styles.answerHeader}>{Math.round((answerYesOptions.length / (answerNoOptions.length + answerYesOptions.length)) * 100)}% haben für JA abgestimmt</Text>
+                                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                        <MaterialCommunityIcons name='check-circle' color={'#95D158'} size={30} />
+                                        <View style={{ flex: 1 }}>
+                                            {/* <ProgressBar progress={(answerYesOptions.length/(answerNoOptions.length+answerYesOptions.length))} style={{ width: "" }} /> */}
+                                        </View>
+                                        <Text style={styles.answerName}>{Math.round((answerYesOptions.length / (answerNoOptions.length + answerYesOptions.length)) * 100)}%</Text>
+                                    </View>
+                                    <View style={{ flexDirection: "row", alignItems: "center", paddingTop: "4%" }}>
+                                        <MaterialCommunityIcons name='close-circle' color={'#AD323D'} size={30} />
+                                        <View style={{ flex: 1 }}>
+                                            {/* <ProgressBar progress={(answerNoOptions.length/(answerNoOptions.length+answerYesOptions.length))} style={{ width: "" }} /> */}
+                                        </View>
+                                        <Text style={styles.answerName}>{Math.round((answerNoOptions.length / (answerNoOptions.length + answerYesOptions.length)) * 100)}%</Text>
+                                    </View>
+                                </View>
+                            </Surface>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Surface elevation={1}>
+                                <List.Accordion
+                                    title="Liste der Ja-Abgestimmten"
+
+                                    left={props => <MaterialCommunityIcons name='check-circle' color={'#95D158'} size={30} paddingLeft={"5%"} />
+                                    }
+                                >
+                                    {answerYesOptions.map((item, index) => {
+                                        return (
+                                            <List.Item key={index} title={item.userName} />
+                                        )
+                                    })}
+                                </List.Accordion>
+                            </Surface>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Surface elevation={1}>
+                                <List.Accordion
+                                    title="Liste der Nein-Abgestimmten"
+                                    left={props =><MaterialCommunityIcons name='close-circle' color={'#AD323D'} size={30} paddingLeft={"5%"}/> }
+                                >
+                                    {answerNoOptions.map((item, index) => {
+                                        return (
+                                            <List.Item key={index} title={item.userName} />
+                                        )
+                                    })}
+                                </List.Accordion>
+                            </Surface>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                        <Surface elevation={1}>
+
+                            <View style={styles.textIconContainer}>
+                                <MaterialCommunityIcons name='av-timer' color={'#090A0A'} size={30} paddingLeft={"3%"} />
                                 <Text style={styles.accountButtonText}>Verbleibende Zeit in Tagen</Text>
                                 <View
                                     style={styles.numberUsersBox}>
                                     <Text style={styles.numberUsers}>{checkDate()}</Text>
                                 </View>
                             </View>
-                    </Col>
-                </Row>
-            </KeyboardAwareScrollView>
-            <SubmitButton buttonText={'Weiter'} position={'absolute'} bottom={120} onPress={() => goNextForm()} />
-            <BottomNavigation buttonColors={['#6F6F70', '#6F6F70', '#6F6F70', '#6F6F70']} />
-        </Grid>
+                            </Surface>
+                        </Col>
+                    </Row>
+                </KeyboardAwareScrollView>
+                <SubmitButton buttonText={'Weiter'} position={'absolute'} bottom={120} onPress={() => goNextForm()} />
+                <BottomNavigation buttonColors={['#6F6F70', '#6F6F70', '#6F6F70', '#6F6F70']} />
+            </Grid>
         </PaperProvider >
     );
 }
@@ -286,11 +284,11 @@ const styles = StyleSheet.create({
     },
     textIconContainer: {
         flexDirection: "row",
-        justifyContent:"space-between",
-        alignSelf:"center",
-        width:"100%",
+        justifyContent: "space-between",
+        alignSelf: "center",
+        width: "100%",
         padding: "2%",
-        backgroundColor:"#DADADA",
+        backgroundColor: "#DADADA",
     },
     statisticContainer: {
         padding: "8%",
@@ -320,9 +318,9 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "#FFF",
         borderRadius: 4,
-        width:"20%",
-        alignContent:"center",
-        justifyContent:"center",
+        width: "20%",
+        alignContent: "center",
+        justifyContent: "center",
 
 
         paddingLeft: "2%",
