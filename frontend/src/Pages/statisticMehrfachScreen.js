@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
-import { Image, Button, StyleSheet, View, Alert, Dimensions, TouchableOpacity, KeyboardAvoidingView } from "react-native";
+import { Image, Button, StyleSheet, View, FlatList, Dimensions, RefreshControl, KeyboardAvoidingView } from "react-native";
 import {
     MD3DarkTheme as DefaultTheme,
     Provider as PaperProvider,
@@ -30,7 +30,20 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import API from "../API/apiConnection";
 const { width, height } = Dimensions.get("window");
 
-const StatisticMehrfachScreen = ({ navigation, route }) => {
+const data = [
+    { id: '1', text: 'Rosen sind Rot', percent: '20%' },
+    { id: '2', text: 'Veilchen Blau', percent: '20%' },
+    { id: '3', text: 'Ich klau zwei Döner', percent: '20%' },
+    { id: '4', text: 'und geh in den Bau', percent: '20%' },
+    { id: '5', text: 'Achmed Göthe', percent: '20%' },
+    // Add more items as nee, percent: '20%'ded
+];
+const colorAnswerCirle = ['#00DAF8',  '#4072EE','#B558F6',  '#7628B4', '#48A7FF'
+
+]
+
+
+const StatisticFreitextScreen = ({ navigation, route }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [date, setDate] = useState('');
@@ -65,7 +78,7 @@ const StatisticMehrfachScreen = ({ navigation, route }) => {
 
 
     const checkDate = () => {
-         // Parse the date from the 'question' in the format 'dd.mm.yyyy'
+        // Parse the date from the 'question' in the format 'dd.mm.yyyy'
         const questionDateParts = question.date.split('.');
         const questionDay = parseInt(questionDateParts[0], 10);
         const questionMonth = parseInt(questionDateParts[1], 10) - 1; // Month is zero-based
@@ -121,29 +134,29 @@ const StatisticMehrfachScreen = ({ navigation, route }) => {
 
     const getAnswerYesNoUser = (id) => {
         console.log("question.questionId: ", id);
-      
+
         // Define two separate promises for the API calls
         const yesOptionsPromise = API.getAnswerOptionYesByQuestionId(id);
         const noOptionsPromise = API.getAnswerOptionNoByQuestionId(id);
-      
+
         // Use Promise.all to wait for both promises to resolve
         Promise.all([yesOptionsPromise, noOptionsPromise])
-          .then(([yesOptionsResponse, noOptionsResponse]) => {
-            console.log("Yes Options: ", yesOptionsResponse.data);
-            console.log("No Options: ", noOptionsResponse.data);
-      
-            // Set the state variables with the data from the responses
-            setAnswerYesOptions(yesOptionsResponse.data);
-            setAnswerNoOptions(noOptionsResponse.data);
-      
-            // You can now proceed with any additional logic that depends on this data
-          })
-          .catch((err) => {
-            console.log("err: ", err);
-          });
-          
-      };
-      
+            .then(([yesOptionsResponse, noOptionsResponse]) => {
+                console.log("Yes Options: ", yesOptionsResponse.data);
+                console.log("No Options: ", noOptionsResponse.data);
+
+                // Set the state variables with the data from the responses
+                setAnswerYesOptions(yesOptionsResponse.data);
+                setAnswerNoOptions(noOptionsResponse.data);
+
+                // You can now proceed with any additional logic that depends on this data
+            })
+            .catch((err) => {
+                console.log("err: ", err);
+            });
+
+    };
+
 
     if (!fontsLoaded) {
         return null;
@@ -154,35 +167,93 @@ const StatisticMehrfachScreen = ({ navigation, route }) => {
         navigation.navigate('QuestionaireOptions', { title: title, description: description, date: date, color: selectedColorIndex, type: 'poll' });
     }
 
+
+    const palceholderData = [{}]; // Placeholder item
+    const onRefresh = () => {
+        console.log("Refreshing page")
+        // getQuestions();
+    };
+
     return (
-        
         <PaperProvider>
-            <Grid style={styles.container} container>
-                <KeyboardAwareScrollView contentContainerStyle={styles.keyboardContainer} resetScrollToCoords={{ x: 0, y: 0 }} scrollEnabled={false} extraScrollHeight={40}>
-                    <Row>
-                        <Col>
-                            <Text style={styles.headerText}>Statistik deiner Umfrage</Text>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Text style={styles.TextInput}>Statistik deiner Umfrage</Text>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Text style={styles.TextInput}>Statistik deiner Umfrage</Text>
-                        </Col>
-                    </Row>
-                  
-                </KeyboardAwareScrollView>
-                <SubmitButton buttonText={'Weiter'} position={'absolute'} bottom={120} onPress={() => goNextForm()} />
-                <BottomNavigation buttonColors={['#6F6F70', '#6F6F70', '#6F6F70', '#6F6F70']} />
-            </Grid>
+            <FlatList
+                style={styles.container}
+                data={palceholderData}
+                keyExtractor={item => item.id}
+                renderItem={({ item }) => (
+                    <Grid style={styles.container} container>
+                        <Row>
+                            <Col>
+                                <Text style={styles.headerText}>Statistik deiner Umfrage</Text>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                            <Text style={styles.subHeader}>Frage hier rein</Text>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                            <Text style={styles.subHeader}>Mehrfacha</Text>
+                            </Col>
+                        </Row>
+                        <View style={styles.answerContainer}>
+                            <Text style={styles.answerHeader}>
+                                Mehrfachauswahl Antworten
+                            </Text>
+
+                            {data.map((item, index) => {
+                                const calculatedValue = (index % 4) + 1;
+                                const colorItem = colorAnswerCirle
+                                return (
+
+                                    <View style={styles.textAnswerBox}>
+                                        <Row key={index}>
+                                            <Col size={1}>
+                                                <MaterialCommunityIcons name='checkbox-blank-circle-outline' color={colorAnswerCirle[calculatedValue]} size={30} />
+                                            </Col>
+                                            <Col size={6}>
+                                                <Text style={styles.answerName}>{item.text}</Text>
+                                            </Col>
+                                            <Col size={2}>
+                                                <Text style={styles.answerName}>{item.percent}</Text>
+                                            </Col>
+                                        </Row>
+
+                                    </View>
+
+                                )
+                            })}
+                        </View>
+                        <Row>
+                            <Col>
+                                <Surface elevation={1}>
+                                    <View style={styles.textIconContainer}>
+                                        <MaterialCommunityIcons name='account-outline' color={'#090A0A'} size={24} />
+                                        <Text style={styles.accountButtonText}>Verbleibende Zeit in Tagen</Text>
+                                        <View
+                                            style={{
+                                                borderWidth: 1,
+                                                borderColor: "black",
+                                                borderRadius: 0,
+                                            }}>
+                                            <Text>{checkDate()}</Text>
+                                        </View>
+                                    </View>
+                                </Surface>
+                            </Col>
+                        </Row>
+                    </Grid>
+                )}
+                refreshControl={<RefreshControl tintColor={"#74479A"} onRefresh={onRefresh} />}
+            />
+            <BottomNavigation buttonColors={['#6F6F70', '#6F6F70', '#6F6F70', '#778DE3']} />
+
+
         </PaperProvider>
-    
     );
 }
+
 
 const styles = StyleSheet.create({
 
@@ -202,12 +273,21 @@ const styles = StyleSheet.create({
         color: '#090A0A',
         // marginBottom: '5%'
     },
+    answerHeader: {
+        // alignSelf: 'flex-start',
+        textAlign: 'center',
+        fontFamily: 'Manrope_600SemiBold',
+        fontSize: 16,
+        color: '#FFFFFF',
+        marginBottom: '5%'
+    },
     textIconContainer: {
         flexDirection: "row",
         alignItems: 'center'
     },
     statisticContainer: {
-        padding: 25,
+        padding: 10,
+
     },
 
     keyboardContainer: {
@@ -215,13 +295,50 @@ const styles = StyleSheet.create({
         width: '100%',
 
     },
+    answerContainer: {
+        backgroundColor: "#39424A",
+        paddingTop: "5%",
+        borderRadius: 5,
+
+    },
+
+    textAnswerBox: {
+        alignSelf: "center",
+
+        width: '95%',
+        backgroundColor: '#39424A',
+        borderRadius: 5,
+        marginBottom: "5%",
+
+
+    },
+    answerName: {
+        // alignSelf: 'flex-start',
+        textAlign: 'left',
+        fontFamily: 'Inter_500Medium',
+        fontSize: 16,
+        color: '#FFF',
+        marginTop: "1%",
+
+    },
+    answerText: {
+        // alignSelf: 'flex-start',
+        textAlign: 'left',
+        fontFamily: 'Inter_500Medium',
+        fontSize: 16,
+        color: '#FFF',
+        left: "25%",
+        marginBottom: "5%",
+
+    },
 
     container: {
-        height: '100%',
+        height: '87%',
         width: '100%',
-        backgroundColor: 'white'
-    }
+        backgroundColor: '+',
+        flexGrow: 0,
+    },
 
 })
 
-export default StatisticMehrfachScreen;
+export default StatisticFreitextScreen;

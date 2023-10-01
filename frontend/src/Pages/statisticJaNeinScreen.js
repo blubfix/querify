@@ -65,7 +65,7 @@ const StatisticJaNeinScreen = ({ navigation, route }) => {
 
 
     const checkDate = () => {
-         // Parse the date from the 'question' in the format 'dd.mm.yyyy'
+        // Parse the date from the 'question' in the format 'dd.mm.yyyy'
         const questionDateParts = question.date.split('.');
         const questionDay = parseInt(questionDateParts[0], 10);
         const questionMonth = parseInt(questionDateParts[1], 10) - 1; // Month is zero-based
@@ -121,29 +121,29 @@ const StatisticJaNeinScreen = ({ navigation, route }) => {
 
     const getAnswerYesNoUser = (id) => {
         console.log("question.questionId: ", id);
-      
+
         // Define two separate promises for the API calls
         const yesOptionsPromise = API.getAnswerOptionYesByQuestionId(id);
         const noOptionsPromise = API.getAnswerOptionNoByQuestionId(id);
-      
+
         // Use Promise.all to wait for both promises to resolve
         Promise.all([yesOptionsPromise, noOptionsPromise])
-          .then(([yesOptionsResponse, noOptionsResponse]) => {
-            console.log("Yes Options: ", yesOptionsResponse.data);
-            console.log("No Options: ", noOptionsResponse.data);
-      
-            // Set the state variables with the data from the responses
-            setAnswerYesOptions(yesOptionsResponse.data);
-            setAnswerNoOptions(noOptionsResponse.data);
-      
-            // You can now proceed with any additional logic that depends on this data
-          })
-          .catch((err) => {
-            console.log("err: ", err);
-          });
-          
-      };
-      
+            .then(([yesOptionsResponse, noOptionsResponse]) => {
+                console.log("Yes Options: ", yesOptionsResponse.data);
+                console.log("No Options: ", noOptionsResponse.data);
+
+                // Set the state variables with the data from the responses
+                setAnswerYesOptions(yesOptionsResponse.data);
+                setAnswerNoOptions(noOptionsResponse.data);
+
+                // You can now proceed with any additional logic that depends on this data
+            })
+            .catch((err) => {
+                console.log("err: ", err);
+            });
+
+    };
+
 
     if (!fontsLoaded) {
         return null;
@@ -170,111 +170,99 @@ const StatisticJaNeinScreen = ({ navigation, route }) => {
                         </Col>
                     </Row>
                     <Row>
-                        <Col>
-                            <Surface elevation={1}>
+                        <Col>                            
                                 <View style={styles.textIconContainer}>
                                     <MaterialCommunityIcons name='account-outline' color={'#090A0A'} size={30} />
-                                    <Text style={styles.accountButtonText}>Profil</Text>
+                                    <Text style={styles.accountButtonText}>Teilnehmende</Text>
                                     <View
-                                        style={{
-                                            borderWidth: 1,
-                                            borderColor: "black",
-                                            borderRadius: 0,
-                                        }}>
-                                        <Text> {answerYesOptions.length + answerNoOptions.length} </Text>
-                                    </View>
+                                        style={styles.numberUsersBox}>
+                                        <Text style={styles.numberUsers}> {answerYesOptions.length + answerNoOptions.length} </Text>
                                 </View>
-                            </Surface>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Surface elevation={5} style={{ backgroundColor: "grey" }}>
-                                <View style={styles.statisticContainer}>
-                                    <Text style={styles.subHeader}>{Math.round((answerYesOptions.length/(answerNoOptions.length+answerYesOptions.length))*100)}% haben für JA abgestimmt</Text>
-                                    <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                        <MaterialCommunityIcons name='account-outline' color={'#090A0A'} size={30} />
-                                        <View style={{ flex: 1 }}>
-                                            {/* <ProgressBar progress={(answerYesOptions.length/(answerNoOptions.length+answerYesOptions.length))} style={{ width: "" }} /> */}
-                                        </View>
-                                        <Text>{Math.round((answerYesOptions.length/(answerNoOptions.length+answerYesOptions.length))*100)}%</Text>
+                            </View>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Surface elevation={5} style={{ backgroundColor: "#39424A" }}>
+                            <View style={styles.statisticContainer}>
+                                <Text style={styles.answerHeader}>{Math.round((answerYesOptions.length / (answerNoOptions.length + answerYesOptions.length)) * 100)}% haben für JA abgestimmt</Text>
+                                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                                    <MaterialCommunityIcons name='check-circle' color={'#FFF'} size={30} />
+                                    <View style={{ flex: 1 }}>
+                                        {/* <ProgressBar progress={(answerYesOptions.length/(answerNoOptions.length+answerYesOptions.length))} style={{ width: "" }} /> */}
                                     </View>
-                                    <View style={{ flexDirection: "row", alignItems: "center" }}>
-                                        <MaterialCommunityIcons name='account-outline' color={'#090A0A'} size={30} />
-                                        <View style={{ flex: 1 }}>
-                                            {/* <ProgressBar progress={(answerNoOptions.length/(answerNoOptions.length+answerYesOptions.length))} style={{ width: "" }} /> */}
-                                        </View>
-                                        <Text>{Math.round((answerNoOptions.length/(answerNoOptions.length+answerYesOptions.length))*100)}%</Text>
-                                    </View>
+                                    <Text style={styles.answerName}>{Math.round((answerYesOptions.length / (answerNoOptions.length + answerYesOptions.length)) * 100)}%</Text>
                                 </View>
-                            </Surface>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Surface elevation={1}>
-                                <List.Accordion
-                                    title="Liste der Ja-Abgestimmten"
-                                    left={props => <List.Icon {...props} icon="check" />}
-                                    right={() => (
-                                        <View style={{ borderRadius: 0, borderWidth: 1, borderColor: "black" }}>
-                                            <Text>{answerYesOptions.length}</Text>
-                                        </View>
-                                    )}
-                                >
-                                    {answerYesOptions.map((item, index) => {
-                                        return (
-                                            <List.Item key={index} title={item.userName} />
-                                        )
-                                    })}
-                                </List.Accordion>
-                            </Surface>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Surface elevation={1}>
-                                <List.Accordion
-                                    title="Liste der Nein-Abgestimmten"
-                                    left={props => <List.Icon {...props} icon="check" />}
-                                    right={() => (
-                                        <View style={{ borderRadius: 0, borderWidth: 1, borderColor: "black" }}>
-                                            <Text>{answerNoOptions.length}</Text>
-                                        </View>
-                                    )}
-                                >
-                                    {answerNoOptions.map((item, index) => {
-                                        return (
-                                            <List.Item key={index} title={item.userName} />
-                                        )
-                                    })}
-                                </List.Accordion>
-                            </Surface>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Surface elevation={1}>
-                                <View style={styles.textIconContainer}>
-                                    <MaterialCommunityIcons name='account-outline' color={'#090A0A'} size={30} />
-                                    <Text style={styles.accountButtonText}>Verbleibende Zeit in Tagen</Text>
-                                    <View
-                                        style={{
-                                            borderWidth: 1,
-                                            borderColor: "black",
-                                            borderRadius: 0,
-                                        }}>
-                                        <Text>{checkDate()}</Text>
+                                <View style={{ flexDirection: "row", alignItems: "center", paddingTop:"4%" }}>
+                                    <MaterialCommunityIcons name='account-outline' color={'#FFF'} size={30} />
+                                    <View style={{ flex: 1 }}>
+                                        {/* <ProgressBar progress={(answerNoOptions.length/(answerNoOptions.length+answerYesOptions.length))} style={{ width: "" }} /> */}
                                     </View>
+                                    <Text style={styles.answerName}>{Math.round((answerNoOptions.length / (answerNoOptions.length + answerYesOptions.length)) * 100)}%</Text>
                                 </View>
-                            </Surface>
-                        </Col>
-                    </Row>
-                </KeyboardAwareScrollView>
-                <SubmitButton buttonText={'Weiter'} position={'absolute'} bottom={120} onPress={() => goNextForm()} />
-                <BottomNavigation buttonColors={['#6F6F70', '#6F6F70', '#6F6F70', '#6F6F70']} />
-            </Grid>
-        </PaperProvider>
+                            </View>
+                        </Surface>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Surface elevation={1}>
+                            <List.Accordion
+                                title="Liste der Ja-Abgestimmten"
+                                left={props => <List.Icon {...props} icon="check" />}
+                                right={() => (
+                                    <View style={{ borderRadius: 0, borderWidth: 1, borderColor: "black" }}>
+                                        <Text>{answerYesOptions.length}</Text>
+                                    </View>
+                                )}
+                            >
+                                {answerYesOptions.map((item, index) => {
+                                    return (
+                                        <List.Item key={index} title={item.userName} />
+                                    )
+                                })}
+                            </List.Accordion>
+                        </Surface>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Surface elevation={1}>
+                            <List.Accordion
+                                title="Liste der Nein-Abgestimmten"
+                                left={props => <List.Icon {...props} icon="check" />}
+                                right={() => (
+                                    <View style={{ borderRadius: 0, borderWidth: 1, borderColor: "black" }}>
+                                        <Text>{answerNoOptions.length}</Text>
+                                    </View>
+                                )}
+                            >
+                                {answerNoOptions.map((item, index) => {
+                                    return (
+                                        <List.Item key={index} title={item.userName} />
+                                    )
+                                })}
+                            </List.Accordion>
+                        </Surface>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                            <View style={styles.textIconContainer}>
+                                <MaterialCommunityIcons name='account-outline' color={'#090A0A'} size={30} />
+                                <Text style={styles.accountButtonText}>Verbleibende Zeit in Tagen</Text>
+                                <View
+                                    style={styles.numberUsersBox}>
+                                    <Text style={styles.numberUsers}>{checkDate()}</Text>
+                                </View>
+                            </View>
+                    </Col>
+                </Row>
+            </KeyboardAwareScrollView>
+            <SubmitButton buttonText={'Weiter'} position={'absolute'} bottom={120} onPress={() => goNextForm()} />
+            <BottomNavigation buttonColors={['#6F6F70', '#6F6F70', '#6F6F70', '#6F6F70']} />
+        </Grid>
+        </PaperProvider >
     );
 }
 
@@ -298,12 +286,79 @@ const styles = StyleSheet.create({
     },
     textIconContainer: {
         flexDirection: "row",
-        alignItems: 'center'
+        justifyContent:"space-between",
+        alignSelf:"center",
+        width:"100%",
+        padding: "2%",
+        backgroundColor:"#DADADA",
     },
     statisticContainer: {
-        padding: 25,
+        padding: "8%",
+        borderRadius: 5,
+        backgroundColor: "#39424A",
+    },
+    accountButtonText: {
+        alignSelf: 'flex-start',
+        textAlign: 'left',
+        fontFamily: 'Manrope_400Regular',
+        fontSize: 14,
+        color: '#222',
+        // marginRight: "30%",
+        marginLeft: "2%",
+        marginTop: "1%"
+    },
+    numberUsers: {
+
+        textAlign: 'center',
+        fontFamily: 'Manrope_400Regular',
+        fontSize: 14,
+        color: '#222',
+
     },
 
+    numberUsersBox: {
+        borderWidth: 1,
+        borderColor: "#FFF",
+        borderRadius: 4,
+        width:"20%",
+        alignContent:"center",
+        justifyContent:"center",
+
+
+        paddingLeft: "2%",
+        paddingRight: "2%",
+        paddingTop: "1%",
+        paddingBottom: "1%",
+
+    },
+    answerName: {
+        // alignSelf: 'flex-start',
+        textAlign: 'left',
+        fontFamily: 'Inter_500Medium',
+        fontSize: 16,
+        color: '#FFF',
+        marginTop: "1%",
+
+    },
+    answerText: {
+        // alignSelf: 'flex-start',
+        textAlign: 'left',
+        fontFamily: 'Inter_500Medium',
+        fontSize: 16,
+        color: '#FFF',
+        left: "25%",
+        marginBottom: "5%",
+
+    },
+
+    answerHeader: {
+        // alignSelf: 'flex-start',
+        textAlign: 'center',
+        fontFamily: 'Manrope_600SemiBold',
+        fontSize: 16,
+        color: '#FFFFFF',
+        marginBottom: '5%'
+    },
     keyboardContainer: {
         minHeight: '100%',
         width: '100%',
