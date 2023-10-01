@@ -42,7 +42,7 @@ const colorAnswerCirle = ['#00DAF8', '#4072EE', '#B558F6', '#7628B4', '#48A7FF'
 ]
 
 
-const StatisticFreitextScreen = ({ navigation, route }) => {
+const StatistikLikertScreen = ({ navigation, route }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [date, setDate] = useState('');
@@ -404,4 +404,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default StatisticFreitextScreen;
+export default StatistikLikertScreen;
