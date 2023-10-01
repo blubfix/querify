@@ -191,15 +191,26 @@ const StatisticJaNeinScreen = ({ navigation, route }) => {
                                     <Text style={styles.answerHeader}>{Math.round((answerYesOptions.length / (answerNoOptions.length + answerYesOptions.length)) * 100)}% haben für JA abgestimmt</Text>
                                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                                         <MaterialCommunityIcons name='check-circle' color={'#95D158'} size={30} />
-                                        <View style={{ flex: 1 }}>
-                                            {/* <ProgressBar progress={(answerYesOptions.length/(answerNoOptions.length+answerYesOptions.length))} style={{ width: "" }} /> */}
+                                        <View style={{ flex: 1, paddingLeft:5, paddingRight: 5 }}>
+                                            <ProgressBar
+                                                progress={
+                                                    answerYesOptions.length > 0
+                                                    ? answerYesOptions.length / (answerNoOptions.length + answerYesOptions.length)
+                                                    : 0
+                                                }
+                                                style={{ width: "" }}
+                                            />
                                         </View>
                                         <Text style={styles.answerName}>{Math.round((answerYesOptions.length / (answerNoOptions.length + answerYesOptions.length)) * 100)}%</Text>
                                     </View>
                                     <View style={{ flexDirection: "row", alignItems: "center", paddingTop: "4%" }}>
                                         <MaterialCommunityIcons name='close-circle' color={'#AD323D'} size={30} />
-                                        <View style={{ flex: 1 }}>
-                                            {/* <ProgressBar progress={(answerNoOptions.length/(answerNoOptions.length+answerYesOptions.length))} style={{ width: "" }} /> */}
+                                        <View style={{ flex: 1, paddingLeft:5, paddingRight: 5 }}>
+                                            <ProgressBar progress={
+                                                answerNoOptions.length > 0
+                                                ? answerNoOptions.length / (answerNoOptions.length+answerYesOptions.length)
+                                                : 0
+                                                } style={{ width: "" }} />
                                         </View>
                                         <Text style={styles.answerName}>{Math.round((answerNoOptions.length / (answerNoOptions.length + answerYesOptions.length)) * 100)}%</Text>
                                     </View>

@@ -31,11 +31,11 @@ import API from "../API/apiConnection";
 const { width, height } = Dimensions.get("window");
 
 const data = [
-    { id: '1', text: 'Stimme voll und ganz zu', percent: '20%' },
-    { id: '2', text: 'Stimme zu', percent: '20%' },
-    { id: '3', text: 'Stimme weder zu noch lehne ab', percent: '20%' },
-    { id: '4', text: 'Stimme nicht zu', percent: '20%' },
-    { id: '5', text: 'Stimme überhaupt nicht zu', percent: '20%' },
+    { id: '1', text: 'Stimme voll und ganz zu', number:0, percent: '' },
+    { id: '2', text: 'Stimme zu', number:0, percent: '' },
+    { id: '3', text: 'Stimme weder zu noch lehne ab', number:0, percent: '' },
+    { id: '4', text: 'Stimme nicht zu', number:0, percent: '' },
+    { id: '5', text: 'Stimme überhaupt nicht zu', number:0, percent: '' },
 ];
 const colorAnswerCirle = ['#00DAF8', '#4072EE', '#B558F6', '#7628B4', '#48A7FF'
 
@@ -52,6 +52,8 @@ const StatistikLikertScreen = ({ navigation, route }) => {
     const [answerYesOptions, setAnswerYesOptions] = useState([]);
     const [answerNoOptions, setAnswerNoOptions] = useState([]);
     const [answerCount, setAnswerCount] = useState();
+    const [answerOptions, setAnswerOptions] = useState([]);
+    const [calcAnswers, setCalcAnswers] = useState([]);
 
 
     const handlePress = () => setExpanded(!expanded);
@@ -71,9 +73,9 @@ const StatistikLikertScreen = ({ navigation, route }) => {
     });
 
     useEffect(() => {
-        getAnswerYesNoUser(question.questionId);
+        getAnswerYesNoUser(question);
         checkDate();
-    }, []);
+    }, [calcAnswers]);
 
 
     const checkDate = () => {
@@ -131,23 +133,53 @@ const StatistikLikertScreen = ({ navigation, route }) => {
         setSelectedColorIndex(colorIndex);
     }
 
-    const getAnswerYesNoUser = (id) => {
+    const getAnswerYesNoUser = (question) => {
+        const id = question.questionId;
         console.log("question.questionId: ", id);
+        console.log("question: ", question);
 
         // Define two separate promises for the API calls
-        const yesOptionsPromise = API.getAnswerOptionYesByQuestionId(id);
-        const noOptionsPromise = API.getAnswerOptionNoByQuestionId(id);
+        const answers = API.getAnswerOptionByQuestionID(id);
 
         // Use Promise.all to wait for both promises to resolve
-        Promise.all([yesOptionsPromise, noOptionsPromise])
-            .then(([yesOptionsResponse, noOptionsResponse]) => {
-                console.log("Yes Options: ", yesOptionsResponse.data);
-                console.log("No Options: ", noOptionsResponse.data);
+        Promise.all([answers])
+            .then((response) => {
+                console.log("Yes Options: ", response[0].data);
+                setAnswerOptions(response[0].data);
+                
+                // Create a map to store the counts for each unique answerText
+                const counts = {};
 
-                // Set the state variables with the data from the responses
-                setAnswerYesOptions(yesOptionsResponse.data);
-                setAnswerNoOptions(noOptionsResponse.data);
+                answerOptions.forEach((answer) => {
+                    const matchingDataItem = data.find(item => item.text === answer.answerText);
+                    if (matchingDataItem) {
+                        // Check if the answerText is in the counts map, and if not, initialize it with 0
+                        if (!(answer.answerText in counts)) {
+                            counts[answer.answerText] = 0;
+                        }
+                        // Increment the count for the current answerText
+                        counts[answer.answerText]++;
+                    }
+                });
 
+                // Update the data array with the counts
+                data.forEach((item) => {
+                    if (item.text in counts) {
+                        item.number = counts[item.text];
+                    }
+                });
+
+                // Calculate the total sum of numbers
+                const totalSum = data.reduce((sum, item) => sum + item.number, 0);
+                
+                // Calculate the percentage and add it to each object in jsonArray
+                data.forEach((item) => {
+                    item.percent = ((item.number / totalSum) * 100).toFixed(2) + "%";
+                });
+
+                console.log("data: ", data);
+                setCalcAnswers(data);
+                console.log("calcAnswers: ", calcAnswers);
                 // You can now proceed with any additional logic that depends on this data
             })
             .catch((err) => {
@@ -170,7 +202,7 @@ const StatistikLikertScreen = ({ navigation, route }) => {
     const palceholderData = [{}]; // Placeholder item
     const onRefresh = () => {
         console.log("Refreshing page")
-        // getQuestions();
+        getAnswerYesNoUser(question);
     };
 
     return (
@@ -188,7 +220,8 @@ const StatistikLikertScreen = ({ navigation, route }) => {
                         </Row>
                         <Row>
                             <Col>
-                                <Text style={styles.subHeader}>Frage hier rein</Text>
+                                <Text style={styles.subHeader}>{question.title}</Text>
+                                <Text>{checkQuestionArt()}</Text>
                             </Col>
                         </Row>
                         <Row>
@@ -199,7 +232,7 @@ const StatistikLikertScreen = ({ navigation, route }) => {
                                         <Text style={styles.accountButtonText}>Teilnehmende</Text>
                                         <View
                                             style={styles.numberUsersBox}>
-                                            <Text style={styles.numberUsers}> {answerYesOptions.length + answerNoOptions.length} </Text>
+                                            <Text style={styles.numberUsers}> {answerOptions.length} </Text>
                                         </View>
                                     </View>
                                 </Surface>
@@ -209,11 +242,11 @@ const StatistikLikertScreen = ({ navigation, route }) => {
                             <Text style={styles.answerHeader}>
                                 Likert-Skala Antworten
                             </Text>
-                            {data.map((item, index) => {
+                            {calcAnswers.map((item, index) => {
                                 const calculatedValue = (index % 4) + 1;
                                 const colorItem = colorAnswerCirle
                                 return (
-                                    <View style={styles.textAnswerBox}>
+                                    <View style={styles.textAnswerBox} key={index+100}>
                                         <Row key={index}>
                                             <Col size={1}>
                                                 <MaterialCommunityIcons name='checkbox-blank-circle-outline' color={colorAnswerCirle[calculatedValue]} size={30} />

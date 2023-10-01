@@ -31,11 +31,11 @@ import API from "../API/apiConnection";
 const { width, height } = Dimensions.get("window");
 
 const data = [
-    { id: '1', text: 'Rosen sind Rot', percent: '20%' },
-    { id: '2', text: 'Veilchen Blau', percent: '20%' },
-    { id: '3', text: 'Ich klau zwei Döner', percent: '20%' },
-    { id: '4', text: 'und geh in den Bau', percent: '20%' },
-    { id: '5', text: 'Achmed Göthe', percent: '20%' },
+    { id: '1', text: '0', number:0, percent: '' },
+    { id: '2', text: '1', number:0, percent: '' },
+    { id: '3', text: '2', number:0, percent: '' },
+    { id: '4', text: '3', number:0, percent: '' },
+    { id: '5', text: '4', number:0, percent: '' },
     // Add more items as nee, percent: '20%'ded
 ];
 const colorAnswerCirle = ['#00DAF8', '#4072EE', '#B558F6', '#7628B4', '#48A7FF'
@@ -67,6 +67,10 @@ const StatistikStarScreen = ({ navigation, route }) => {
     const [answerNoOptions, setAnswerNoOptions] = useState([]);
     const [answerCount, setAnswerCount] = useState();
     const [inputValue, setInputValue] = useState(1);
+    const [answerOptions, setAnswerOptions] = useState([]);
+    const [calcAnswers, setCalcAnswers] = useState([]);
+    const [allStars, setAllStars] = useState(0);
+    const sumStars = 0;
 
 
     const handlePress = () => setExpanded(!expanded);
@@ -96,9 +100,9 @@ const StatistikStarScreen = ({ navigation, route }) => {
     });
 
     useEffect(() => {
-        getAnswerYesNoUser(question.questionId);
+        getAnswerYesNoUser(question);
         checkDate();
-    }, []);
+    }, [calcAnswers]);
 
 
     const checkDate = () => {
@@ -156,22 +160,63 @@ const StatistikStarScreen = ({ navigation, route }) => {
         setSelectedColorIndex(colorIndex);
     }
 
-    const getAnswerYesNoUser = (id) => {
+    const getAnswerYesNoUser = (question) => {
+        const id = question.questionId;
         console.log("question.questionId: ", id);
+        console.log("question: ", question);
 
         // Define two separate promises for the API calls
-        const yesOptionsPromise = API.getAnswerOptionYesByQuestionId(id);
-        const noOptionsPromise = API.getAnswerOptionNoByQuestionId(id);
+        const answers = API.getAnswerOptionByQuestionID(id);
 
         // Use Promise.all to wait for both promises to resolve
-        Promise.all([yesOptionsPromise, noOptionsPromise])
-            .then(([yesOptionsResponse, noOptionsResponse]) => {
-                console.log("Yes Options: ", yesOptionsResponse.data);
-                console.log("No Options: ", noOptionsResponse.data);
+        Promise.all([answers])
+            .then((response) => {
+                console.log("Yes Options: ", response[0].data);
+                setAnswerOptions(response[0].data);
 
-                // Set the state variables with the data from the responses
-                setAnswerYesOptions(yesOptionsResponse.data);
-                setAnswerNoOptions(noOptionsResponse.data);
+                // Create a map to store the counts for each unique answerText
+                const counts = {};
+
+                answerOptions.forEach((answer) => {
+                    const matchingDataItem = data.find(item => item.text === answer.answerText);
+                    if (matchingDataItem) {
+                        // Check if the answerText is in the counts map, and if not, initialize it with 0
+                        if (!(answer.answerText in counts)) {
+                            counts[answer.answerText] = 0;
+                        }
+                        // Increment the count for the current answerText
+                        counts[answer.answerText]++;
+                    }
+                });
+
+                // Update the data array with the counts
+                data.forEach((item) => {
+                    if (item.text in counts) {
+                        item.number = counts[item.text];
+                    }
+                });
+
+                // Calculate the total sum of numbers
+                const totalSum = data.reduce((sum, item) => sum + item.number, 0);
+                console.log("totalSum: ", totalSum);
+                // Calculate the percentage and add it to each object in jsonArray
+                data.forEach((item) => {
+                    item.percent = ((item.number / totalSum) * 100).toFixed(2) + "%";
+                });
+                let sum = 0;
+
+                data.forEach((item) => {
+                    const textValue = parseInt(item.text); // Convert text to a number
+                    sum += textValue;
+                });
+
+                setInputValue(sum / totalSum);
+
+                console.log("Sum of text values:", sum);
+
+                console.log("data: ", data);
+                setCalcAnswers(data);
+                console.log("calcAnswers: ", calcAnswers);
 
                 // You can now proceed with any additional logic that depends on this data
             })
@@ -196,7 +241,7 @@ const StatistikStarScreen = ({ navigation, route }) => {
     const palceholderData = [{}]; // Placeholder item
     const onRefresh = () => {
         console.log("Refreshing page")
-        // getQuestions();
+        getAnswerYesNoUser(question);
     };
 
     const renderItem = ({ item }) => (
@@ -227,7 +272,8 @@ const StatistikStarScreen = ({ navigation, route }) => {
                         </Row>
                         <Row>
                             <Col>
-                                <Text style={styles.subHeader}>Frage hier rein</Text>
+                                <Text style={styles.subHeader}>{question.title}</Text>
+                                <Text>{checkQuestionArt()}</Text>
                             </Col>
                         </Row>
                         <Row>
@@ -238,7 +284,7 @@ const StatistikStarScreen = ({ navigation, route }) => {
                                         <Text style={styles.accountButtonText}>Teilnehmende</Text>
                                         <View
                                             style={styles.numberUsersBox}>
-                                            <Text style={styles.numberUsers}> {answerYesOptions.length + answerNoOptions.length} </Text>
+                                            <Text style={styles.numberUsers}> {answerOptions.length} </Text>
                                         </View>
                                     </View>
                                 </Surface>

@@ -50,9 +50,8 @@ const StatistikMehrfachScreen = ({ navigation, route }) => {
     const [selectedColorIndex, setSelectedColorIndex] = useState(null);
     const [question, setQuestion] = useState(route.params.item);
     const [expanded, setExpanded] = React.useState(true);
-    const [answerYesOptions, setAnswerYesOptions] = useState([]);
-    const [answerNoOptions, setAnswerNoOptions] = useState([]);
-    const [answerCount, setAnswerCount] = useState();
+    const [answerOptions, setAnswerOptions] = useState([]);
+    const [calcAnswers, setCalcAnswers] = useState([]);
 
 
     const handlePress = () => setExpanded(!expanded);
@@ -72,7 +71,7 @@ const StatistikMehrfachScreen = ({ navigation, route }) => {
     });
 
     useEffect(() => {
-        getAnswerYesNoUser(question.questionId);
+        getAnswersMore(question);
         checkDate();
     }, []);
 
@@ -132,23 +131,60 @@ const StatistikMehrfachScreen = ({ navigation, route }) => {
         setSelectedColorIndex(colorIndex);
     }
 
-    const getAnswerYesNoUser = (id) => {
+    const getAnswersMore = (question) => {
+        const id = question.questionId;
         console.log("question.questionId: ", id);
+        const options = question.multi;
+        console.log("question.multi: ", options);
+
+        // Parse the string into an array
+        const dataArray = options.split(',');
+
+        // Create an array of JSON objects
+        const jsonArray = dataArray.map(item => ({
+        data: item,
+        number: 0
+        }));
+
+        console.log("jsonArray: ", jsonArray);
+
+        // Output the array of JSON objects
+        console.log(jsonArray);
 
         // Define two separate promises for the API calls
-        const yesOptionsPromise = API.getAnswerOptionYesByQuestionId(id);
-        const noOptionsPromise = API.getAnswerOptionNoByQuestionId(id);
+        const answers = API.getAnswerOptionByQuestionID(id);
 
         // Use Promise.all to wait for both promises to resolve
-        Promise.all([yesOptionsPromise, noOptionsPromise])
-            .then(([yesOptionsResponse, noOptionsResponse]) => {
-                console.log("Yes Options: ", yesOptionsResponse.data);
-                console.log("No Options: ", noOptionsResponse.data);
-
+        Promise.all([answers])
+            .then((response) => {
+                console.log("Yes Options: ", response[0].data);
                 // Set the state variables with the data from the responses
-                setAnswerYesOptions(yesOptionsResponse.data);
-                setAnswerNoOptions(noOptionsResponse.data);
-
+                setAnswerOptions(response[0].data);
+                
+                const data = response[0].data;
+                data.forEach((item) => {
+                    const answersSelected = item.answerText.split(',');
+                    answersSelected.forEach((answer) => {
+                        const trimmedAnswer = answer.trim(); // Remove leading and trailing spaces
+                        const jsonItem = jsonArray.find((item) => item.data === trimmedAnswer);
+                        if (jsonItem) {
+                            jsonItem.number++;
+                        }
+                    });
+                });
+                
+                // Calculate the total sum of numbers
+                const totalSum = jsonArray.reduce((sum, item) => sum + item.number, 0);
+                
+                // Calculate the percentage and add it to each object in jsonArray
+                jsonArray.forEach((item) => {
+                    item.percent = ((item.number / totalSum) * 100).toFixed(2) + "%";
+                });
+                
+                // Now jsonArray contains the updated numbers
+                console.log("jsonArray: ", jsonArray);
+                setCalcAnswers(jsonArray);
+                console.log("calcAnswers: ", calcAnswers);
                 // You can now proceed with any additional logic that depends on this data
             })
             .catch((err) => {
@@ -156,6 +192,8 @@ const StatistikMehrfachScreen = ({ navigation, route }) => {
             });
 
     };
+
+
 
 
     if (!fontsLoaded) {
@@ -189,7 +227,8 @@ const StatistikMehrfachScreen = ({ navigation, route }) => {
                         </Row>
                         <Row>
                             <Col>
-                                <Text style={styles.subHeader}>Frage hier rein</Text>
+                                <Text style={styles.subHeader}>{question.title}</Text>
+                                <Text>{checkQuestionArt()}</Text>
                             </Col>
                         </Row>
                         <Row>
@@ -200,7 +239,7 @@ const StatistikMehrfachScreen = ({ navigation, route }) => {
                                         <Text style={styles.accountButtonText}>Teilnehmende</Text>
                                         <View
                                             style={styles.numberUsersBox}>
-                                            <Text style={styles.numberUsers}> {answerYesOptions.length + answerNoOptions.length} </Text>
+                                            <Text style={styles.numberUsers}> {answerOptions.length} </Text>
                                         </View>
                                     </View>
                                 </Surface>
@@ -210,17 +249,16 @@ const StatistikMehrfachScreen = ({ navigation, route }) => {
                             <Text style={styles.answerHeader}>
                                 Mehrfachauswahl Antworten
                             </Text>
-                            {data.map((item, index) => {
-                                const calculatedValue = (index % 4) + 1;
-                                const colorItem = colorAnswerCirle
+                            {calcAnswers.map((item, index) => {
+                                // const calculatedValue = (index % 4) + 1;
                                 return (
-                                    <View style={styles.textAnswerBox}>
+                                    <View style={styles.textAnswerBox} key={index}>
                                         <Row key={index}>
                                             <Col size={1}>
-                                                <MaterialCommunityIcons name='checkbox-blank-circle-outline' color={colorAnswerCirle[calculatedValue]} size={30} />
+                                                <MaterialCommunityIcons name='checkbox-blank-circle-outline' color={colorAnswerCirle[0]} size={30} />
                                             </Col>
                                             <Col size={6}>
-                                                <Text style={styles.answerName}>{item.text}</Text>
+                                                <Text style={styles.answerName}>{item.data}</Text>
                                             </Col>
                                             <Col size={2}>
                                                 <Text style={styles.answerName}>{item.percent}</Text>
