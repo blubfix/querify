@@ -247,18 +247,22 @@ async function getAnswerOptionByQuestionId(questionId) {
   try {
     console.log("Question ID:", questionId); // Konsolenausgabe der Frage-ID
     const result = await connection.query(
-      `SELECT *, CAST((SELECT COUNT(*) FROM answerOption AS a2 WHERE a2.questionId = '${questionId}') AS SIGNED) AS optionCount FROM answerOption WHERE questionId = '${questionId}';`
-    );
+      `SELECT ao.answerOptionId, ao.answerText, ao.questionId, CAST(COUNT(ao2.answerOptionId) AS SIGNED) AS optionCount, u.userId, u.name FROM answerOption ao JOIN (SELECT DISTINCT ag.answerOptionId, u.userId, u.name FROM answerGiven ag JOIN user u ON ag.userId = u.userId) u ON ao.answerOptionId = u.answerOptionId LEFT JOIN answerOption ao2 ON ao2.questionId = ao.questionId WHERE ao.questionId = '${questionId}' GROUP BY ao.answerOptionId, ao.answerText, ao.questionId, u.userId, u.name;`);
     console.log("DB Result: getAnswerOptionByQuestionID", result);
     if (result.length === 0) {
       console.log("No answerOption with this question Id available");
       return null;
     }
-    const newData = result.map(item => ({
-      ...item,
+    const newData = result.map((item) => ({
+      answerOptionId: item.answerOptionId,
+      answerText: item.answerText,
+      questionId: item.questionId,
+      userId: item.userId,
+      name: item.name,
       optionCount: Number(item.optionCount)
 
     }));
+    console.log("newData: ", newData);
     return newData;
   } catch (e) {
     console.error(e);
