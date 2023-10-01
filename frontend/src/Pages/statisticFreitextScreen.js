@@ -53,6 +53,7 @@ const StatisticFreitextScreen = ({ navigation, route }) => {
     const [selectedColorIndex, setSelectedColorIndex] = useState(null);
     const [question, setQuestion] = useState(route.params.item);
     const [expanded, setExpanded] = React.useState(true);
+    const [answerOptions, setAnswerOptions] = useState([]);
     const [answerYesOptions, setAnswerYesOptions] = useState([]);
     const [answerNoOptions, setAnswerNoOptions] = useState([]);
     const [answerCount, setAnswerCount] = useState();
@@ -75,7 +76,7 @@ const StatisticFreitextScreen = ({ navigation, route }) => {
     });
 
     useEffect(() => {
-        getAnswerYesNoUser(question.questionId);
+        getAnswerFree(question.questionId);
         checkDate();
     }, []);
 
@@ -135,23 +136,17 @@ const StatisticFreitextScreen = ({ navigation, route }) => {
         setSelectedColorIndex(colorIndex);
     }
 
-    const getAnswerYesNoUser = (id) => {
+    const getAnswerFree = (id) => {
         console.log("question.questionId: ", id);
 
         // Define two separate promises for the API calls
-        const yesOptionsPromise = API.getAnswerOptionYesByQuestionId(id);
-        const noOptionsPromise = API.getAnswerOptionNoByQuestionId(id);
+        const freePromise = API.getAnswerOptionByQuestionID(id);
 
         // Use Promise.all to wait for both promises to resolve
-        Promise.all([yesOptionsPromise, noOptionsPromise])
-            .then(([yesOptionsResponse, noOptionsResponse]) => {
-                console.log("Yes Options: ", yesOptionsResponse.data);
-                console.log("No Options: ", noOptionsResponse.data);
-
-                // Set the state variables with the data from the responses
-                setAnswerYesOptions(yesOptionsResponse.data);
-                setAnswerNoOptions(noOptionsResponse.data);
-
+        Promise.all([freePromise])
+            .then((response) => {
+                console.log("Free answer: ", response[0].data);
+                setAnswerOptions(response[0].data);
                 // You can now proceed with any additional logic that depends on this data
             })
             .catch((err) => {
@@ -192,15 +187,34 @@ const StatisticFreitextScreen = ({ navigation, route }) => {
                         </Row>
                         <Row>
                             <Col>
-
+                            <Text style={styles.subHeader}>{question.title}</Text>
+                            <Text>{checkQuestionArt()}</Text>
                             </Col>
                         </Row>
+                        <Row>
+                        <Col>
+                            <Surface elevation={1}>
+                                <View style={styles.textIconContainer}>
+                                    <MaterialCommunityIcons name='account-outline' color={'#090A0A'} size={30} />
+                                    <Text style={styles.accountButtonText}>Profil</Text>
+                                    <View
+                                        style={{
+                                            borderWidth: 1,
+                                            borderColor: "black",
+                                            borderRadius: 0,
+                                        }}>
+                                        <Text> {answerOptions.length} </Text>
+                                    </View>
+                                </View>
+                            </Surface>
+                        </Col>
+                    </Row>
                         <View style={styles.answerContainer}>
                             <Text style={styles.answerHeader}>
                                 Freitext Antworten
                             </Text>
                     
-                            {data.map((item, index) => {
+                            {answerOptions.map((item, index) => {
                                 return (
                                     <View style={styles.textAnswerBox}>
                                         <Row key={index}>
@@ -208,11 +222,11 @@ const StatisticFreitextScreen = ({ navigation, route }) => {
                                                 <MaterialCommunityIcons name='account-outline' color={'#090A0A'} size={30} />
                                             </Col>
                                             <Col size={6}>
-                                                <Text style={styles.answerName}>{item.text}</Text>
+                                                <Text style={styles.answerName}>{item.name}</Text>
                                             </Col>
                                         </Row>
                                         <Row>
-                                            <Text style={styles.answerText}>{item.answer}</Text>
+                                            <Text style={styles.answerText}>{item.answerText}</Text>
                                         </Row>
                                     </View>
 
