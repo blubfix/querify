@@ -50,7 +50,7 @@ const AccountScreen = ({ navigation }) => {
     //TODO: Logout and remove the jwt token so the user is not loggedin anymore
     const logout = () => {
         removeTokenFromStorage()
-        navigation.navigate('LoginScreen')
+        navigation.navigate('StartScreen')
     }
 
 

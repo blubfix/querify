@@ -98,6 +98,7 @@ const AnswerFreitext =({ navigation, route }) => {
                     API.postAnswerGiven(data2)
                         .then((resp) => {
                             console.log(resp.data);
+                            navigation.navigate("CreateQuestionaire")
                         })
                         .catch((e) => {
                             console.log(e);
