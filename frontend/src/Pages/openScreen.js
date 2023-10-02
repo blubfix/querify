@@ -38,12 +38,15 @@ export default function StartScreen({ navigation }) {
     }
     const checkToken = async () => {
         try {
+
             const token = await AsyncStorage.getItem('authToken');
             console.log(token);
             if (token) {
                 setIsLoggedIn(true); // User is logged in
+                return(true);
             } else {
                 setIsLoggedIn(false); // User is not logged in
+                return(false);
 
             }
             console.log(isLoggedIn);
@@ -53,19 +56,32 @@ export default function StartScreen({ navigation }) {
     };
 
 
-    checkToken(); // Check token when the component mounts
+   
 
-    if (!isLoggedIn) {
-        console.log("Login");
-        setTimeout(() => {
-            navigation.navigate("StartScreen"); // Navigate to the Login screen
-        }, 2500); // Delay for 1 second (1000 milliseconds)
-    } else {
-        console.log("CreateQuestionaire_openScreen");
-        setTimeout(() => {
-            navigation.navigate("CreateQuestionaire"); // Navigate to the Login screen
-        }, 2500); // Delay for 1 second (1000 milliseconds)
+
+    async function checkLogin() {
+        try {
+
+            if (!await checkToken()) {
+                console.log("state:", isLoggedIn);
+                console.log("Login");
+                setTimeout(() => {
+                    navigation.navigate("StartScreen"); // Navigate to the Login screen
+                }, 1000); // Delay for 1 second (1000 milliseconds)
+            } else {
+                console.log("CreateQuestionaire_openScreen");
+                setTimeout(() => {
+                    navigation.navigate("CreateQuestionaire"); // Navigate to the Login screen
+                }, 1000); // Delay for 1 second (1000 milliseconds)
+            }
+        } catch (error) {
+            // Handle errors that might occur during the token check
+            console.error(error);
+        }
     }
+
+
+    checkLogin();
 
 
 
@@ -85,7 +101,7 @@ export default function StartScreen({ navigation }) {
                 </Row>
                 <Row>
                     <Col>
-                        <View style={{ flex: 1, marginTop:"20%",justifyContent: 'center', alignItems: 'center' }}>
+                        <View style={{ flex: 1, marginTop: "20%", justifyContent: 'center', alignItems: 'center' }}>
                             <ActivityIndicator size="large" color="#00B3FF" />
                         </View>
                     </Col>

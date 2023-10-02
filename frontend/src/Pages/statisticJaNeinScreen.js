@@ -1,52 +1,19 @@
-import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
-import { Image, Button, StyleSheet, View, Alert, Dimensions, RefreshControl, FlatList } from "react-native";
-import {
-    MD3DarkTheme as DefaultTheme,
-    Provider as PaperProvider,
-    Switch,
-    Text,
-    Surface,
-    Appbar,
-    SegmentedButtons,
-    TextInput,
-    List,
-    ProgressBar,
-} from "react-native-paper";
+import { StyleSheet, View, RefreshControl, FlatList } from "react-native";
+import { Provider as PaperProvider, Text, List, ProgressBar } from "react-native-paper";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Col, Row, Grid } from "react-native-paper-grid";
-import SubmitButton from "../Components/SubmitButton";
-import SingleLineInput from "../Components/SingleLineInput";
-import CheckBox from 'expo-checkbox';
 import { useFonts, Inter_700Bold, Inter_400Regular, Inter_500Medium } from '@expo-google-fonts/inter';
 import { Manrope_400Regular, Manrope_600SemiBold, Manrope_700Bold, Manrope_300Light } from '@expo-google-fonts/manrope'
 import BottomNavigation from "../Components/BottomNavigation";
-import TitleInput from "../Components/TitleInput";
-import DescriptionInput from "../Components/DescriptionInput";
-import DateInput from "../Components/DateInput";
-import ColorPalette from "../Components/ColorPalette";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import API from "../API/apiConnection";
-const { width, height } = Dimensions.get("window");
 
 const StatisticJaNeinScreen = ({ navigation, route }) => {
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-    const [date, setDate] = useState('');
-    const [selectedColorIndex, setSelectedColorIndex] = useState(null);
+   
     const [question, setQuestion] = useState(route.params.item);
-    const [expanded, setExpanded] = React.useState(true);
     const [answerYesOptions, setAnswerYesOptions] = useState([]);
     const [answerNoOptions, setAnswerNoOptions] = useState([]);
-    const [answerCount, setAnswerCount] = useState();
-
-
-    const handlePress = () => setExpanded(!expanded);
-
-    console.log("wo bin ich: ", question)
-
-
 
     const [fontsLoaded] = useFonts({
         Inter_400Regular,
@@ -65,7 +32,6 @@ const StatisticJaNeinScreen = ({ navigation, route }) => {
 
 
     const checkDate = () => {
-        // Parse the date from the 'question' in the format 'dd.mm.yyyy'
         const questionDateParts = question.date.split('.');
         const questionDay = parseInt(questionDateParts[0], 10);
         const questionMonth = parseInt(questionDateParts[1], 10) - 1; // Month is zero-based
@@ -102,23 +68,6 @@ const StatisticJaNeinScreen = ({ navigation, route }) => {
         }
     }
 
-    const handleTitleChange = (newTitle) => {
-        console.log("newTitle: ", newTitle)
-        setTitle(newTitle);
-    }
-    const handleDescriptionChange = (newDescription) => {
-        console.log("newDescription: ", newDescription)
-        setDescription(newDescription);
-    }
-    const handleDateChange = (newDate) => {
-        console.log("newDate: ", newDate)
-        setDate(newDate);
-    }
-    const handleColorSelected = (colorIndex) => {
-        console.log("colorIndex: ", colorIndex)
-        setSelectedColorIndex(colorIndex);
-    }
-
     const getAnswerYesNoUser = (id) => {
         console.log("question.questionId: ", id);
 
@@ -141,23 +90,18 @@ const StatisticJaNeinScreen = ({ navigation, route }) => {
             .catch((err) => {
                 console.log("err: ", err);
             });
-
     };
-
 
     if (!fontsLoaded) {
         return null;
     }
     const palceholderData = [{ id: '1' }]; // Placeholder item
 
-    const goNextForm = () => {
-        console.log("title: ", title)
-        navigation.navigate('QuestionaireOptions', { title: title, description: description, date: date, color: selectedColorIndex, type: 'poll' });
-    }
+    
 
     const onRefresh = () => {
         console.log("Refreshing page")
-        // getQuestions();
+        getAnswerYesNoUser(question.questionId);
     };
 
     return (
@@ -167,7 +111,6 @@ const StatisticJaNeinScreen = ({ navigation, route }) => {
                 data={palceholderData}
                 keyExtractor={item => item.id}
                 renderItem={({ item }) => (
-
                     <Grid container>
                         <Row>
                             <Col>
@@ -182,8 +125,6 @@ const StatisticJaNeinScreen = ({ navigation, route }) => {
                         </Row>
                         <Row>
                             <Col>
-
-
                                 <View style={styles.textIconContainer}>
                                     <MaterialCommunityIcons name='account-multiple-outline' color={'#090A0A'} size={30} paddingLeft={"2%"} />
                                     <Text style={styles.accountButtonText}>Teilnehmende</Text>
@@ -192,12 +133,10 @@ const StatisticJaNeinScreen = ({ navigation, route }) => {
                                         <Text style={styles.numberUsers}> {answerYesOptions.length + answerNoOptions.length} </Text>
                                     </View>
                                 </View>
-
                             </Col>
                         </Row>
                         <Row>
                             <Col>
-
                                 <View style={styles.statisticContainer}>
                                     <Text style={styles.answerHeader}>{Math.round((answerYesOptions.length / (answerNoOptions.length + answerYesOptions.length)) * 100)}% haben für JA abgestimmt</Text>
                                     <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -226,12 +165,10 @@ const StatisticJaNeinScreen = ({ navigation, route }) => {
                                         <Text style={styles.answerName}>{Math.round((answerNoOptions.length / (answerNoOptions.length + answerYesOptions.length)) * 100)}%</Text>
                                     </View>
                                 </View>
-
                             </Col>
                         </Row>
                         <Row>
                             <Col>
-
                                 <List.Accordion
                                     style={{ backgroundColor: "#DADADA" }}
                                     title="Liste der Ja-Abgestimmten"
@@ -248,18 +185,14 @@ const StatisticJaNeinScreen = ({ navigation, route }) => {
                                         )
                                     })}
                                 </List.Accordion>
-
                             </Col>
                         </Row>
                         <Row>
                             <Col>
-
                                 <List.Accordion
                                     style={{ backgroundColor: "#DADADA" }}
                                     title="Liste der Nein-Abgestimmten"
-                                    left={
-
-                                        props => <MaterialCommunityIcons name='close-circle' color={'#AD323D'} size={30} paddingLeft={"5%"} />}
+                                    left={props => <MaterialCommunityIcons name='close-circle' color={'#AD323D'} size={30} paddingLeft={"5%"} />}
                                 >
                                     {answerNoOptions.map((item, index) => {
                                         return (
@@ -270,12 +203,10 @@ const StatisticJaNeinScreen = ({ navigation, route }) => {
                                         )
                                     })}
                                 </List.Accordion>
-
                             </Col>
                         </Row>
                         <Row>
                             <Col>
-
                                 <View style={styles.textIconContainer}>
                                     <MaterialCommunityIcons name='av-timer' color={'#090A0A'} size={30} paddingLeft={"3%"} />
                                     <Text style={styles.accountButtonText}>Verbleibende Zeit in Tagen</Text>
@@ -284,12 +215,10 @@ const StatisticJaNeinScreen = ({ navigation, route }) => {
                                         <Text style={styles.numberUsers}>{checkDate()}</Text>
                                     </View>
                                 </View>
-
                             </Col>
                         </Row>
                     </Grid>
                 )}
-
                 refreshControl={<RefreshControl tintColor={"#74479A"} onRefresh={onRefresh} />}
             />
             <BottomNavigation buttonColors={['#6F6F70', '#6F6F70', '#6F6F70', '#6F6F70']} />
@@ -313,7 +242,6 @@ const styles = StyleSheet.create({
         fontFamily: 'Inter_500Medium',
         fontSize: 16,
         color: '#090A0A',
-        // marginBottom: '5%'
     },
     textIconContainer: {
         flexDirection: "row",
@@ -334,19 +262,15 @@ const styles = StyleSheet.create({
         fontFamily: 'Manrope_400Regular',
         fontSize: 14,
         color: '#222',
-        // marginRight: "30%",
         marginLeft: "2%",
         marginTop: "1%"
     },
     numberUsers: {
-
         textAlign: 'center',
         fontFamily: 'Manrope_400Regular',
         fontSize: 14,
         color: '#222',
-
     },
-
     numberUsersBox: {
         borderWidth: 1,
         borderColor: "#FFF",
@@ -354,36 +278,27 @@ const styles = StyleSheet.create({
         width: "20%",
         alignContent: "center",
         justifyContent: "center",
-
-
         paddingLeft: "2%",
         paddingRight: "2%",
         paddingTop: "1%",
         paddingBottom: "1%",
-
     },
     answerName: {
-        // alignSelf: 'flex-start',
         textAlign: 'left',
         fontFamily: 'Inter_500Medium',
         fontSize: 16,
         color: '#FFF',
         marginTop: "1%",
-
     },
     answerText: {
-        // alignSelf: 'flex-start',
         textAlign: 'left',
         fontFamily: 'Inter_500Medium',
         fontSize: 16,
         color: '#FFF',
         left: "25%",
         marginBottom: "5%",
-
     },
-
     answerHeader: {
-        // alignSelf: 'flex-start',
         textAlign: 'center',
         fontFamily: 'Manrope_600SemiBold',
         fontSize: 16,
@@ -393,9 +308,7 @@ const styles = StyleSheet.create({
     keyboardContainer: {
         minHeight: '100%',
         width: '100%',
-
     },
-
     container: {
         height: "87%",
         width: "100%",

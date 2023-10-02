@@ -40,6 +40,9 @@ const CreateQuestionaireScreen =({ navigation }) => {
     return (
         <PaperProvider>
                 <Grid style={styles.container} container>
+                    <Row style={{height:"3%"}}> 
+                    {/* quickfix for island from iphone14  */}
+                    </Row>
                     <Row>
                         <Col>
                             <Text style={styles.headerText}>Erstelle eine Umfrage</Text>

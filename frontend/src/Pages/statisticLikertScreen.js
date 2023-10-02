@@ -1,35 +1,13 @@
-import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
-import { Image, Button, StyleSheet, View, FlatList, Dimensions, RefreshControl, KeyboardAvoidingView } from "react-native";
-import {
-    MD3DarkTheme as DefaultTheme,
-    Provider as PaperProvider,
-    Switch,
-    Text,
-    Surface,
-    Appbar,
-    SegmentedButtons,
-    TextInput,
-    List,
-    ProgressBar,
-} from "react-native-paper";
+import { StyleSheet, View, FlatList, Dimensions, RefreshControl } from "react-native";
+import { Provider as PaperProvider, Text, Surface } from "react-native-paper";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Col, Row, Grid } from "react-native-paper-grid";
-import SubmitButton from "../Components/SubmitButton";
-import SingleLineInput from "../Components/SingleLineInput";
-import CheckBox from 'expo-checkbox';
 import { useFonts, Inter_700Bold, Inter_400Regular, Inter_500Medium } from '@expo-google-fonts/inter';
 import { Manrope_400Regular, Manrope_600SemiBold, Manrope_700Bold, Manrope_300Light } from '@expo-google-fonts/manrope'
 import BottomNavigation from "../Components/BottomNavigation";
-import TitleInput from "../Components/TitleInput";
-import DescriptionInput from "../Components/DescriptionInput";
-import DateInput from "../Components/DateInput";
-import ColorPalette from "../Components/ColorPalette";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import API from "../API/apiConnection";
-const { width, height } = Dimensions.get("window");
-
 const data = [
     { id: '1', text: 'Stimme voll und ganz zu', number:0, percent: '' },
     { id: '2', text: 'Stimme zu', number:0, percent: '' },
@@ -37,10 +15,7 @@ const data = [
     { id: '4', text: 'Stimme nicht zu', number:0, percent: '' },
     { id: '5', text: 'Stimme überhaupt nicht zu', number:0, percent: '' },
 ];
-const colorAnswerCirle = ['#00DAF8', '#4072EE', '#B558F6', '#7628B4', '#48A7FF'
-
-]
-
+const colorAnswerCirle = ['#00DAF8', '#4072EE', '#B558F6', '#7628B4', '#48A7FF']
 
 const StatistikLikertScreen = ({ navigation, route }) => {
     const [title, setTitle] = useState('');
@@ -48,15 +23,10 @@ const StatistikLikertScreen = ({ navigation, route }) => {
     const [date, setDate] = useState('');
     const [selectedColorIndex, setSelectedColorIndex] = useState(null);
     const [question, setQuestion] = useState(route.params.item);
-    const [expanded, setExpanded] = React.useState(true);
-    const [answerYesOptions, setAnswerYesOptions] = useState([]);
-    const [answerNoOptions, setAnswerNoOptions] = useState([]);
-    const [answerCount, setAnswerCount] = useState();
     const [answerOptions, setAnswerOptions] = useState([]);
     const [calcAnswers, setCalcAnswers] = useState([]);
 
 
-    const handlePress = () => setExpanded(!expanded);
 
     console.log("wo bin ich: ", question)
 

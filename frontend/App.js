@@ -63,7 +63,7 @@ export default function App() {
                 />
                 <Stack.Screen name="RegisterScreen_4" component={RegisterScreen_4} options={{ headerTitle: "", headerLeft: () => <LogoTitle progress={1} />, headerShadowVisible: false, gestureEnabled: false }}
                 />
-                <Stack.Screen name="CreateQuestionaire" component={CreateQuestionaireScreen} options={{ headerTitle: "", headerLeft: () => <LogoTitle progress={1} />, headerShadowVisible: false, animation: 'none', gestureEnabled: false }}
+                <Stack.Screen name="CreateQuestionaire" component={CreateQuestionaireScreen} options={{ headerShadowVisible: false, gestureEnabled: false, headerShown: false }} 
                 />
                 <Stack.Screen name="AccountScreen" component={AccountScreen} options={{ headerTitle: "", headerLeft: () => <LogoTitle progress={0} />, headerShadowVisible: false, animation: 'none', gestureEnabled: false }}
                 />

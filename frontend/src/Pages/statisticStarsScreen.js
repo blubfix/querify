@@ -1,41 +1,26 @@
-import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
-import { Image, Button, StyleSheet, View, FlatList, Dimensions, RefreshControl, KeyboardAvoidingView } from "react-native";
+import { StyleSheet, View, FlatList, Dimensions, RefreshControl } from "react-native";
 import {
-    MD3DarkTheme as DefaultTheme,
-    Provider as PaperProvider,
-    Switch,
+    Provider as PaperProvider, 
     Text,
-    Surface,
-    Appbar,
-    SegmentedButtons,
-    TextInput,
-    List,
-    ProgressBar,
+    Surface,    
 } from "react-native-paper";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Col, Row, Grid } from "react-native-paper-grid";
-import SubmitButton from "../Components/SubmitButton";
-import SingleLineInput from "../Components/SingleLineInput";
-import CheckBox from 'expo-checkbox';
 import { useFonts, Inter_700Bold, Inter_400Regular, Inter_500Medium } from '@expo-google-fonts/inter';
 import { Manrope_400Regular, Manrope_600SemiBold, Manrope_700Bold, Manrope_300Light } from '@expo-google-fonts/manrope'
 import BottomNavigation from "../Components/BottomNavigation";
-import TitleInput from "../Components/TitleInput";
-import DescriptionInput from "../Components/DescriptionInput";
-import DateInput from "../Components/DateInput";
-import ColorPalette from "../Components/ColorPalette";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+
 
 import API from "../API/apiConnection";
 const { width, height } = Dimensions.get("window");
 
 const data = [
-    { id: '1', text: '0', number:0, percent: '' },
-    { id: '2', text: '1', number:0, percent: '' },
-    { id: '3', text: '2', number:0, percent: '' },
-    { id: '4', text: '3', number:0, percent: '' },
-    { id: '5', text: '4', number:0, percent: '' },
+    { id: '1', text: '0', number: 0, percent: '' },
+    { id: '2', text: '1', number: 0, percent: '' },
+    { id: '3', text: '2', number: 0, percent: '' },
+    { id: '4', text: '3', number: 0, percent: '' },
+    { id: '5', text: '4', number: 0, percent: '' },
     // Add more items as nee, percent: '20%'ded
 ];
 const colorAnswerCirle = ['#00DAF8', '#4072EE', '#B558F6', '#7628B4', '#48A7FF'
@@ -53,17 +38,14 @@ const StatistikStarScreen = ({ navigation, route }) => {
     const [selectedColorIndex, setSelectedColorIndex] = useState(null);
     const [question, setQuestion] = useState(route.params.item);
     const [expanded, setExpanded] = React.useState(true);
-    const [answerYesOptions, setAnswerYesOptions] = useState([]);
-    const [answerNoOptions, setAnswerNoOptions] = useState([]);
-    const [answerCount, setAnswerCount] = useState();
     const [inputValue, setInputValue] = useState(1);
     const [answerOptions, setAnswerOptions] = useState([]);
     const [calcAnswers, setCalcAnswers] = useState([]);
-    const [allStars, setAllStars] = useState(0);
-    const sumStars = 0;
+
+    // LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+    // LogBox.ignoreAllLogs();//Ignore all log notifications
 
 
-    const handlePress = () => setExpanded(!expanded);
 
     console.log("wo bin ich: ", question)
 
@@ -71,7 +53,7 @@ const StatistikStarScreen = ({ navigation, route }) => {
         let list = [];
         for (let i = 0; i < 5; i++) {
             if (i < input) {
-                list.push({ id: i, color: '#DFB300',  }); // Füge rote Werte hinzu
+                list.push({ id: i, color: '#DFB300', }); // Füge rote Werte hinzu
             } else {
                 list.push({ id: i, color: '#626262' }); // Füge blaue Werte hinzu
             }
@@ -133,22 +115,6 @@ const StatistikStarScreen = ({ navigation, route }) => {
         }
     }
 
-    const handleTitleChange = (newTitle) => {
-        console.log("newTitle: ", newTitle)
-        setTitle(newTitle);
-    }
-    const handleDescriptionChange = (newDescription) => {
-        console.log("newDescription: ", newDescription)
-        setDescription(newDescription);
-    }
-    const handleDateChange = (newDate) => {
-        console.log("newDate: ", newDate)
-        setDate(newDate);
-    }
-    const handleColorSelected = (colorIndex) => {
-        console.log("colorIndex: ", colorIndex)
-        setSelectedColorIndex(colorIndex);
-    }
 
     const getAnswerYesNoUser = (question) => {
         const id = question.questionId;
@@ -221,13 +187,6 @@ const StatistikStarScreen = ({ navigation, route }) => {
         return null;
     }
 
-    const goNextForm = () => {
-        console.log("title: ", title)
-        navigation.navigate('QuestionaireOptions', { title: title, description: description, date: date, color: selectedColorIndex, type: 'poll' });
-    }
-
-
-
     const palceholderData = [{ id: 'placeholder' }]; // Placeholder item
     const onRefresh = () => {
         console.log("Refreshing page")
@@ -236,14 +195,14 @@ const StatistikStarScreen = ({ navigation, route }) => {
 
     const renderItem = ({ item }) => (
         <View >
-            <MaterialCommunityIcons style={styles.thumbIcon} name='star' color={item.color} size={25} index={item.id}/>
+            <MaterialCommunityIcons style={styles.thumbIcon} name='star' color={item.color} size={25} index={item.id} />
 
         </View>
     );
 
     const renderItemSmall = ({ item }) => (
         <View >
-            <MaterialCommunityIcons style={styles.thumbIcon} name='star' color={item.color} size={15} index={item.id}  />
+            <MaterialCommunityIcons style={styles.thumbIcon} name='star' color={item.color} size={15} index={item.id} />
         </View>
     );
 
@@ -284,7 +243,7 @@ const StatistikStarScreen = ({ navigation, route }) => {
                         <View style={styles.answerContainer}>
 
                             <Row>
-                                <Col style={{paddingLeft:"2%", paddingBottom:"2%"}} size={2}>
+                                <Col style={{ paddingLeft: "2%", paddingBottom: "2%" }} size={2}>
                                     <FlatList
                                         data={generateList(inputValue)}
                                         renderItem={renderItem}
@@ -305,7 +264,7 @@ const StatistikStarScreen = ({ navigation, route }) => {
                                         <Row key={index}>
                                             <Col size={6}>
                                                 <FlatList
-                                                    data={generateList(index+1)}
+                                                    data={generateList(index + 1)}
                                                     renderItem={renderItemSmall}
                                                     keyExtractor={(item) => item.id.toString()}
                                                     numColumns={5}

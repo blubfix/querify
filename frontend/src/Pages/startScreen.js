@@ -53,7 +53,7 @@ export default function StartScreen({ navigation }) {
     };
 
 
-    checkToken(); // Check token when the component mounts
+    // checkToken(); // Check token when the component mounts
 
 
 

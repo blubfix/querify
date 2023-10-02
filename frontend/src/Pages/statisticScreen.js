@@ -1,5 +1,4 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
     SectionList,
     StyleSheet,
@@ -8,17 +7,8 @@ import {
     FlatList,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-    MD3DarkTheme as DefaultTheme,
-    Provider as PaperProvider,
-    Text,
-
-    Snackbar,
-    ActivityIndicator,
-} from "react-native-paper";
+import { Provider as PaperProvider, Text, Snackbar, ActivityIndicator } from "react-native-paper";
 import StatButton from "../Components/StatButton";
-import StatButtonOwn from "../Components/StatButtonOwn";
-import StatButtonOwnOld from "../Components/StatButtonOwnOld";
 import {
     useFonts,
     Inter_700Bold,
@@ -88,7 +78,7 @@ const StatisticsScreen = ({ navigation }) => {
     const getSuverysAttended = (id) => {
         API.getUserAnswersWithQuestionInfo(id)
             .then((resp) => {
-                console.log("teilgenommene Umfragen: ",resp.data);
+                console.log("teilgenommene Umfragen: ", resp.data);
                 setSurveys(resp.data);
                 if (resp.data.length == 0) {
                     setSnackbarVisibleSurv(true); // Show snackbar on error
@@ -106,7 +96,7 @@ const StatisticsScreen = ({ navigation }) => {
     const getActiveQuestions = (id) => {
         API.getActiveQuestions(id)
             .then((resp) => {
-                console.log("ActiveQuestions: ",resp.data);
+                console.log("ActiveQuestions: ", resp.data);
                 setActiveQuestion(resp.data);
                 // if (resp.data.length == 0) {
                 //     setSnackbarVisible(true); // Show snackbar on error
@@ -120,34 +110,13 @@ const StatisticsScreen = ({ navigation }) => {
                 setLoading(false); // Set loading to false once data fetching is complete
             });
     };
-    
+
     const getExpiredQuestions = (id) => {
         API.getExpiredQuestions(id)
             .then((resp) => {
-                console.log("ExpiredQuestions: ",resp.data);
+                console.log("ExpiredQuestions: ", resp.data);
                 setExpiredQuestion(resp.data);
-            
-            })
-            .catch((e) => {
-                console.log(e);
-                setSnackbarVisible(true); // Show snackbar on error
-            })
-            .finally(() => {
-                setLoading(false); // Set loading to false once data fetching is complete
-            });
-    };
 
-    const getQuestion = (id) => {
-        //const id = userData.id;
-        //console.log("id: ", id)
-        API.getQuestionByUser(id)
-            .then((resp) => {
-                console.log(resp.data);
-                setQuestion(resp.data);
-                splitDataQuestion(resp.data);
-                if (resp.data.length == 0) {
-                    setSnackbarVisible(true); // Show snackbar on error
-                }
             })
             .catch((e) => {
                 console.log(e);
@@ -325,7 +294,7 @@ const styles = StyleSheet.create({
         height: "87%",
         width: "100%",
         backgroundColor: "white",
-        flexGrow:0,
+        flexGrow: 0,
     },
     subContainer: {
         height: "70%",
