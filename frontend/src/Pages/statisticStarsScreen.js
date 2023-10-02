@@ -234,16 +234,16 @@ const StatistikStarScreen = ({ navigation, route }) => {
         getAnswerYesNoUser(question);
     };
 
-    const renderItem = ({ item, index }) => (
+    const renderItem = ({ item }) => (
         <View >
-            <MaterialCommunityIcons style={styles.thumbIcon} name='star' color={item.color} size={25} />
+            <MaterialCommunityIcons style={styles.thumbIcon} name='star' color={item.color} size={25} index={item.id}/>
 
         </View>
     );
 
-    const renderItemSmall = ({ item, index }) => (
+    const renderItemSmall = ({ item }) => (
         <View >
-            <MaterialCommunityIcons style={styles.thumbIcon} name='star' color={item.color} size={15}  />
+            <MaterialCommunityIcons style={styles.thumbIcon} name='star' color={item.color} size={15} index={item.id}  />
         </View>
     );
 
@@ -305,7 +305,7 @@ const StatistikStarScreen = ({ navigation, route }) => {
                                         <Row key={index}>
                                             <Col size={6}>
                                                 <FlatList
-                                                    data={generateList(index+1, index)}
+                                                    data={generateList(index+1)}
                                                     renderItem={renderItemSmall}
                                                     keyExtractor={(item) => item.id.toString()}
                                                     numColumns={5}
