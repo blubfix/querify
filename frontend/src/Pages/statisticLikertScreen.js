@@ -199,7 +199,7 @@ const StatistikLikertScreen = ({ navigation, route }) => {
     }
 
 
-    const palceholderData = [{}]; // Placeholder item
+    const palceholderData = [{id:'1'}]; // Placeholder item
     const onRefresh = () => {
         console.log("Refreshing page")
         getAnswerYesNoUser(question);
@@ -249,7 +249,7 @@ const StatistikLikertScreen = ({ navigation, route }) => {
                                     <View style={styles.textAnswerBox} key={index+100}>
                                         <Row key={index}>
                                             <Col size={1}>
-                                                <MaterialCommunityIcons name='checkbox-blank-circle-outline' color={colorAnswerCirle[calculatedValue]} size={30} />
+                                                <MaterialCommunityIcons name='checkbox-blank-circle-outline' color={colorAnswerCirle[calculatedValue]} size={30} index={index}/>
                                             </Col>
                                             <Col size={6}>
                                                 <Text style={styles.answerName}>{item.text}</Text>

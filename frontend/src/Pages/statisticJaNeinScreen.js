@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
-import { Image, Button, StyleSheet, View, Alert, Dimensions, TouchableOpacity, KeyboardAvoidingView } from "react-native";
+import { Image, Button, StyleSheet, View, Alert, Dimensions, RefreshControl, FlatList } from "react-native";
 import {
     MD3DarkTheme as DefaultTheme,
     Provider as PaperProvider,
@@ -148,55 +148,66 @@ const StatisticJaNeinScreen = ({ navigation, route }) => {
     if (!fontsLoaded) {
         return null;
     }
+    const palceholderData = [{ id: '1' }]; // Placeholder item
 
     const goNextForm = () => {
         console.log("title: ", title)
         navigation.navigate('QuestionaireOptions', { title: title, description: description, date: date, color: selectedColorIndex, type: 'poll' });
     }
 
+    const onRefresh = () => {
+        console.log("Refreshing page")
+        // getQuestions();
+    };
+
     return (
         <PaperProvider>
-            <Grid style={styles.container} container>
-                <KeyboardAwareScrollView contentContainerStyle={styles.keyboardContainer} resetScrollToCoords={{ x: 0, y: 0 }} scrollEnabled={false} extraScrollHeight={40}>
-                    <Row>
-                        <Col>
-                            <Text style={styles.headerText}>Statistik deiner Umfrage</Text>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Text style={styles.subHeader}>{question.title}</Text>
-                            <Text>{checkQuestionArt()}</Text>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                        <Surface elevation={1}>
+            <FlatList
+                style={styles.container}
+                data={palceholderData}
+                keyExtractor={item => item.id}
+                renderItem={({ item }) => (
 
-                            <View style={styles.textIconContainer}>
-                                <MaterialCommunityIcons name='account-multiple-outline' color={'#090A0A'} size={30} paddingLeft={"2%"} />
-                                <Text style={styles.accountButtonText}>Teilnehmende</Text>
-                                <View
-                                    style={styles.numberUsersBox}>
-                                    <Text style={styles.numberUsers}> {answerYesOptions.length + answerNoOptions.length} </Text>
+                    <Grid container>
+                        <Row>
+                            <Col>
+                                <Text style={styles.headerText}>Statistik deiner Umfrage</Text>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+                                <Text style={styles.subHeader}>{question.title}</Text>
+                                <Text>{checkQuestionArt()}</Text>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+
+
+                                <View style={styles.textIconContainer}>
+                                    <MaterialCommunityIcons name='account-multiple-outline' color={'#090A0A'} size={30} paddingLeft={"2%"} />
+                                    <Text style={styles.accountButtonText}>Teilnehmende</Text>
+                                    <View
+                                        style={styles.numberUsersBox}>
+                                        <Text style={styles.numberUsers}> {answerYesOptions.length + answerNoOptions.length} </Text>
+                                    </View>
                                 </View>
-                            </View>
-                            </Surface>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Surface elevation={5} style={{ backgroundColor: "#39424A" }}>
+
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+
                                 <View style={styles.statisticContainer}>
                                     <Text style={styles.answerHeader}>{Math.round((answerYesOptions.length / (answerNoOptions.length + answerYesOptions.length)) * 100)}% haben für JA abgestimmt</Text>
                                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                                         <MaterialCommunityIcons name='check-circle' color={'#95D158'} size={30} />
-                                        <View style={{ flex: 1, paddingLeft:5, paddingRight: 5 }}>
+                                        <View style={{ flex: 1, paddingLeft: 5, paddingRight: 5 }}>
                                             <ProgressBar
                                                 progress={
                                                     answerYesOptions.length > 0
-                                                    ? answerYesOptions.length / (answerNoOptions.length + answerYesOptions.length)
-                                                    : 0
+                                                        ? answerYesOptions.length / (answerNoOptions.length + answerYesOptions.length)
+                                                        : 0
                                                 }
                                                 style={{ width: "" }}
                                             />
@@ -205,23 +216,24 @@ const StatisticJaNeinScreen = ({ navigation, route }) => {
                                     </View>
                                     <View style={{ flexDirection: "row", alignItems: "center", paddingTop: "4%" }}>
                                         <MaterialCommunityIcons name='close-circle' color={'#AD323D'} size={30} />
-                                        <View style={{ flex: 1, paddingLeft:5, paddingRight: 5 }}>
+                                        <View style={{ flex: 1, paddingLeft: 5, paddingRight: 5 }}>
                                             <ProgressBar progress={
                                                 answerNoOptions.length > 0
-                                                ? answerNoOptions.length / (answerNoOptions.length+answerYesOptions.length)
-                                                : 0
-                                                } style={{ width: "" }} />
+                                                    ? answerNoOptions.length / (answerNoOptions.length + answerYesOptions.length)
+                                                    : 0
+                                            } style={{ width: "" }} />
                                         </View>
                                         <Text style={styles.answerName}>{Math.round((answerNoOptions.length / (answerNoOptions.length + answerYesOptions.length)) * 100)}%</Text>
                                     </View>
                                 </View>
-                            </Surface>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Surface elevation={1}>
+
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+
                                 <List.Accordion
+                                    style={{ backgroundColor: "#DADADA" }}
                                     title="Liste der Ja-Abgestimmten"
 
                                     left={props => <MaterialCommunityIcons name='check-circle' color={'#95D158'} size={30} paddingLeft={"5%"} />
@@ -229,48 +241,58 @@ const StatisticJaNeinScreen = ({ navigation, route }) => {
                                 >
                                     {answerYesOptions.map((item, index) => {
                                         return (
-                                            <List.Item key={index} title={item.userName} />
+                                            <List.Item
+                                                style={{ backgroundColor: "#DADADA" }}
+                                                key={index}
+                                                title={item.userName} />
                                         )
                                     })}
                                 </List.Accordion>
-                            </Surface>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                            <Surface elevation={1}>
+
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+
                                 <List.Accordion
+                                    style={{ backgroundColor: "#DADADA" }}
                                     title="Liste der Nein-Abgestimmten"
-                                    left={props =><MaterialCommunityIcons name='close-circle' color={'#AD323D'} size={30} paddingLeft={"5%"}/> }
+                                    left={
+
+                                        props => <MaterialCommunityIcons name='close-circle' color={'#AD323D'} size={30} paddingLeft={"5%"} />}
                                 >
                                     {answerNoOptions.map((item, index) => {
                                         return (
-                                            <List.Item key={index} title={item.userName} />
+                                            <List.Item
+                                                style={{ backgroundColor: "#DADADA" }}
+                                                key={index}
+                                                title={item.userName} />
                                         )
                                     })}
                                 </List.Accordion>
-                            </Surface>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col>
-                        <Surface elevation={1}>
 
-                            <View style={styles.textIconContainer}>
-                                <MaterialCommunityIcons name='av-timer' color={'#090A0A'} size={30} paddingLeft={"3%"} />
-                                <Text style={styles.accountButtonText}>Verbleibende Zeit in Tagen</Text>
-                                <View
-                                    style={styles.numberUsersBox}>
-                                    <Text style={styles.numberUsers}>{checkDate()}</Text>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col>
+
+                                <View style={styles.textIconContainer}>
+                                    <MaterialCommunityIcons name='av-timer' color={'#090A0A'} size={30} paddingLeft={"3%"} />
+                                    <Text style={styles.accountButtonText}>Verbleibende Zeit in Tagen</Text>
+                                    <View
+                                        style={styles.numberUsersBox}>
+                                        <Text style={styles.numberUsers}>{checkDate()}</Text>
+                                    </View>
                                 </View>
-                            </View>
-                            </Surface>
-                        </Col>
-                    </Row>
-                </KeyboardAwareScrollView>
-                <SubmitButton buttonText={'Weiter'} position={'absolute'} bottom={120} onPress={() => goNextForm()} />
-                <BottomNavigation buttonColors={['#6F6F70', '#6F6F70', '#6F6F70', '#6F6F70']} />
-            </Grid>
+
+                            </Col>
+                        </Row>
+                    </Grid>
+                )}
+
+                refreshControl={<RefreshControl tintColor={"#74479A"} onRefresh={onRefresh} />}
+            />
+            <BottomNavigation buttonColors={['#6F6F70', '#6F6F70', '#6F6F70', '#6F6F70']} />
         </PaperProvider >
     );
 }
@@ -375,9 +397,10 @@ const styles = StyleSheet.create({
     },
 
     container: {
-        height: '100%',
-        width: '100%',
-        backgroundColor: 'white'
+        height: "87%",
+        width: "100%",
+        backgroundColor: "white",
+        flexGrow: 0,
     }
 
 })

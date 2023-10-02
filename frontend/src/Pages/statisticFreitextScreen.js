@@ -166,7 +166,7 @@ const StatisticFreitextScreen = ({ navigation, route }) => {
     }
 
 
-    const palceholderData = [{}]; // Placeholder item
+    const palceholderData = [{ id: '1' }]; // Placeholder item
     const onRefresh = () => {
         console.log("Refreshing page")
         // getQuestions();
@@ -179,7 +179,7 @@ const StatisticFreitextScreen = ({ navigation, route }) => {
                 data={palceholderData}
                 keyExtractor={item => item.id}
                 renderItem={({ item }) => (
-                    <Grid style={styles.container} container>
+                    <Grid container>
                         <Row>
                             <Col>
                                 <Text style={styles.headerText}>Statistik deiner Umfrage</Text>
@@ -187,33 +187,29 @@ const StatisticFreitextScreen = ({ navigation, route }) => {
                         </Row>
                         <Row>
                             <Col>
-                            <Text style={styles.subHeader}>{question.title}</Text>
-                            <Text>{checkQuestionArt()}</Text>
+                                <Text style={styles.subHeader}>{question.title}</Text>
+                                <Text>{checkQuestionArt()}</Text>
                             </Col>
                         </Row>
                         <Row>
-                        <Col>
-                            <Surface elevation={1}>
-                                <View style={styles.textIconContainer}>
-                                    <MaterialCommunityIcons name='account-outline' color={'#090A0A'} size={30} />
-                                    <Text style={styles.accountButtonText}>Profil</Text>
-                                    <View
-                                        style={{
-                                            borderWidth: 1,
-                                            borderColor: "black",
-                                            borderRadius: 0,
-                                        }}>
-                                        <Text> {answerOptions.length} </Text>
+                            <Col>
+                                <Surface elevation={1}>
+                                    <View style={styles.textIconContainer}>
+                                        <MaterialCommunityIcons name='account-multiple-outline' color={'#090A0A'} size={30} paddingLeft={"2%"} />
+                                        <Text style={styles.accountButtonText}>Teilnehmende</Text>
+                                        <View
+                                            style={styles.numberUsersBox}>
+                                            <Text style={styles.numberUsers}> {answerOptions.length} </Text>
+                                        </View>
                                     </View>
-                                </View>
-                            </Surface>
-                        </Col>
-                    </Row>
+                                </Surface>
+                            </Col>
+                        </Row>
                         <View style={styles.answerContainer}>
                             <Text style={styles.answerHeader}>
                                 Freitext Antworten
                             </Text>
-                    
+
                             {answerOptions.map((item, index) => {
                                 return (
                                     <View style={styles.textAnswerBox}>
@@ -237,15 +233,11 @@ const StatisticFreitextScreen = ({ navigation, route }) => {
                             <Col>
                                 <Surface elevation={1}>
                                     <View style={styles.textIconContainer}>
-                                        <MaterialCommunityIcons name='account-outline' color={'#090A0A'} size={30} />
+                                        <MaterialCommunityIcons name='av-timer' color={'#090A0A'} size={30} paddingLeft={"3%"} />
                                         <Text style={styles.accountButtonText}>Verbleibende Zeit in Tagen</Text>
                                         <View
-                                            style={{
-                                                borderWidth: 1,
-                                                borderColor: "black",
-                                                borderRadius: 0,
-                                            }}>
-                                            <Text>{checkDate()}</Text>
+                                            style={styles.numberUsersBox}>
+                                            <Text style={styles.numberUsers}>{checkDate()}</Text>
                                         </View>
                                     </View>
                                 </Surface>
@@ -261,6 +253,7 @@ const StatisticFreitextScreen = ({ navigation, route }) => {
         </PaperProvider>
     );
 }
+
 
 
 const styles = StyleSheet.create({
@@ -289,14 +282,7 @@ const styles = StyleSheet.create({
         color: '#FFFFFF',
         marginBottom: '5%'
     },
-    textIconContainer: {
-        flexDirection: "row",
-        alignItems: 'center'
-    },
-    statisticContainer: {
-        padding: 10,
 
-    },
 
     keyboardContainer: {
         minHeight: '100%',
@@ -305,8 +291,10 @@ const styles = StyleSheet.create({
     },
     answerContainer: {
         backgroundColor: "#39424A",
+        alignSelf: "center",
         paddingTop: "5%",
         borderRadius: 5,
+        width: "97%",
 
     },
 
@@ -320,12 +308,46 @@ const styles = StyleSheet.create({
 
 
     },
+    accountButtonText: {
+        alignSelf: 'flex-start',
+        textAlign: 'left',
+        fontFamily: 'Manrope_400Regular',
+        fontSize: 14,
+        color: '#222',
+        // marginRight: "30%",
+        marginLeft: "2%",
+        marginTop: "1%"
+    },
+    numberUsers: {
+
+        textAlign: 'center',
+        fontFamily: 'Manrope_400Regular',
+        fontSize: 14,
+        color: '#222',
+
+    },
+
+    numberUsersBox: {
+        borderWidth: 1,
+        borderColor: "#FFF",
+        borderRadius: 4,
+        width: "20%",
+        alignContent: "center",
+        justifyContent: "center",
+
+
+        paddingLeft: "2%",
+        paddingRight: "2%",
+        paddingTop: "1%",
+        paddingBottom: "1%",
+
+    },
     answerName: {
         // alignSelf: 'flex-start',
         textAlign: 'left',
         fontFamily: 'Inter_500Medium',
         fontSize: 16,
-        color: '#222222',
+        color: '#FFF',
         marginTop: "1%",
 
     },
@@ -334,17 +356,52 @@ const styles = StyleSheet.create({
         textAlign: 'left',
         fontFamily: 'Inter_500Medium',
         fontSize: 16,
-        color: '#222222',
+        color: '#FFF',
         left: "25%",
         marginBottom: "5%",
 
     },
 
-    container: {
-        height: '87%',
+    answerHeader: {
+        // alignSelf: 'flex-start',
+        textAlign: 'center',
+        fontFamily: 'Manrope_600SemiBold',
+        fontSize: 16,
+        color: '#FFFFFF',
+        marginBottom: '5%'
+    },
+    keyboardContainer: {
+        minHeight: '100%',
         width: '100%',
-        backgroundColor: '+',
+
+    },
+    answerHeader: {
+        // alignSelf: 'flex-start',
+        textAlign: 'center',
+        fontFamily: 'Manrope_600SemiBold',
+        fontSize: 16,
+        color: '#FFFFFF',
+        marginBottom: '5%'
+    },
+
+    container: {
+        height: "87%",
+        width: "100%",
+        backgroundColor: "white",
         flexGrow: 0,
+    },
+    textIconContainer: {
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignSelf: "center",
+        width: "100%",
+        padding: "2%",
+        backgroundColor: "#DADADA",
+    },
+    statisticContainer: {
+        padding: "8%",
+        borderRadius: 5,
+        backgroundColor: "#39424A",
     },
 
 })

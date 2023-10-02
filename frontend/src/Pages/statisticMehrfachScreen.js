@@ -423,9 +423,10 @@ const styles = StyleSheet.create({
     },
 
     container: {
-        height: '100%',
-        width: '100%',
-        backgroundColor: 'white'
+        height: "87%",
+        width: "100%",
+        backgroundColor: "white",
+        flexGrow: 0,
     },
     textIconContainer: {
         flexDirection: "row",

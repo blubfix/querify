@@ -43,17 +43,7 @@ const colorAnswerCirle = ['#00DAF8', '#4072EE', '#B558F6', '#7628B4', '#48A7FF'
 ]
 
 
-const generateList = (input) => {
-    let list = [];
-    for (let i = 0; i < 5; i++) {
-        if (i < input) {
-            list.push({ id: i, color: '#ff0000' }); // Füge rote Werte hinzu
-        } else {
-            list.push({ id: i, color: '#0000ff' }); // Füge blaue Werte hinzu
-        }
-    }
-    return list;
-};
+
 
 
 const StatistikStarScreen = ({ navigation, route }) => {
@@ -81,7 +71,7 @@ const StatistikStarScreen = ({ navigation, route }) => {
         let list = [];
         for (let i = 0; i < 5; i++) {
             if (i < input) {
-                list.push({ id: i, color: '#DFB300' }); // Füge rote Werte hinzu
+                list.push({ id: i, color: '#DFB300',  }); // Füge rote Werte hinzu
             } else {
                 list.push({ id: i, color: '#626262' }); // Füge blaue Werte hinzu
             }
@@ -238,21 +228,22 @@ const StatistikStarScreen = ({ navigation, route }) => {
 
 
 
-    const palceholderData = [{}]; // Placeholder item
+    const palceholderData = [{ id: 'placeholder' }]; // Placeholder item
     const onRefresh = () => {
         console.log("Refreshing page")
         getAnswerYesNoUser(question);
     };
 
-    const renderItem = ({ item }) => (
+    const renderItem = ({ item, index }) => (
         <View >
-            <MaterialCommunityIcons style={styles.thumbIcon} name='star' color={item.color} size={"25%"} />
+            <MaterialCommunityIcons style={styles.thumbIcon} name='star' color={item.color} size={25} />
+
         </View>
     );
 
-    const renderItemSmall = ({ item }) => (
+    const renderItemSmall = ({ item, index }) => (
         <View >
-            <MaterialCommunityIcons style={styles.thumbIcon} name='star' color={item.color} size={"15%"} />
+            <MaterialCommunityIcons style={styles.thumbIcon} name='star' color={item.color} size={15}  />
         </View>
     );
 
@@ -314,7 +305,7 @@ const StatistikStarScreen = ({ navigation, route }) => {
                                         <Row key={index}>
                                             <Col size={6}>
                                                 <FlatList
-                                                    data={generateList(index+1)}
+                                                    data={generateList(index+1, index)}
                                                     renderItem={renderItemSmall}
                                                     keyExtractor={(item) => item.id.toString()}
                                                     numColumns={5}
