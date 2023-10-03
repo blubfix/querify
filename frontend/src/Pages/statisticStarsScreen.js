@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, FlatList, Dimensions, RefreshControl } from "react-native";
+import { StyleSheet, View, FlatList, LogBox, RefreshControl } from "react-native";
 import {
     Provider as PaperProvider, 
     Text,
@@ -13,7 +13,6 @@ import BottomNavigation from "../Components/BottomNavigation";
 
 
 import API from "../API/apiConnection";
-const { width, height } = Dimensions.get("window");
 
 const data = [
     { id: '1', text: '0', number: 0, percent: '' },
@@ -42,8 +41,8 @@ const StatistikStarScreen = ({ navigation, route }) => {
     const [answerOptions, setAnswerOptions] = useState([]);
     const [calcAnswers, setCalcAnswers] = useState([]);
 
-    // LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
-    // LogBox.ignoreAllLogs();//Ignore all log notifications
+    LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+    LogBox.ignoreAllLogs();//Ignore all log notifications
 
 
 

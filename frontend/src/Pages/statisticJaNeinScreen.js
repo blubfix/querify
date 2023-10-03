@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, RefreshControl, FlatList } from "react-native";
+import { StyleSheet, View, RefreshControl,LogBox, FlatList } from "react-native";
 import { Provider as PaperProvider, Text, List, ProgressBar } from "react-native-paper";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Col, Row, Grid } from "react-native-paper-grid";
@@ -14,6 +14,10 @@ const StatisticJaNeinScreen = ({ navigation, route }) => {
     const [question, setQuestion] = useState(route.params.item);
     const [answerYesOptions, setAnswerYesOptions] = useState([]);
     const [answerNoOptions, setAnswerNoOptions] = useState([]);
+
+    LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+    LogBox.ignoreAllLogs();//Ignore all log notifications
+
 
     const [fontsLoaded] = useFonts({
         Inter_400Regular,

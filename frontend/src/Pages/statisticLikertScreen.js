@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, FlatList, Dimensions, RefreshControl } from "react-native";
+import { StyleSheet, View, FlatList, LogBox, RefreshControl } from "react-native";
 import { Provider as PaperProvider, Text, Surface } from "react-native-paper";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Col, Row, Grid } from "react-native-paper-grid";
@@ -26,6 +26,8 @@ const StatistikLikertScreen = ({ navigation, route }) => {
     const [answerOptions, setAnswerOptions] = useState([]);
     const [calcAnswers, setCalcAnswers] = useState([]);
 
+    LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+    LogBox.ignoreAllLogs();//Ignore all log notifications
 
 
     console.log("wo bin ich: ", question)
