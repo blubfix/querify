@@ -168,7 +168,7 @@ const StatisticsScreen = ({ navigation }) => {
                                 renderItem={({ item }) => (
                                     <StatButtonOwn
                                         buttonHeading={item.title}
-                                        buttonText={item.name}
+                                        buttonText={item.userName}
                                         position={"relative"}
                                         onDots={() => navigation.navigate("QuestionaireOptions")}
                                         onPress={() => whatQuestion(item.type, item.bewertung, item)}
@@ -201,7 +201,7 @@ const StatisticsScreen = ({ navigation }) => {
                                 renderItem={({ item }) => (
                                     <StatButton
                                         buttonHeading={item.title}
-                                        buttonText={item.name}
+                                        buttonText={item.userName}
                                         position={"relative"}
                                         onDots={() => navigation.navigate("QuestionaireOptions")}
                                         onPress={() => whatQuestion(item.type, item.bewertung, item)}

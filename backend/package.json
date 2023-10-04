@@ -1,7 +1,8 @@
 {
   "scripts": {
     "start": "nodemon index.js",
-    "initdb": "node initDatabase.js"
+    "initdb": "node initDatabase.js",
+    "initdb_presentation":" node initDatabase_Presentation.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",

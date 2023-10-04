@@ -102,7 +102,7 @@ async function createData() {
       ('BBBBBB2222', 'Clara@mail.de', 'password', 'Franzi', '2001-04-13'),
       ('CCCCCC3333', 'Tim@mail.de', '123456', 'Renate', '1998-07-19'),
       ('DDDDDD4444', 'Anna@mail.de', 'secret', 'Lena', '1995-10-05'),
-      ('EEEEEE5555', 'Max@mail.de', 'pass123', 'Paul', '1990-12-31')`
+      ('YKTZcW5556', 'Laurin@test.de', '$2b$05$lG9qdRHQpg.g5rGbiksOBuaMg.e5sZFw9D2L1hQMiz6XrOHB1rKmm', 'Laurin', '16.04.1998')`
     );
     console.log("DONE!");
 
@@ -113,6 +113,7 @@ async function createData() {
       ('YYYYYY8888', 'Was ist deine Lieblingsfarbe?', CURRENT_TIMESTAMP, 'BBBBBB2222', 'multi', '1', 'qrCodeBase64', 'https://querify.com/question/YYYYYY8888', 'nach Namen fragen, anderen aber nicht anzeigen', 'nach ihrer Abstimmung sehen', 'als Vorlage gespeichert', NULL, '06.10.2023','Hello World', 'blau,rot,grün'),
       ('EFGHIJ5678', 'Welches Buch hast du zuletzt gelesen?', CURRENT_TIMESTAMP, 'AAAAAA1111', 'poll', '1', 'qrCodeBase64', 'https://querify.com/question/EFGHIJ5678', 'nach Namen fragen & für alle anzeigen', 'nach dem Umfragestichtag', '60 Tagen nach dem Umfragestichtag gelöscht', NULL, '07.10.2023','Hello World', NULL),
       ('KLMNOP9999', 'Wie viel Zeit verbringst du mit Lesen ?', CURRENT_TIMESTAMP, 'CCCCCC3333', 'free', '1', 'qrCodeBase64', 'https://querify.com/question/KLMNOP9999', 'anonyme Abstimmung', 'nach ihrer Abstimmung sehen', 'als Vorlage gespeichert', NULL, '08.10.2023','Hello World', NULL),
+      ('LmDhnu0117',"App-Feedback","2023-10-04 16:35:30","YKTZcW5556","feeling",'1','qrCodeBase64',"https://querify.com/question/LmDhnu0117","undefined","undefined","undefined","stars","07.10.2023","description":"Wie findest du die App?\nBewerte in Sternen","multi":"null"),
       ('UVWXYZ7777', 'Welches Land möchtest du gerne bereisen?', CURRENT_TIMESTAMP, 'DDDDDD4444', 'feeling', '1', 'qrCodeBase64', 'https://querify.com/question/UVWXYZ7777', 'anonyme Abstimmung', 'vor ihrer Abstimmung sehen', 'als Vorlage gespeichert', 'stars', '09.10.2023','Hello World', NULL)`
     );
     console.log("DONE!");
@@ -121,6 +122,7 @@ async function createData() {
     await connection.query(
       `INSERT INTO answerOption (answerOptionId, answerText, questionId) VALUES
       ('ABABAB1212', 'Zwei Mal pro Woche', 'ABCDEF1234'),
+      {"answerOptionId":"VhZDbJ3559","answerText":"4","questionId":"LmDhnu0117"},
       ('BCBCBC3131', 'Blau', 'YYYYYY8888'),
       ('DEDEDE4545', 'Paraquay', 'UVWXYZ7777'),
       ('FGFGFG6767', 'Rot', 'YYYYYY8888'),
@@ -133,6 +135,7 @@ async function createData() {
     await connection.query(
       `INSERT INTO answerGiven (answerGivenId, userId, answerOptionId, questionId) VALUES
       ('ZYZYZY9898', 'BBBBBB2222', 'ABABAB1212', 'ABCDEF1234'),
+      {"answerGivenId":"Kfmpne8109","userId":"YKTZcW5556","answerOptionId":"VhZDbJ3559","questionId":"LmDhnu0117"},
       ('XWXWXW7676', 'CCCCCC3333', 'BCBCBC3131', 'YYYYYY8888'),
       ('AQWSED1234', 'AAAAAA1111', 'DEDEDE4545', 'ABCDEF1234'),
       ('YHBGVF5678', 'DDDDDD4444', 'FGFGFG6767', 'YYYYYY8888'),
